@@ -3,8 +3,6 @@
 w visual studio do projektu mozna przulaczyc tylko jeden plik naglowkowy, abu podlaczyc kolejny nalezy wejsc projekt->
 wlasciwosci->c++/c->zaawansowane->plik wymuszonego doloczenia i wpisac sciezke do pliku naglowkowego*/
 
-float degree = 0.0;
-
 void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, PlanszaGry& plansza, ArmiaGracz& armiagracz) {
 
 	while (gamesystem.running) { //glowna petla
