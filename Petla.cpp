@@ -23,6 +23,7 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 				menu.CzyMenu = true;
 			}
 		}
+
 		if (menu.CzyInstrukcje && gamesystem.event.mouse.y > 470 || gamesystem.event.mouse.y < 70) {
 			if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
 				menu.CzyInstrukcje = false;
