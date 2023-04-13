@@ -86,7 +86,7 @@ public:                                       //klasa ekranu ustawiania statkow
     ALLEGRO_BITMAP* Exit;
 
     void init(char Napis[], char Panel[], char litery[], char cyfry[], char reset[], char exit[]);    //metody do jej inicjalizacji, rysowania i zniszczenia
-    void drawUstawianie(PlanszaGry plansza);
+    void drawUstawianie();
     void destroy();
 };
 

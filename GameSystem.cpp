@@ -111,7 +111,7 @@ void Ustawianie::init(char Napis[], char Panel[], char litery[], char cyfry[], c
 	this->Exit = al_load_bitmap(exit);
 }
 
-void Ustawianie::drawUstawianie(PlanszaGry plansza) {
+void Ustawianie::drawUstawianie() {
 	this->CzyUstawianie = true;   //pozwala na wykonywanie warunkow zwiazych z ekranem ustawiania(zobacz Petla.cpp lin38 i 44)
 	al_draw_bitmap(NapisObracanie, 700, 0, 0);     //rysowanie ekranu ustawiania statkow
 	al_draw_bitmap(SrodPanel, 500, 0, 0);
@@ -119,7 +119,6 @@ void Ustawianie::drawUstawianie(PlanszaGry plansza) {
 	al_draw_bitmap(Cyfry, 24, 94, 0);
 	al_draw_bitmap(Reset, 617, 461, 0);
 	al_draw_bitmap(Exit, 514, 461, 0);
-	//plansza.drawplansza(ALLEGRO_EVENT event);
 }
 
 void Ustawianie::destroy() {
@@ -167,7 +166,7 @@ void Statek1::drawstatek1(ALLEGRO_EVENT event, PlanszaGry board, Ustawianie setu
 						board.Pola[i - 11]->CzyStatek = true;
 						board.Pola[i + 9]->CzyStatek = true;
 						board.Pola[i + 11]->CzyStatek = true;
-						//board.Pola[i - 9]->CzyStatek  = true;
+						board.Pola[i - 9]->CzyStatek  = true;
 					}
 					else {
 						x = defaultX;

@@ -59,7 +59,7 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 		if (ustawianie.CzyUstawianie) {
 			menu.CzyMenu = false;
 			al_clear_to_color(al_map_rgb(255, 255, 255));
-			ustawianie.drawUstawianie(plansza);
+			ustawianie.drawUstawianie();
 			plansza.drawplansza();
 
 			for (auto& boat : armiagracz.statki1) {
