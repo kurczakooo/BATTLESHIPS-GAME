@@ -143,17 +143,7 @@ void Statek1::drawstatek1(ALLEGRO_EVENT event, PlanszaGry board, Ustawianie setu
 			isDragged = false;
 			std::cout << "\n\n";
 			for (int i = 0; i < 100; i++) {
-				//board.Pola[i]->CzyStatek = false;
 				if (x + 20 >= board.Pola[i]->x && x + 20 <= board.Pola[i]->x + 40 && y + 20 >= board.Pola[i]->y && y + 20 <= board.Pola[i]->y + 40) {
-					//if(!board.ZajetePola.empty())
-					//	board.ZajetePola.pop_back();
-					/*for (auto& zajete : board.ZajetePola) {
-						if (i == zajete) {
-							x = defaultX;
-							y = defaultY;
-							degree = 0;
-						}
-					}*/
 					if (!board.Pola[i]->CzyStatek && !board.Pola[i]->wokolStatku) {
 						x = board.Pola[i]->x;
 						y = board.Pola[i]->y;
@@ -173,25 +163,6 @@ void Statek1::drawstatek1(ALLEGRO_EVENT event, PlanszaGry board, Ustawianie setu
 						y = defaultY;
 						degree = 0;
 					}
-					//board.ZajetePola.push_back(i);
-					/*if (!tile->CzyStatek) {
-						x = tile->x;
-						y = tile->y;
-						tile->CzyStatek = true;
-						continue;
-					}
-					else {
-						x = defaultX;
-						y = defaultY;
-						degree = 0;
-						tile->CzyStatek = true;
-					}
-				}
-				tile->CzyStatek = false;
-					board.ZajetePola.push_back(i);
-					for (auto& zajete : board.ZajetePola) {
-						std::cout << zajete << " ";
-					}*/
 				}
 			}
 			if (x + 20 >= 475 || x + 20 <= 75 || y + 20 >= 494 || y + 20 <= 94) {
@@ -236,9 +207,6 @@ void Statek2::drawstatek2(ALLEGRO_EVENT event, PlanszaGry board, Ustawianie setu
 			for (int i = 1; i <= 100;i++) {
 				std::cout << board.Pola[i-1]->CzyStatek<<" ";
 				if (i % 10 == 0)std::cout << "\n";
-			}
-			for (auto& zajete : board.ZajetePola) {
-				std::cout << zajete<<" ";
 			}
 			if (x + 20 >= 475 || x + 20 <= 75 || y + 20 >= 494 || y + 20 <= 94) {
 				x = defaultX;

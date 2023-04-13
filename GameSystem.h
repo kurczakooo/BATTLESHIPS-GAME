@@ -67,7 +67,6 @@ public:
 class PlanszaGry : public GameSystem {
 public:
     std::vector <Pole*> Pola;
-    std::vector <int> ZajetePola;
 
     void init();
     void destroy();
@@ -99,7 +98,6 @@ public:
     float y;
     float degree;
     bool isDragged;
-    int polozenie;
 
     Statek1(char statek1[], float x, float y, int defaultx, int defaulty);
     void drawstatek1(ALLEGRO_EVENT event, PlanszaGry board, Ustawianie setup);
