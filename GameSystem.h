@@ -98,9 +98,10 @@ public:
     float y;
     float degree;
     bool isDragged;
+    bool CzyUstawiony;
 
     Statek1(char statek1[], float x, float y, int defaultx, int defaulty);
-    void drawstatek1(ALLEGRO_EVENT event, PlanszaGry board, Ustawianie setup);
+    void drawstatek1(ALLEGRO_EVENT event, PlanszaGry board);
 };
 
 class Statek2 : public GameSystem {
@@ -114,7 +115,7 @@ public:
     bool isDragged;
 
     Statek2(char statek2[], float x, float y, int defaultx, int defaulty);
-    void drawstatek2(ALLEGRO_EVENT event, PlanszaGry board, Ustawianie setup);
+    void drawstatek2(ALLEGRO_EVENT event, PlanszaGry board);
 };
 
 class Statek3 : public GameSystem {
@@ -128,7 +129,7 @@ public:
     bool isDragged;
 
     Statek3(char statek3[], float x, float y, int defaultx, int defaulty);
-    void drawstatek3(ALLEGRO_EVENT event, PlanszaGry board, Ustawianie setup);
+    void drawstatek3(ALLEGRO_EVENT event, PlanszaGry board);
 };
 
 class Statek4 : public GameSystem {
@@ -142,7 +143,7 @@ public:
     bool isDragged;
 
     Statek4(char statek4[], float x, float y, int defaultx, int defaulty);
-    void drawstatek4(ALLEGRO_EVENT event, PlanszaGry board, Ustawianie setup);
+    void drawstatek4(ALLEGRO_EVENT event, PlanszaGry board);
 };
 
 class ArmiaGracz : public GameSystem {
@@ -153,5 +154,7 @@ public:
     std::vector <Statek4*> statki4;
 
     void init();
+    void drawarmia(ALLEGRO_EVENT event, PlanszaGry board);
+    void restart(ALLEGRO_EVENT event, PlanszaGry board);
     void destroy();
 };

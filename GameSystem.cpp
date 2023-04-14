@@ -135,11 +135,12 @@ Statek1::Statek1(char statek1[], float x, float y, int defaultx, int defaulty) {
 	this->defaultX = defaultx;
 	this->defaultY = defaulty;
 	this->isDragged = false;
+	this->CzyUstawiony = false;
 }
 
-void Statek1::drawstatek1(ALLEGRO_EVENT event, PlanszaGry board, Ustawianie setup) {
+void Statek1::drawstatek1(ALLEGRO_EVENT event, PlanszaGry board) {
 	if (event.mouse.x >= x && event.mouse.x <= x + 40 && event.mouse.y >= y && event.mouse.y <= y + 40) {
-		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
+		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && !CzyUstawiony) {
 			isDragged = false;
 			std::cout << "\n\n";
 			for (int i = 0; i < 100; i++) {
@@ -149,14 +150,16 @@ void Statek1::drawstatek1(ALLEGRO_EVENT event, PlanszaGry board, Ustawianie setu
 						y = board.Pola[i]->y;
 						//std::cout << i << " ";
 						board.Pola[i]->CzyStatek = true;
-						board.Pola[i - 1]->CzyStatek = true;
+						CzyUstawiony = true;
+						break;
+						/*board.Pola[i - 1]->CzyStatek = true;
 						board.Pola[i + 1]->CzyStatek = true;
 						board.Pola[i - 10]->CzyStatek = true;
 						board.Pola[i + 10]->CzyStatek = true;
 						board.Pola[i - 11]->CzyStatek = true;
 						board.Pola[i + 9]->CzyStatek = true;
 						board.Pola[i + 11]->CzyStatek = true;
-						board.Pola[i - 9]->CzyStatek  = true;
+						board.Pola[i - 9]->CzyStatek  = true;*/
 					}
 					else {
 						x = defaultX;
@@ -182,7 +185,7 @@ void Statek1::drawstatek1(ALLEGRO_EVENT event, PlanszaGry board, Ustawianie setu
 			isDragged = true;
 		}
 	}
-	if (event.type == ALLEGRO_EVENT_MOUSE_AXES && isDragged) {
+	if (event.type == ALLEGRO_EVENT_MOUSE_AXES && isDragged && !CzyUstawiony) {
 		x = event.mouse.x - al_get_bitmap_width(ship1) / 2;
 		y = event.mouse.y - al_get_bitmap_height(ship1) / 2;
 		//std::cout << x << " " << y << "\n";
@@ -200,7 +203,7 @@ Statek2::Statek2(char statek2[], float x, float y, int defaultx, int defaulty) {
 	this->isDragged = false;
 }
 
-void Statek2::drawstatek2(ALLEGRO_EVENT event, PlanszaGry board, Ustawianie setup) {
+void Statek2::drawstatek2(ALLEGRO_EVENT event, PlanszaGry board) {
 	if (event.mouse.x >= x && event.mouse.x <= x + 40 && event.mouse.y >= y && event.mouse.y <= y + 80) {
 		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
 			isDragged = false;
@@ -246,21 +249,21 @@ Statek3::Statek3(char statek3[], float x, float y, int defaultx, int defaulty) {
 	this->isDragged = false;
 }
 
-void Statek3::drawstatek3(ALLEGRO_EVENT event, PlanszaGry board, Ustawianie setup) {
+void Statek3::drawstatek3(ALLEGRO_EVENT event, PlanszaGry board) {
 	if (event.mouse.x >= x && event.mouse.x <= x + 40 && event.mouse.y >= y && event.mouse.y <= y + 120) {
 		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
 			isDragged = false;
-			if (x + 20 >= 475 || x + 20 <= 75 || y + 20 >= 494 || y + 20 <= 94) {
+			/*if (x + 20 >= 475 || x + 20 <= 75 || y + 20 >= 494 || y + 20 <= 94) {
 				x = defaultX;
 				y = defaultY;
 				degree = 0;
-			}
+			}*/
 		}
 		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
 			isDragged = true;
 		}
 		if (x + 20 <= 475 || x + 20 >= 75 || y + 20 <= 494 || y + 20 >= 94) {
-			if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
+		/*	if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
 				float currentTime = al_get_time();
 				if (currentTime - lastClickTime < 0.5) {
 					degree += 90;
@@ -268,7 +271,7 @@ void Statek3::drawstatek3(ALLEGRO_EVENT event, PlanszaGry board, Ustawianie setu
 						degree = 0;
 				}
 				lastClickTime = currentTime;
-			}
+			}*/
 		}
 	}
 
@@ -289,7 +292,7 @@ Statek4::Statek4(char statek4[], float x, float y, int defaultx, int defaulty) {
 	this->isDragged = false;
 }
 
-void Statek4::drawstatek4(ALLEGRO_EVENT event, PlanszaGry board, Ustawianie setup) {
+void Statek4::drawstatek4(ALLEGRO_EVENT event, PlanszaGry board) {
 	if (event.mouse.x >= x && event.mouse.x <= x + 40 && event.mouse.y >= y && event.mouse.y <= y + 160) {
 		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
 			isDragged = false;
@@ -336,6 +339,44 @@ void ArmiaGracz::init() {
 	this->statki3.push_back(new Statek3(statek3, 970.0, 291.0, 970, 291));
 
 	this->statki4.push_back(new Statek4(statek4, 1050.0, 131.0, 1050, 131));
+}
+
+void ArmiaGracz::drawarmia(ALLEGRO_EVENT event, PlanszaGry board) {
+	for (auto& boat : statki1) {
+		boat->drawstatek1(event, board);
+	}
+	for (auto& boat : statki2) {
+		boat->drawstatek2(event, board);
+	}
+	for (auto& boat : statki3) {
+		boat->drawstatek3(event, board);
+	}
+	for (auto& boat : statki4) {
+		boat->drawstatek4(event, board);
+	}
+}
+
+void ArmiaGracz::restart(ALLEGRO_EVENT event, PlanszaGry board) {
+	for (auto& tile : board.Pola) {
+		tile->CzyStatek = false;
+	}
+	for (auto& boat : statki1) {
+		boat->x = boat->defaultX;
+		boat->y = boat->defaultY;
+		boat->CzyUstawiony = false;
+	}
+	for (auto& boat : statki2) {
+		boat->x = boat->defaultX;
+		boat->y = boat->defaultY;
+	}
+	for (auto& boat : statki3) {
+		boat->x = boat->defaultX;
+		boat->y = boat->defaultY;
+	}
+	for (auto& boat : statki4) {
+		boat->x = boat->defaultX;
+		boat->y = boat->defaultY;
+	}
 }
 
 void ArmiaGracz::destroy() {

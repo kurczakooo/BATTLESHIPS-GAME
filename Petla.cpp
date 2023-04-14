@@ -60,19 +60,7 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 			al_clear_to_color(al_map_rgb(255, 255, 255));
 			ustawianie.drawUstawianie();
 			plansza.drawplansza();
-
-			for (auto& boat : armiagracz.statki1) {
-				boat->drawstatek1(gamesystem.event, plansza, ustawianie);
-			}
-			for (auto& boat : armiagracz.statki2) {
-				boat->drawstatek2(gamesystem.event, plansza, ustawianie);
-			}
-			for (auto& boat : armiagracz.statki3) {
-				boat->drawstatek3(gamesystem.event, plansza, ustawianie);
-			}
-			for (auto& boat : armiagracz.statki4) {
-				boat->drawstatek4(gamesystem.event, plansza, ustawianie);
-			}
+			armiagracz.drawarmia(gamesystem.event, plansza);
 
 			if (gamesystem.event.mouse.x >= 514 && gamesystem.event.mouse.x <= 570 && gamesystem.event.mouse.y >= 461 && gamesystem.event.mouse.y <= 521) {
 				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
@@ -85,25 +73,7 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 
 			if (gamesystem.event.mouse.x >= 617 && gamesystem.event.mouse.x <= 680 && gamesystem.event.mouse.y >= 461 && gamesystem.event.mouse.y <= 521) {
 				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
-					for (auto& tile : plansza.Pola) {
-						tile->CzyStatek = false;
-					}
-					for (auto& boat : armiagracz.statki1) {
-						boat->x = boat->defaultX;
-						boat->y = boat->defaultY;
-					}
-					for (auto& boat : armiagracz.statki2) {
-						boat->x = boat->defaultX;
-						boat->y = boat->defaultY;
-					}
-					for (auto& boat : armiagracz.statki3) {
-						boat->x = boat->defaultX;
-						boat->y = boat->defaultY;
-					}
-					for (auto& boat : armiagracz.statki4) {
-						boat->x = boat->defaultX;
-						boat->y = boat->defaultY;
-					}
+					armiagracz.restart(gamesystem.event, plansza);
 				}
 			}
 		}
@@ -111,7 +81,7 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 	}
 }
 
-/*  warunek do zaznaczanie juz pol trafionych dac do draw plansza
+/*  warunek do zaznaczanie juz pol trafionych
 		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
 			if (event.mouse.x > pole->x && event.mouse.x < pole->x + 40 && event.mouse.y > pole->y && event.mouse.y < pole->y + 40) {
 				pole->pole = pole->miss;
