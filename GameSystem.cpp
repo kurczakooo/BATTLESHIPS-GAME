@@ -151,15 +151,16 @@ void Statek1::drawstatek1(ALLEGRO_EVENT event, PlanszaGry board) {
 						//std::cout << i << " ";
 						board.Pola[i]->CzyStatek = true;
 						CzyUstawiony = true;
+					//	if(!board.Pola.end())
+						//	board.Pola[i - 1]->CzyStatek = true;
+//						board.Pola[i + 1]->CzyStatek = true;
+//						board.Pola[i - 10]->CzyStatek = true;
+//						board.Pola[i + 10]->CzyStatek = true;
+//						board.Pola[i - 11]->CzyStatek = true;
+//						board.Pola[i + 9]->CzyStatek = true;
+//						board.Pola[i + 11]->CzyStatek = true;
+//						board.Pola[i - 9]->CzyStatek  = true;
 						break;
-						/*board.Pola[i - 1]->CzyStatek = true;
-						board.Pola[i + 1]->CzyStatek = true;
-						board.Pola[i - 10]->CzyStatek = true;
-						board.Pola[i + 10]->CzyStatek = true;
-						board.Pola[i - 11]->CzyStatek = true;
-						board.Pola[i + 9]->CzyStatek = true;
-						board.Pola[i + 11]->CzyStatek = true;
-						board.Pola[i - 9]->CzyStatek  = true;*/
 					}
 					else {
 						x = defaultX;
@@ -173,13 +174,12 @@ void Statek1::drawstatek1(ALLEGRO_EVENT event, PlanszaGry board) {
 				y = defaultY;
 				degree = 0;
 			}
-			if (event.mouse.x >= 75 && event.mouse.x <= 475 && event.mouse.y >= 94 && event.mouse.y <= 494) {
-				if (event.mouse.button == 2) {
-					degree += 90;
-					if (degree > 90)
-						degree = 0;
-				}
-			}
+		}
+		if (CzyUstawiony && event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && event.mouse.button == 2) {
+			degree += 90;
+			if (degree > 90)
+				degree = 0;
+			std::cout << degree << "\n";
 		}
 		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
 			isDragged = true;
