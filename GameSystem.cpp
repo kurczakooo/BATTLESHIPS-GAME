@@ -142,13 +142,11 @@ void Statek1::drawstatek1(ALLEGRO_EVENT event, PlanszaGry board) {
 	if (event.mouse.x >= x && event.mouse.x <= x + 40 && event.mouse.y >= y && event.mouse.y <= y + 40) {
 		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && !CzyUstawiony) {
 			isDragged = false;
-			std::cout << "\n\n";
 			for (int i = 0; i < 100; i++) {
 				if (x + 20 >= board.Pola[i]->x && x + 20 <= board.Pola[i]->x + 40 && y + 20 >= board.Pola[i]->y && y + 20 <= board.Pola[i]->y + 40) {
 					if (!board.Pola[i]->CzyStatek && !board.Pola[i]->wokolStatku) {
 						x = board.Pola[i]->x;
 						y = board.Pola[i]->y;
-						//std::cout << i << " ";
 						board.Pola[i]->CzyStatek = true;
 						CzyUstawiony = true;
 					//	if(!board.Pola.end())
@@ -188,7 +186,6 @@ void Statek1::drawstatek1(ALLEGRO_EVENT event, PlanszaGry board) {
 	if (event.type == ALLEGRO_EVENT_MOUSE_AXES && isDragged && !CzyUstawiony) {
 		x = event.mouse.x - al_get_bitmap_width(ship1) / 2;
 		y = event.mouse.y - al_get_bitmap_height(ship1) / 2;
-		//std::cout << x << " " << y << "\n";
 	}
 	al_draw_rotated_bitmap(ship1, al_get_bitmap_width(ship1) / 2, al_get_bitmap_height(ship1) / 2, x + al_get_bitmap_width(ship1) / 2, y + al_get_bitmap_height(ship1) / 2, degree * 3.14159 / 180, 0);
 }
@@ -201,6 +198,7 @@ Statek2::Statek2(char statek2[], float x, float y, int defaultx, int defaulty) {
 	this->defaultX = defaultx;
 	this->defaultY = defaulty;
 	this->isDragged = false;
+	this->CzyUstawiony = false;
 }
 
 void Statek2::drawstatek2(ALLEGRO_EVENT event, PlanszaGry board) {
@@ -211,6 +209,7 @@ void Statek2::drawstatek2(ALLEGRO_EVENT event, PlanszaGry board) {
 				std::cout << board.Pola[i-1]->CzyStatek<<" ";
 				if (i % 10 == 0)std::cout << "\n";
 			}
+			std::cout << "\n\n";
 			if (x + 20 >= 475 || x + 20 <= 75 || y + 20 >= 494 || y + 20 <= 94) {
 				x = defaultX;
 				y = defaultY;
@@ -232,7 +231,7 @@ void Statek2::drawstatek2(ALLEGRO_EVENT event, PlanszaGry board) {
 			}
 		}
 	}
-	if (event.type == ALLEGRO_EVENT_MOUSE_AXES && isDragged) {
+	if (event.type == ALLEGRO_EVENT_MOUSE_AXES && isDragged && !CzyUstawiony) {
 		x = event.mouse.x - al_get_bitmap_width(ship2) / 2;
 		y = event.mouse.y - al_get_bitmap_height(ship2) / 2;
 	}
@@ -247,6 +246,7 @@ Statek3::Statek3(char statek3[], float x, float y, int defaultx, int defaulty) {
 	this->defaultX = defaultx;
 	this->defaultY = defaulty;
 	this->isDragged = false;
+	this->CzyUstawiony = false;
 }
 
 void Statek3::drawstatek3(ALLEGRO_EVENT event, PlanszaGry board) {
@@ -290,6 +290,7 @@ Statek4::Statek4(char statek4[], float x, float y, int defaultx, int defaulty) {
 	this->defaultX = defaultx;
 	this->defaultY = defaulty;
 	this->isDragged = false;
+	this->CzyUstawiony = false;
 }
 
 void Statek4::drawstatek4(ALLEGRO_EVENT event, PlanszaGry board) {
@@ -363,19 +364,30 @@ void ArmiaGracz::restart(ALLEGRO_EVENT event, PlanszaGry board) {
 	for (auto& boat : statki1) {
 		boat->x = boat->defaultX;
 		boat->y = boat->defaultY;
+		boat->degree = 0;
 		boat->CzyUstawiony = false;
+		boat->isDragged = false;
 	}
 	for (auto& boat : statki2) {
 		boat->x = boat->defaultX;
 		boat->y = boat->defaultY;
+		boat->degree = 0;
+		boat->CzyUstawiony = false;
+		boat->isDragged = false;
 	}
 	for (auto& boat : statki3) {
 		boat->x = boat->defaultX;
 		boat->y = boat->defaultY;
+		boat->degree = 0;
+		boat->CzyUstawiony = false;
+		boat->isDragged = false;
 	}
 	for (auto& boat : statki4) {
 		boat->x = boat->defaultX;
 		boat->y = boat->defaultY;
+		boat->degree = 0;
+		boat->CzyUstawiony = false;
+		boat->isDragged = false;
 	}
 }
 
