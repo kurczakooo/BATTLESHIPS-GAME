@@ -14,7 +14,15 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 			if(koniec == 1) gamesystem.running = false;
 		}
 
-		if (menu.CzyInstrukcje && (gamesystem.event.mouse.x > 900 || gamesystem.event.mouse.x < 300) || (gamesystem.event.mouse.y > 470 || gamesystem.event.mouse.y < 70)) {
+		if (menu.CzyInstrukcje && gamesystem.event.mouse.x > 900 || gamesystem.event.mouse.x < 300) {
+			if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
+				menu.CzyInstrukcje = false;
+				menu.drawMenu();
+				menu.CzyMenu = true;
+			}
+		}
+
+		if (menu.CzyInstrukcje && gamesystem.event.mouse.y > 470 || gamesystem.event.mouse.y < 70) {
 			if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
 				menu.CzyInstrukcje = false;
 				menu.drawMenu();
@@ -33,16 +41,17 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 		if (menu.CzyMenu) {
 			if (gamesystem.event.mouse.x >= 483 && gamesystem.event.mouse.x <= 718 && gamesystem.event.mouse.y >= 410 && gamesystem.event.mouse.y <= 485) {
 				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
+					std::cout << "koniec ";
 					gamesystem.running = false;
 				}
 			}
 			
 			if (gamesystem.event.mouse.x >= 475 && gamesystem.event.mouse.x <= 725 && gamesystem.event.mouse.y >= 220 && gamesystem.event.mouse.y <= 320) {
 				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
-					menu.CzyMenu = false;
 					ustawianie.CzyUstawianie = true;
  					armiagracz.init();
 					plansza.init(); 
+					menu.CzyMenu = false;
 				}
 			}
 		}
@@ -65,7 +74,6 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 
 			if (gamesystem.event.mouse.x >= 617 && gamesystem.event.mouse.x <= 680 && gamesystem.event.mouse.y >= 461 && gamesystem.event.mouse.y <= 521) {
 				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
-					menu.CzyMenu = false;
 					armiagracz.restart(gamesystem.event, plansza);
 				}
 			}

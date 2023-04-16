@@ -9,7 +9,6 @@ char statek1[] = "elements/1statek.png";
 char statek2[] = "elements/2statek.png";
 char statek3[] = "elements/3statek.png";
 char statek4[] = "elements/4statek.png";
-float lastClickTime = 0.0;
 
 void GameSystem::init() {
 
@@ -274,25 +273,16 @@ void Statek3::drawstatek3(ALLEGRO_EVENT event, PlanszaGry board) {
 				i++;
 			}
 			std::cout << "\n\n";
-			/*if (x + 20 >= 475 || x + 20 <= 75 || y + 20 >= 494 || y + 20 <= 94) {
+			if (x + 20 >= 475 || x + 20 <= 75 || y + 20 >= 494 || y + 20 <= 94) {
 				x = defaultX;
 				y = defaultY;
 				degree = 0;
-			}*/
+			}
 		}
 		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
 			isDragged = true;
 		}
 		if (x + 20 <= 475 || x + 20 >= 75 || y + 20 <= 494 || y + 20 >= 94) {
-		/*	if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
-				float currentTime = al_get_time();
-				if (currentTime - lastClickTime < 0.5) {
-					degree += 90;
-					if (degree > 90)
-						degree = 0;
-				}
-				lastClickTime = currentTime;
-			}*/
 		}
 	}
 
@@ -326,17 +316,6 @@ void Statek4::drawstatek4(ALLEGRO_EVENT event, PlanszaGry board) {
 		}
 		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
 			isDragged = true;
-		}
-		if (x + 20 <= 475 || x + 20 >= 75 || y + 20 <= 494 || y + 20 >= 94) {
-			if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
-				float currentTime = al_get_time();
-				if (currentTime - lastClickTime < 0.5) {
-					degree += 90;
-					if (degree > 90)
-						degree = 0;
-				}
-				lastClickTime = currentTime;
-			}
 		}
 	}
 
