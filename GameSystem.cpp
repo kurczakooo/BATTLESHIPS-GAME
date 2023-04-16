@@ -21,11 +21,8 @@ void GameSystem::init() {
 	this->display = al_create_display(DisplayWidth, DisplayHeight);
 	al_set_window_title(display, DisplayTitle);
 	this->queue = al_create_event_queue();
-	this->timer = al_create_timer(1.0/60);
 	al_register_event_source(queue, al_get_display_event_source(display));
 	al_register_event_source(queue, al_get_mouse_event_source());
-	al_register_event_source(queue, al_get_timer_event_source(timer));
-	al_start_timer(timer);
 	//rejestrowanie wydarzen na displayu i wydarzen myszki
 	this->running = true;
 }
@@ -155,7 +152,7 @@ void Statek1::drawstatek1(ALLEGRO_EVENT event, PlanszaGry board) {
 						y = board.Pola[i]->y;
 						Iczesc = i;
 						board.Pola[Iczesc]->CzyStatek = true;
-						zaznaczwokol1(event, board);
+						//zaznaczwokol1(event, board);
 						CzyUstawiony = true;
 					}
 					else {
@@ -206,16 +203,13 @@ void Statek2::drawstatek2(ALLEGRO_EVENT event, PlanszaGry board) {
 			isDragged = false;
 			for (int i = 0; i < 100; i++) {
 				if (x + 20 >= board.Pola[i]->x && x + 20 <= board.Pola[i]->x + 40 && y + 20 >= board.Pola[i]->y && y + 20 <= board.Pola[i]->y + 40) {
-					if (!board.Pola[i]->CzyStatek && !board.Pola[i]->wokolStatku && i != 99) {
+					if (!board.Pola[i]->CzyStatek && !board.Pola[i]->wokolStatku && i != 99 && (i + 1) % 10 != 0) {
 						x = board.Pola[i]->x;
 						y = board.Pola[i]->y;
 						Iczesc = i;
 						IIczesc = i + 1;
 						board.Pola[Iczesc]->CzyStatek = true;
-						board.Pola[IIczesc]->CzyStatek = true;
-						//board.Pola[IIczesc - 10]->wokolStatku = true;
-						// board.Pola[IIczesc - 11]->wokolStatku = true;
-						
+						board.Pola[IIczesc]->CzyStatek = true;						
 						break;
 					}
 					else {
