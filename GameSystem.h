@@ -99,9 +99,11 @@ public:
     float degree;
     bool isDragged;
     bool CzyUstawiony;
+    int Iczesc;
 
     Statek1(char statek1[], float x, float y, int defaultx, int defaulty);
     void drawstatek1(ALLEGRO_EVENT event, PlanszaGry board);
+    void zaznaczwokol1(ALLEGRO_EVENT event, PlanszaGry board);
 };
 
 class Statek2 : public GameSystem {
@@ -113,7 +115,8 @@ public:
     float y;
     float degree;
     bool isDragged;
-    bool CzyUstawiony;
+    int Iczesc;
+    int IIczesc;
 
     Statek2(char statek2[], float x, float y, int defaultx, int defaulty);
     void drawstatek2(ALLEGRO_EVENT event, PlanszaGry board);
