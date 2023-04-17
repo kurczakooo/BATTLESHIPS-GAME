@@ -224,17 +224,17 @@ void Statek2::drawstatek2(ALLEGRO_EVENT event, PlanszaGry board) {
 				degree = 0;
 			}
 		}
-		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && event.mouse.button == 2 && IIczesc + 10 <= 99 && !board.Pola[IIczesc + 10]->wokolStatku) {
+		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && event.mouse.button == 2 && IIczesc + 10 <= 99 && !board.Pola[IIczesc + 10]->CzyStatek) {
 			degree += 90;
 			if (degree > 90)
 				degree = 0;
 			if (degree == 90) {
-				board.Pola[Iczesc]->CzyStatek = false;
-				board.Pola[IIczesc + 10]->CzyStatek = true;
+//				board.Pola[Iczesc]->CzyStatek = false;
+//				board.Pola[IIczesc + 10]->CzyStatek = true;
 			}
 			if(degree == 0) {
-				board.Pola[Iczesc]->CzyStatek = true;
-				board.Pola[IIczesc + 10]->CzyStatek = false;
+//				board.Pola[Iczesc]->CzyStatek = true;
+//				board.Pola[IIczesc + 10]->CzyStatek = false;
 			}
 		}
 		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
@@ -265,24 +265,54 @@ void Statek3::drawstatek3(ALLEGRO_EVENT event, PlanszaGry board) {
 	if (event.mouse.x >= x && event.mouse.x <= x + 40 && event.mouse.y >= y && event.mouse.y <= y + 120) {
 		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
 			isDragged = false;
-			int i = 1;
-			for (auto& tile : board.Pola) {
-				std::cout << tile->CzyStatek << " ";
-				if (i % 10 == 0)
-					std::cout << "\n";
-				i++;
+			for (int i = 0; i < 100; i++) {
+				if (x + 20 >= board.Pola[i]->x && x + 20 <= board.Pola[i]->x + 40 && y + 20 >= board.Pola[i]->y && y + 20 <= board.Pola[i]->y + 40) {
+					if (!board.Pola[i]->CzyStatek && !board.Pola[i]->wokolStatku && i != 99 && i != 98 && (i + 1) % 10 != 0) {
+						x = board.Pola[i]->x;
+						y = board.Pola[i]->y;
+						Iczesc = i;
+						IIczesc = i + 1;
+						IIIczesc = i + 2;
+						board.Pola[Iczesc]->CzyStatek = true;
+						board.Pola[IIczesc]->CzyStatek = true;
+						board.Pola[IIIczesc]->CzyStatek = true;
+						break;
+					}
+					else {
+						x = defaultX;
+						y = defaultY;
+						degree = 0;
+					}
+				}
 			}
-			std::cout << "\n\n";
 			if (x + 20 >= 475 || x + 20 <= 75 || y + 20 >= 494 || y + 20 <= 94) {
 				x = defaultX;
 				y = defaultY;
 				degree = 0;
 			}
 		}
+		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && event.mouse.button == 2 && IIIczesc + 10 <= 99 && IIIczesc + 20 <= 99 && !board.Pola[IIIczesc + 10]->CzyStatek && !board.Pola[IIIczesc + 20]->CzyStatek) {
+			degree += 90;
+			if (degree > 90)
+				degree = 0;
+			if (degree == 90) {
+//				board.Pola[Iczesc]->CzyStatek = false;
+//				board.Pola[IIczesc]->CzyStatek = false;
+//				board.Pola[IIIczesc + 10]->CzyStatek = true;
+//				board.Pola[IIIczesc + 20]->CzyStatek = true;
+			}
+			if (degree == 0) {
+//				board.Pola[Iczesc]->CzyStatek = true;
+//				board.Pola[IIczesc]->CzyStatek = true;
+//				board.Pola[IIIczesc + 10]->CzyStatek = false;
+//				board.Pola[IIIczesc + 20]->CzyStatek = false;
+			}
+		}
 		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
 			isDragged = true;
-		}
-		if (x + 20 <= 475 || x + 20 >= 75 || y + 20 <= 494 || y + 20 >= 94) {
+			board.Pola[Iczesc]->CzyStatek = false;
+			board.Pola[IIczesc]->CzyStatek = false;
+			board.Pola[IIIczesc]->CzyStatek = false;
 		}
 	}
 
@@ -308,14 +338,61 @@ void Statek4::drawstatek4(ALLEGRO_EVENT event, PlanszaGry board) {
 	if (event.mouse.x >= x && event.mouse.x <= x + 40 && event.mouse.y >= y && event.mouse.y <= y + 160) {
 		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
 			isDragged = false;
+			for (int i = 0; i < 100; i++) {
+				if (x + 20 >= board.Pola[i]->x && x + 20 <= board.Pola[i]->x + 40 && y + 20 >= board.Pola[i]->y && y + 20 <= board.Pola[i]->y + 40) {
+					if (!board.Pola[i]->CzyStatek && !board.Pola[i]->wokolStatku && i != 99 && i != 98 && i != 97 && (i + 1) % 10 != 0) {
+						x = board.Pola[i]->x;
+						y = board.Pola[i]->y;
+						Iczesc = i;
+						IIczesc = i + 1;
+						IIIczesc = i + 2;
+						IVczesc = i + 3;
+						board.Pola[Iczesc]->CzyStatek = true;
+						board.Pola[IIczesc]->CzyStatek = true;
+						board.Pola[IIIczesc]->CzyStatek = true;
+						board.Pola[IVczesc]->CzyStatek = true;
+						break;
+					}
+					else {
+						x = defaultX;
+						y = defaultY;
+						degree = 0;
+					}
+				}
+			}
 			if (x + 20 >= 475 || x + 20 <= 75 || y + 20 >= 494 || y + 20 <= 94) {
 				x = defaultX;
 				y = defaultY;
 				degree = 0;
 			}
 		}
+		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && event.mouse.button == 2 && IVczesc + 10 <= 99 && IVczesc + 20 <= 99 && IVczesc + 30 <= 99 && !board.Pola[IVczesc + 10]->CzyStatek && !board.Pola[IVczesc + 20]->CzyStatek && !board.Pola[IVczesc + 30]->CzyStatek) {
+			degree += 90;
+			if (degree > 90)
+				degree = 0;
+			if (degree == 90) {
+//				board.Pola[Iczesc]->CzyStatek = false;
+//				board.Pola[IIczesc]->CzyStatek = false;
+//				board.Pola[IIIczesc]->CzyStatek = false;
+//				board.Pola[IVczesc + 10]->CzyStatek = true;
+//				board.Pola[IVczesc + 20]->CzyStatek = true;
+//   			board.Pola[IVczesc + 30]->CzyStatek = true;
+			}
+			if (degree == 0) {
+//				board.Pola[Iczesc]->CzyStatek = true;
+//				board.Pola[IIczesc]->CzyStatek = true;
+//				board.Pola[IIIczesc]->CzyStatek = true;
+//				board.Pola[IVczesc + 10]->CzyStatek = false;
+//				board.Pola[IVczesc + 20]->CzyStatek = false;
+//				board.Pola[IVczesc + 30]->CzyStatek = false;
+			}
+		}
 		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
 			isDragged = true;
+			board.Pola[Iczesc]->CzyStatek = false;
+			board.Pola[IIczesc]->CzyStatek = false;
+			board.Pola[IIIczesc]->CzyStatek = false;
+			board.Pola[IVczesc]->CzyStatek = false;
 		}
 	}
 

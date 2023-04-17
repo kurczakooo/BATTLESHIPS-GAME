@@ -1,5 +1,6 @@
 #include "GameSystem.h"
 #include "Petla.h"
+#include "allegro5/allegro_primitives.h"
 
 int main() {
 

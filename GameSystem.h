@@ -133,6 +133,9 @@ public:
     float degree;
     bool isDragged;
     bool CzyUstawiony;
+    int Iczesc;
+    int IIczesc;
+    int IIIczesc;
 
     Statek3(char statek3[], float x, float y, int defaultx, int defaulty);
     void drawstatek3(ALLEGRO_EVENT event, PlanszaGry board);
@@ -148,6 +151,10 @@ public:
     float degree;
     bool isDragged;
     bool CzyUstawiony;
+    int Iczesc;
+    int IIczesc;
+    int IIIczesc;
+    int IVczesc;
 
     Statek4(char statek4[], float x, float y, int defaultx, int defaulty);
     void drawstatek4(ALLEGRO_EVENT event, PlanszaGry board);

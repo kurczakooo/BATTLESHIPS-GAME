@@ -74,6 +74,7 @@
     <Allegro_AddonImage>true</Allegro_AddonImage>
     <Allegro_AddonColor>true</Allegro_AddonColor>
     <Allegro_AddonDialog>true</Allegro_AddonDialog>
+    <Allegro_AddonPrimitives>true</Allegro_AddonPrimitives>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
