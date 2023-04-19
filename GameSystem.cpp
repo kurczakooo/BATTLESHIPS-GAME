@@ -93,8 +93,11 @@ void PlanszaGry::destroy() {
 }
 
 void PlanszaGry::drawplansza() {
-	for (auto& tile : Pola) {
-		al_draw_bitmap(tile->pole, tile->x, tile->y, 0);
+	for (auto& tile1 : Pola) {
+		if (tile1->wokolStatku)
+			tile1->pole = tile1->miss;
+
+		al_draw_bitmap(tile1->pole, tile1->x, tile1->y, 0);
 	}
 }
 
@@ -136,7 +139,7 @@ Statek1::Statek1(char statek1[], float x, float y, int defaultx, int defaulty) {
 
 void Statek1::zaznaczwokol1(ALLEGRO_EVENT event, PlanszaGry board) {
 	if ((Iczesc + 1) % 10 != 0 && Iczesc != 99) {
-		board.Pola[Iczesc + 1]->CzyStatek = true;
+		board.Pola[Iczesc + 1]->wokolStatku = true;
 	}
 }
 
@@ -151,7 +154,7 @@ void Statek1::drawstatek1(ALLEGRO_EVENT event, PlanszaGry board) {
 						y = board.Pola[i]->y;
 						Iczesc = i;
 						board.Pola[Iczesc]->CzyStatek = true;
-						//zaznaczwokol1(event, board);
+						zaznaczwokol1(event, board);
 						CzyUstawiony = true;
 					}
 					else {
@@ -168,11 +171,11 @@ void Statek1::drawstatek1(ALLEGRO_EVENT event, PlanszaGry board) {
 				degree = 0;
 			}
 		}
-		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && event.mouse.button == 2 && CzyUstawiony) {
+	/*	if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && event.mouse.button == 2 && CzyUstawiony) {
 			degree += 90;
 			if (degree > 90)
 				degree = 0;
-		}
+		}*/
 		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
 			isDragged = true;
 			board.Pola[Iczesc]->CzyStatek = false;
@@ -224,19 +227,19 @@ void Statek2::drawstatek2(ALLEGRO_EVENT event, PlanszaGry board) {
 				degree = 0;
 			}
 		}
-		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && event.mouse.button == 2 && IIczesc + 10 <= 99 && !board.Pola[IIczesc + 10]->CzyStatek) {
+	/*	if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && event.mouse.button == 2 && IIczesc + 10 <= 99 && !board.Pola[IIczesc + 10]->CzyStatek) {
 			degree += 90;
 			if (degree > 90)
 				degree = 0;
 			if (degree == 90) {
-//				board.Pola[Iczesc]->CzyStatek = false;
-//				board.Pola[IIczesc + 10]->CzyStatek = true;
+				board.Pola[Iczesc]->CzyStatek = false;
+				board.Pola[IIczesc + 10]->CzyStatek = true;
 			}
 			if(degree == 0) {
-//				board.Pola[Iczesc]->CzyStatek = true;
-//				board.Pola[IIczesc + 10]->CzyStatek = false;
+				board.Pola[Iczesc]->CzyStatek = true;
+				board.Pola[IIczesc + 10]->CzyStatek = false;
 			}
-		}
+		}*/
 		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
 			isDragged = true;
 			board.Pola[Iczesc]->CzyStatek = false;
@@ -291,7 +294,7 @@ void Statek3::drawstatek3(ALLEGRO_EVENT event, PlanszaGry board) {
 				degree = 0;
 			}
 		}
-		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && event.mouse.button == 2 && IIIczesc + 10 <= 99 && IIIczesc + 20 <= 99 && !board.Pola[IIIczesc + 10]->CzyStatek && !board.Pola[IIIczesc + 20]->CzyStatek) {
+/*		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && event.mouse.button == 2 && IIIczesc + 10 <= 99 && IIIczesc + 20 <= 99 && !board.Pola[IIIczesc + 10]->CzyStatek && !board.Pola[IIIczesc + 20]->CzyStatek) {
 			degree += 90;
 			if (degree > 90)
 				degree = 0;
@@ -307,7 +310,7 @@ void Statek3::drawstatek3(ALLEGRO_EVENT event, PlanszaGry board) {
 //				board.Pola[IIIczesc + 10]->CzyStatek = false;
 //				board.Pola[IIIczesc + 20]->CzyStatek = false;
 			}
-		}
+		}*/
 		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
 			isDragged = true;
 			board.Pola[Iczesc]->CzyStatek = false;
@@ -366,7 +369,7 @@ void Statek4::drawstatek4(ALLEGRO_EVENT event, PlanszaGry board) {
 				degree = 0;
 			}
 		}
-		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && event.mouse.button == 2 && IVczesc + 10 <= 99 && IVczesc + 20 <= 99 && IVczesc + 30 <= 99 && !board.Pola[IVczesc + 10]->CzyStatek && !board.Pola[IVczesc + 20]->CzyStatek && !board.Pola[IVczesc + 30]->CzyStatek) {
+	/*	if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && event.mouse.button == 2 && IVczesc + 10 <= 99 && IVczesc + 20 <= 99 && IVczesc + 30 <= 99 && !board.Pola[IVczesc + 10]->CzyStatek && !board.Pola[IVczesc + 20]->CzyStatek && !board.Pola[IVczesc + 30]->CzyStatek) {
 			degree += 90;
 			if (degree > 90)
 				degree = 0;
@@ -386,7 +389,7 @@ void Statek4::drawstatek4(ALLEGRO_EVENT event, PlanszaGry board) {
 //				board.Pola[IVczesc + 20]->CzyStatek = false;
 //				board.Pola[IVczesc + 30]->CzyStatek = false;
 			}
-		}
+		}*/
 		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
 			isDragged = true;
 			board.Pola[Iczesc]->CzyStatek = false;
