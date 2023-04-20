@@ -235,19 +235,63 @@ Statek2::Statek2(char statek2[], float x, float y, int defaultx, int defaulty) {
 	this->isDragged = false;
 }
 
+void Statek2::zaznaczwokol2(ALLEGRO_EVENT event, PlanszaGry board) {
+	if (Iczesc % 10 != 0) {
+		board.Pola[Iczesc - 1]->wokolStatku = true;     //gora statku
+		wokol.push_back(Iczesc - 1);
+	}
+	if ((IIczesc + 1) % 10 != 0 && IIczesc != 99) {
+		board.Pola[IIczesc + 1]->wokolStatku = true;     //dol statku
+		wokol.push_back(IIczesc + 1);
+	}
+	if ((Iczesc - 11) >= 0 && (Iczesc - 10) % 10 != 0) {
+		board.Pola[Iczesc - 11]->wokolStatku = true;    //lewo gora statku
+		wokol.push_back(Iczesc - 11);
+	}
+	if ((Iczesc + 9) < 99 && Iczesc % 10 != 0) {
+		board.Pola[Iczesc + 9]->wokolStatku = true;    //prawo gora statku
+		wokol.push_back(Iczesc + 9);
+	}
+	if ((Iczesc - 10) >= 0) {
+		board.Pola[Iczesc - 10]->wokolStatku = true;    //lewo I czesci 
+		wokol.push_back(Iczesc - 10);
+	}
+	if ((Iczesc + 10) < 99) {
+		board.Pola[Iczesc + 10]->wokolStatku = true;    //prawo I czesci
+		wokol.push_back(Iczesc + 10);
+	}
+	if ((IIczesc - 10) >= 0) {
+		board.Pola[IIczesc - 10]->wokolStatku = true;    //lewo II czesci 
+		wokol.push_back(IIczesc - 10);
+	}
+	if ((IIczesc + 10) < 99) {
+		board.Pola[IIczesc + 10]->wokolStatku = true;    //prawo II czesci
+		wokol.push_back(IIczesc + 10);
+	}
+	if ((IIczesc - 9) >= 0 && (IIczesc - 9) % 10 != 0) {
+		board.Pola[IIczesc - 9]->wokolStatku = true;    //lewo dol statku
+		wokol.push_back(IIczesc - 9);
+	}
+	if ((IIczesc + 11) < 99 && (IIczesc + 11) % 10 != 0) {
+		board.Pola[IIczesc + 11]->wokolStatku = true;    //prawo dol statku
+		wokol.push_back(IIczesc + 11);
+	}
+}
+
 void Statek2::drawstatek2(ALLEGRO_EVENT event, PlanszaGry board) {
 	if (event.mouse.x >= x && event.mouse.x <= x + 40 && event.mouse.y >= y && event.mouse.y <= y + 80) {
 		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
 			isDragged = false;
 			for (int i = 0; i < 100; i++) {
 				if (x + 20 >= board.Pola[i]->x && x + 20 <= board.Pola[i]->x + 40 && y + 20 >= board.Pola[i]->y && y + 20 <= board.Pola[i]->y + 40) {
-					if (!board.Pola[i]->CzyStatek && !board.Pola[i]->wokolStatku && i != 99 && (i + 1) % 10 != 0) {
+					if (!board.Pola[i]->CzyStatek && !board.Pola[i]->wokolStatku && !board.Pola[i + 1]->wokolStatku && i != 99 && (i + 1) % 10 != 0) {
 						x = board.Pola[i]->x;
 						y = board.Pola[i]->y;
 						Iczesc = i;
 						IIczesc = i + 1;
 						board.Pola[Iczesc]->CzyStatek = true;
-						board.Pola[IIczesc]->CzyStatek = true;						
+						board.Pola[IIczesc]->CzyStatek = true;		
+						zaznaczwokol2(event, board);
 						break;
 					}
 					else {
@@ -278,8 +322,14 @@ void Statek2::drawstatek2(ALLEGRO_EVENT event, PlanszaGry board) {
 		}*/
 		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
 			isDragged = true;
-			board.Pola[Iczesc]->CzyStatek = false;
-			board.Pola[IIczesc]->CzyStatek = false;
+			if (CzyUstawiony) {
+				board.Pola[Iczesc]->CzyStatek = false;
+				board.Pola[IIczesc]->CzyStatek = false;
+				CzyUstawiony = false;
+				for (auto& pole : wokol) {
+					board.Pola[pole]->wokolStatku = false;
+				}
+			}
 		}
 	}
 	if (event.type == ALLEGRO_EVENT_MOUSE_AXES && isDragged) {

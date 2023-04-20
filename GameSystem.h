@@ -104,7 +104,6 @@ public:
     Statek1(char statek1[], float x, float y, int defaultx, int defaulty);
     void drawstatek1(ALLEGRO_EVENT event, PlanszaGry board);
     void zaznaczwokol1(ALLEGRO_EVENT event, PlanszaGry board);
-    void zniszczwokol(ALLEGRO_EVENT event, PlanszaGry board);
 };
 
 class Statek2 : public GameSystem {
@@ -119,9 +118,11 @@ public:
     bool CzyUstawiony;
     int Iczesc;
     int IIczesc;
+    std::vector <int> wokol;
 
     Statek2(char statek2[], float x, float y, int defaultx, int defaulty);
     void drawstatek2(ALLEGRO_EVENT event, PlanszaGry board);
+    void zaznaczwokol2(ALLEGRO_EVENT event, PlanszaGry board);
 };
 
 class Statek3 : public GameSystem {
@@ -137,6 +138,7 @@ public:
     int Iczesc;
     int IIczesc;
     int IIIczesc;
+    std::vector <int> wokol;
 
     Statek3(char statek3[], float x, float y, int defaultx, int defaulty);
     void drawstatek3(ALLEGRO_EVENT event, PlanszaGry board);
@@ -156,6 +158,7 @@ public:
     int IIczesc;
     int IIIczesc;
     int IVczesc;
+    std::vector <int> wokol;
 
     Statek4(char statek4[], float x, float y, int defaultx, int defaulty);
     void drawstatek4(ALLEGRO_EVENT event, PlanszaGry board);
