@@ -99,6 +99,7 @@ public:
     bool isDragged;
     bool CzyUstawiony;
     int Iczesc;
+    std::vector <int> wokol;
 
     Statek1(char statek1[], float x, float y, int defaultx, int defaulty);
     void drawstatek1(ALLEGRO_EVENT event, PlanszaGry board);

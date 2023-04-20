@@ -68,7 +68,7 @@ void Menu::destroy() {
 
 Pole::Pole(char Pole[], char Hit[], char Miss[], int x, int y, bool statek, bool trafione, bool wokol) {
 	this->pole = al_load_bitmap(Pole);
-	this->hit = al_load_bitmap(Hit);
+	this->hit = al_load_bitmap(Pole);                            //do zaznacania potem zmienic
 	this->miss = al_load_bitmap(Miss);
 	this->x = x;
 	this->y = y;
@@ -96,6 +96,8 @@ void PlanszaGry::drawplansza() {
 	for (auto& tile1 : Pola) {
 		if (tile1->wokolStatku)
 			tile1->pole = tile1->miss;
+		else
+			tile1->pole = tile1->hit;
 
 		al_draw_bitmap(tile1->pole, tile1->x, tile1->y, 0);
 	}
@@ -139,7 +141,36 @@ Statek1::Statek1(char statek1[], float x, float y, int defaultx, int defaulty) {
 
 void Statek1::zaznaczwokol1(ALLEGRO_EVENT event, PlanszaGry board) {
 	if ((Iczesc + 1) % 10 != 0 && Iczesc != 99) {
-		board.Pola[Iczesc + 1]->wokolStatku = true;
+		board.Pola[Iczesc + 1]->wokolStatku = true;     //dol statku
+		wokol.push_back(Iczesc + 1);
+	}
+	if (Iczesc % 10 != 0 && Iczesc != 0) {
+		board.Pola[Iczesc - 1]->wokolStatku = true;     //gora statku
+		wokol.push_back(Iczesc - 1);
+	}
+	if ((Iczesc - 10) >= 0) {
+		board.Pola[Iczesc - 10]->wokolStatku = true;    //lewo statku
+		wokol.push_back(Iczesc - 10);
+	}
+	if ((Iczesc + 10) < 99) {
+		board.Pola[Iczesc + 10]->wokolStatku = true;    //prawo statku
+		wokol.push_back(Iczesc + 10);
+	}
+	if ((Iczesc - 9) >= 0 && (Iczesc - 9) % 10 != 0) {
+		board.Pola[Iczesc - 9]->wokolStatku = true;    //lewo dol statku
+		wokol.push_back(Iczesc - 9);
+	}
+	if ((Iczesc - 11) >= 0 && (Iczesc - 10) % 10 != 0) {
+		board.Pola[Iczesc - 11]->wokolStatku = true;    //lewo gora statku
+		wokol.push_back(Iczesc - 11);
+	}
+	if ((Iczesc + 9) < 99 && Iczesc % 10 != 0) {
+		board.Pola[Iczesc + 9]->wokolStatku = true;    //prawo gora statku
+		wokol.push_back(Iczesc + 9);
+	}
+	if ((Iczesc + 11) < 99 && (Iczesc + 11) % 10 != 0) {
+		board.Pola[Iczesc + 11]->wokolStatku = true;    //prawo dol statku
+		wokol.push_back(Iczesc + 11);
 	}
 }
 
@@ -178,8 +209,13 @@ void Statek1::drawstatek1(ALLEGRO_EVENT event, PlanszaGry board) {
 		}*/
 		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
 			isDragged = true;
-			board.Pola[Iczesc]->CzyStatek = false;
-			CzyUstawiony = false;
+			if (CzyUstawiony) {
+				board.Pola[Iczesc]->CzyStatek = false;
+				CzyUstawiony = false;
+				for (auto& pole : wokol) {
+					board.Pola[pole]->wokolStatku = false;
+				}
+			}
 		}
 	}
 	if (event.type == ALLEGRO_EVENT_MOUSE_AXES && isDragged) {
@@ -438,9 +474,9 @@ void ArmiaGracz::drawarmia(ALLEGRO_EVENT event, PlanszaGry board) {
 }
  
 void ArmiaGracz::restart(ALLEGRO_EVENT event, PlanszaGry board) {
-	for (auto& tile : board.Pola) {
-		tile->CzyStatek = false;
-		tile->wokolStatku = false;
+	for (auto& tile1 : board.Pola) {
+		tile1->CzyStatek = false;
+		tile1->wokolStatku = false;
 	}
 	for (auto& boat : statki1) {
 		boat->x = boat->defaultX;
