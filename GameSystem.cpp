@@ -83,6 +83,7 @@ void PlanszaGry::init() {
 			this->Pola.push_back(new Pole(tile, hit, miss, (i*40) + 75, (j*40) + 94, false, false, false));
 		}
 	}
+	this->ZajetePola = 0;
 }
 
 void PlanszaGry::destroy() {
@@ -103,16 +104,17 @@ void PlanszaGry::drawplansza() {
 	}
 }
 
-void Ustawianie::init(char Napis[], char Panel[], char litery[], char cyfry[], char reset[], char exit[]) {
+void Ustawianie::init(char Napis[], char Panel[], char litery[], char cyfry[], char reset[], char exit[], char graj[]) {
 	this->NapisObracanie = al_load_bitmap(Napis);          //inicjalizacja ekranu ustawiania statkow
 	this->SrodPanel = al_load_bitmap(Panel);
 	this->Litery = al_load_bitmap(litery);
 	this->Cyfry = al_load_bitmap(cyfry);
 	this->Reset = al_load_bitmap(reset);
 	this->Exit = al_load_bitmap(exit);
+	this->Graj = al_load_bitmap(graj);
 }
 
-void Ustawianie::drawUstawianie() {
+void Ustawianie::drawUstawianie(PlanszaGry board) {
 	this->CzyUstawianie = true;   //pozwala na wykonywanie warunkow zwiazych z ekranem ustawiania(zobacz Petla.cpp lin38 i 44)
 	al_draw_bitmap(NapisObracanie, 700, 0, 0);     //rysowanie ekranu ustawiania statkow
 	al_draw_bitmap(SrodPanel, 500, 0, 0);
@@ -120,12 +122,20 @@ void Ustawianie::drawUstawianie() {
 	al_draw_bitmap(Cyfry, 24, 94, 0);
 	al_draw_bitmap(Reset, 617, 461, 0);
 	al_draw_bitmap(Exit, 514, 461, 0);
+
+	if (board.ZajetePola == 20)
+		al_draw_bitmap(Graj, 508, 235, 0);
 }
 
 void Ustawianie::destroy() {
 	this->CzyUstawianie = false;
 	al_destroy_bitmap(NapisObracanie);   //niszczenie elementow klasy ustawianie
 	al_destroy_bitmap(SrodPanel);
+	al_destroy_bitmap(Litery);
+	al_destroy_bitmap(Cyfry);
+	al_destroy_bitmap(Reset);
+	al_destroy_bitmap(Exit);
+	al_destroy_bitmap(Graj);
 }
 
 Statek1::Statek1(char statek1[], float x, float y, int defaultx, int defaulty) {
@@ -176,7 +186,7 @@ void Statek1::zaznaczwokol1(ALLEGRO_EVENT event, PlanszaGry board) {
 
 void Statek1::drawstatek1(ALLEGRO_EVENT event, PlanszaGry board) {
 	if (event.mouse.x >= x && event.mouse.x <= x + 40 && event.mouse.y >= y && event.mouse.y <= y + 40) {
-		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
+		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && event.mouse.button == 1 && !CzyUstawiony) {
 			isDragged = false;
 			for (int i = 0; i < 100; i++) {
 				if (x + 20 >= board.Pola[i]->x && x + 20 <= board.Pola[i]->x + 40 && y + 20 >= board.Pola[i]->y && y + 20 <= board.Pola[i]->y + 40) {
@@ -187,6 +197,7 @@ void Statek1::drawstatek1(ALLEGRO_EVENT event, PlanszaGry board) {
 						board.Pola[Iczesc]->CzyStatek = true;
 						zaznaczwokol1(event, board);
 						CzyUstawiony = true;
+						board.ZajetePola += 20;
 					}
 					else {
 						x = defaultX;
@@ -202,20 +213,20 @@ void Statek1::drawstatek1(ALLEGRO_EVENT event, PlanszaGry board) {
 				degree = 0;
 			}
 		}
-	/*	if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && event.mouse.button == 2 && CzyUstawiony) {
+		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && event.mouse.button == 2 && !CzyUstawiony) {
 			degree += 90;
 			if (degree > 90)
 				degree = 0;
-		}*/
-		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
-			isDragged = true;
+		}
+		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN && event.mouse.button == 1 && !CzyUstawiony) {
+			isDragged = true;/*
 			if (CzyUstawiony) {
 				board.Pola[Iczesc]->CzyStatek = false;
 				CzyUstawiony = false;
 				for (auto& pole : wokol) {
 					board.Pola[pole]->wokolStatku = false;
 				}
-			}
+			}*/
 		}
 	}
 	if (event.type == ALLEGRO_EVENT_MOUSE_AXES && isDragged) {
@@ -223,6 +234,7 @@ void Statek1::drawstatek1(ALLEGRO_EVENT event, PlanszaGry board) {
 		y = event.mouse.y - al_get_bitmap_height(ship1) / 2;
 	}
 	al_draw_rotated_bitmap(ship1, al_get_bitmap_width(ship1) / 2, al_get_bitmap_height(ship1) / 2, x + al_get_bitmap_width(ship1) / 2, y + al_get_bitmap_height(ship1) / 2, degree * 3.14159 / 180, 0);
+	//al_draw_bitmap(ship1, x, y, 0);
 }
 
 Statek2::Statek2(char statek2[], float x, float y, int defaultx, int defaulty) {
@@ -264,7 +276,7 @@ void Statek2::zaznaczwokol2(ALLEGRO_EVENT event, PlanszaGry board) {
 		board.Pola[IIczesc - 10]->wokolStatku = true;    //lewo II czesci 
 		wokol.push_back(IIczesc - 10);
 	}
-	if ((IIczesc + 10) < 99) {
+	if ((IIczesc + 10) <= 99) {
 		board.Pola[IIczesc + 10]->wokolStatku = true;    //prawo II czesci
 		wokol.push_back(IIczesc + 10);
 	}
@@ -292,6 +304,7 @@ void Statek2::drawstatek2(ALLEGRO_EVENT event, PlanszaGry board) {
 						board.Pola[Iczesc]->CzyStatek = true;
 						board.Pola[IIczesc]->CzyStatek = true;		
 						zaznaczwokol2(event, board);
+						CzyUstawiony = true;
 						break;
 					}
 					else {
@@ -533,6 +546,7 @@ void ArmiaGracz::restart(ALLEGRO_EVENT event, PlanszaGry board) {
 		boat->y = boat->defaultY;
 		boat->degree = 0;
 		boat->isDragged = false;
+		boat->CzyUstawiony = false;
 	}
 	for (auto& boat : statki2) {
 		boat->x = boat->defaultX;
