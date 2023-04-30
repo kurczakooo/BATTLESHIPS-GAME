@@ -121,7 +121,6 @@ public:
     bool CzyUstawiony;
     int Iczesc;
     int IIczesc;
-    std::vector <int> wokol;
 
     Statek2(char statek2[], char statek2r[], float x, float y, int defaultx, int defaulty);
     void drawstatek2(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& screen);
@@ -141,10 +140,10 @@ public:
     int Iczesc;
     int IIczesc;
     int IIIczesc;
-    std::vector <int> wokol;
 
     Statek3(char statek3[], float x, float y, int defaultx, int defaulty);
     void drawstatek3(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& screen);
+    void zaznaczwokol3(ALLEGRO_EVENT event, PlanszaGry& board);
 };
 
 class Statek4 : public GameSystem {
@@ -161,10 +160,10 @@ public:
     int IIczesc;
     int IIIczesc;
     int IVczesc;
-    std::vector <int> wokol;
 
     Statek4(char statek4[], float x, float y, int defaultx, int defaulty);
     void drawstatek4(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& screen);
+    void zaznaczwokol4(ALLEGRO_EVENT event, PlanszaGry& board);
 };
 
 class ArmiaGracz : public GameSystem {
@@ -177,5 +176,19 @@ public:
     void init();
     void drawarmia(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie &screen);
     void restart(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& screen);
+    void destroy();
+};
+
+class GamePlay : public GameSystem {
+public:
+    bool CzyGameplay;
+    ALLEGRO_BITMAP* SrodPanel;
+    ALLEGRO_BITMAP* Litery;
+    ALLEGRO_BITMAP* Cyfry;
+    ALLEGRO_BITMAP* Exit;
+
+    void init(Ustawianie &ustawianie);
+    void drawgameplay();
+    void partia();
     void destroy();
 };

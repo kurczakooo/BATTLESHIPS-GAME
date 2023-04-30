@@ -3,7 +3,7 @@
 w visual studio do projektu mozna przulaczyc tylko jeden plik naglowkowy, abu podlaczyc kolejny nalezy wejsc projekt->
 wlasciwosci->c++/c->zaawansowane->plik wymuszonego doloczenia i wpisac sciezke do pliku naglowkowego*/
 
-void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, PlanszaGry& plansza, ArmiaGracz& armiagracz) {
+void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, PlanszaGry& plansza, ArmiaGracz& armiagracz, GamePlay& gamescreen) {
 
 	while (gamesystem.running) { //glowna petla
 
@@ -77,15 +77,34 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 					armiagracz.restart(gamesystem.event, plansza, ustawianie);
 				}
 			}
+
+			if (ustawianie.ZajetePola == 20 && gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
+				if (gamesystem.event.mouse.x >= 508 && gamesystem.event.mouse.x <= 692 && gamesystem.event.mouse.y >= 235 && gamesystem.event.mouse.y <= 305) {
+					ustawianie.CzyUstawianie = false;
+					gamescreen.CzyGameplay = true;
+					gamescreen.init(ustawianie);
+				}
+			}
+		}
+
+		if (gamescreen.CzyGameplay) {
+			menu.CzyMenu = false;
+			ustawianie.CzyUstawianie = false;
+			al_clear_to_color(al_map_rgb(255, 255, 255));
+			gamescreen.drawgameplay();
+			plansza.drawplansza();
+			armiagracz.drawarmia(gamesystem.event, plansza, ustawianie);
+
+			if (gamesystem.event.mouse.x >= 514 && gamesystem.event.mouse.x <= 570 && gamesystem.event.mouse.y >= 461 && gamesystem.event.mouse.y <= 521) {
+				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
+					gamescreen.CzyGameplay = false;
+					ustawianie.ZajetePola = 0;
+					plansza.destroy();
+					armiagracz.destroy();
+					menu.drawMenu();
+				}
+			}
 		}
 		al_flip_display();
 	}
 }
-
-/*  warunek do zaznaczanie juz pol trafionych
-		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
-			if (event.mouse.x > pole->x && event.mouse.x < pole->x + 40 && event.mouse.y > pole->y && event.mouse.y < pole->y + 40) {
-				pole->pole = pole->miss;
-			}
-		}
-*/

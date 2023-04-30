@@ -150,29 +150,29 @@ Statek1::Statek1(char statek1[], float x, float y, int defaultx, int defaulty) {
 }
 
 void Statek1::zaznaczwokol1(ALLEGRO_EVENT event, PlanszaGry &board) {
-	if ((Iczesc + 1) % 10 != 0 && Iczesc != 99) {
+	if ((Statek1::Iczesc + 1) % 10 != 0 && Statek1::Iczesc != 99) {
 		board.Pola[Iczesc + 1]->wokolStatku = true;     //dol statku
 	}
-	if (Iczesc % 10 != 0 && Iczesc != 0) {
+	if (Statek1::Iczesc % 10 != 0 && Statek1::Iczesc != 0) {
 		board.Pola[Iczesc - 1]->wokolStatku = true;     //gora statku
 	}
-	if ((Iczesc - 10) >= 0) {
-		board.Pola[Iczesc - 10]->wokolStatku = true;    //lewo statku
+	if ((Statek1::Iczesc - 10) >= 0) {
+		board.Pola[Statek1::Iczesc - 10]->wokolStatku = true;    //lewo statku
 	}
-	if ((Iczesc + 10) < 99) {
-		board.Pola[Iczesc + 10]->wokolStatku = true;    //prawo statku
+	if ((Statek1::Iczesc + 10) < 99) {
+		board.Pola[Statek1::Iczesc + 10]->wokolStatku = true;    //prawo statku
 	}
-	if ((Iczesc - 9) >= 0 && (Iczesc - 9) % 10 != 0) {
-		board.Pola[Iczesc - 9]->wokolStatku = true;    //lewo dol statku
+	if ((Statek1::Iczesc - 9) >= 0 && (Statek1::Iczesc - 9) % 10 != 0) {
+		board.Pola[Statek1::Iczesc - 9]->wokolStatku = true;    //lewo dol statku
 	}
-	if ((Iczesc - 11) >= 0 && (Iczesc - 10) % 10 != 0) {
-		board.Pola[Iczesc - 11]->wokolStatku = true;    //lewo gora statku
+	if ((Statek1::Iczesc - 11) >= 0 && (Statek1::Iczesc - 10) % 10 != 0) {
+		board.Pola[Statek1::Iczesc - 11]->wokolStatku = true;    //lewo gora statku
 	}
-	if ((Iczesc + 9) < 99 && Iczesc % 10 != 0) {
-		board.Pola[Iczesc + 9]->wokolStatku = true;    //prawo gora statku
+	if ((Statek1::Iczesc + 9) < 99 && Statek1::Iczesc % 10 != 0) {
+		board.Pola[Statek1::Iczesc + 9]->wokolStatku = true;    //prawo gora statku
 	}
-	if ((Iczesc + 11) < 99 && (Iczesc + 11) % 10 != 0) {
-		board.Pola[Iczesc + 11]->wokolStatku = true;    //prawo dol statku
+	if ((Statek1::Iczesc + 11) < 99 && (Statek1::Iczesc + 11) % 10 != 0) {
+		board.Pola[Statek1::Iczesc + 11]->wokolStatku = true;    //prawo dol statku
 	}
 }
 
@@ -234,51 +234,41 @@ Statek2::Statek2(char statek2[], char statek2r[], float x, float y, int defaultx
 }
 
 void Statek2::zaznaczwokol2(ALLEGRO_EVENT event, PlanszaGry &board) {
-	if (Iczesc % 10 != 0) {
-		board.Pola[Iczesc - 1]->wokolStatku = true;     //gora statku
-		wokol.push_back(Iczesc - 1);
+	if (Statek2::Iczesc % 10 != 0) {
+		board.Pola[Statek2::Iczesc - 1]->wokolStatku = true;     //gora statku
 	}
-	if ((IIczesc + 1) % 10 != 0 && IIczesc != 99) {
-		board.Pola[IIczesc + 1]->wokolStatku = true;     //dol statku
-		wokol.push_back(IIczesc + 1);
+	if ((Statek2::IIczesc + 1) % 10 != 0 && Statek2::IIczesc != 99) {
+		board.Pola[Statek2::IIczesc + 1]->wokolStatku = true;     //dol statku
 	}
-	if ((Iczesc - 11) >= 0 && (Iczesc - 10) % 10 != 0) {
-		board.Pola[Iczesc - 11]->wokolStatku = true;    //lewo gora statku
-		wokol.push_back(Iczesc - 11);
+	if ((Statek2::Iczesc - 11) >= 0 && (Statek2::Iczesc - 10) % 10 != 0) {
+		board.Pola[Statek2::Iczesc - 11]->wokolStatku = true;    //lewo gora statku
 	}
-	if ((Iczesc + 9) < 99 && Iczesc % 10 != 0) {
-		board.Pola[Iczesc + 9]->wokolStatku = true;    //prawo gora statku
-		wokol.push_back(Iczesc + 9);
+	if ((Statek2::Iczesc + 9) < 99 && Statek2::Iczesc % 10 != 0) {
+		board.Pola[Statek2::Iczesc + 9]->wokolStatku = true;    //prawo gora statku
 	}
-	if ((Iczesc - 10) >= 0) {
-		board.Pola[Iczesc - 10]->wokolStatku = true;    //lewo I czesci 
-		wokol.push_back(Iczesc - 10);
+	if ((Statek2::Iczesc - 10) >= 0) {
+		board.Pola[Statek2::Iczesc - 10]->wokolStatku = true;    //lewo I czesci 
 	}
-	if ((Iczesc + 10) < 99) {
-		board.Pola[Iczesc + 10]->wokolStatku = true;    //prawo I czesci
-		wokol.push_back(Iczesc + 10);
+	if ((Statek2::Iczesc + 10) < 99) {
+		board.Pola[Statek2::Iczesc + 10]->wokolStatku = true;    //prawo I czesci
 	}
-	if ((IIczesc - 10) >= 0) {
-		board.Pola[IIczesc - 10]->wokolStatku = true;    //lewo II czesci 
-		wokol.push_back(IIczesc - 10);
+	if ((Statek2::IIczesc - 10) >= 0) {
+		board.Pola[Statek2::IIczesc - 10]->wokolStatku = true;    //lewo II czesci 
 	}
-	if ((IIczesc + 10) <= 99) {
-		board.Pola[IIczesc + 10]->wokolStatku = true;    //prawo II czesci
-		wokol.push_back(IIczesc + 10);
+	if ((Statek2::IIczesc + 10) <= 99) {
+		board.Pola[Statek2::IIczesc + 10]->wokolStatku = true;    //prawo II czesci
 	}
-	if ((IIczesc - 9) >= 0 && (IIczesc - 9) % 10 != 0) {
-		board.Pola[IIczesc - 9]->wokolStatku = true;    //lewo dol statku
-		wokol.push_back(IIczesc - 9);
+	if ((Statek2::IIczesc - 9) >= 0 && (Statek2::IIczesc - 9) % 10 != 0) {
+		board.Pola[Statek2::IIczesc - 9]->wokolStatku = true;    //lewo dol statku
 	}
-	if ((IIczesc + 11) < 99 && (IIczesc + 11) % 10 != 0) {
-		board.Pola[IIczesc + 11]->wokolStatku = true;    //prawo dol statku
-		wokol.push_back(IIczesc + 11);
+	if ((Statek2::IIczesc + 11) < 99 && (Statek2::IIczesc + 11) % 10 != 0) {
+		board.Pola[Statek2::IIczesc + 11]->wokolStatku = true;    //prawo dol statku
 	}
 }
 
 void Statek2::drawstatek2(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& screen) {
 	if (event.mouse.x >= x && event.mouse.x <= x + 40 && event.mouse.y >= y && event.mouse.y <= y + 80) {
-		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
+		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && event.mouse.button == 1 && !CzyUstawiony) {
 			isDragged = false;
 			for (int i = 0; i < 100; i++) {
 				if (x + 20 >= board.Pola[i]->x && x + 20 <= board.Pola[i]->x + 40 && y + 20 >= board.Pola[i]->y && y + 20 <= board.Pola[i]->y + 40) {
@@ -307,36 +297,27 @@ void Statek2::drawstatek2(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& sc
 				degree = 0;
 			}
 		}
-		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && event.mouse.button == 2 && !CzyUstawiony) {
+	/*	if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && event.mouse.button == 2 && !CzyUstawiony) {
 			if (obrocony) {
 				std::swap(ship2, ship2rotated);
 				y -= 40;
 				defaultY -= 40;
 				obrocony = false;
 			}
-			else {
+			else {/////////////////////////////////////////////////////////////////
 				std::swap(ship2, ship2rotated);
 				y += 40;
 				defaultY += 40;
 				obrocony = true;
 			}
-		}
-		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
-			isDragged = true;
-			std::cout << "\n";
 			for (int i = 1; i <= 100; i++) {
 				std::cout << board.Pola[i-1]->CzyStatek<<" ";
 				if (i % 10 == 0)
 					std::cout << "\n";
 			}
-			if (CzyUstawiony) {
-				board.Pola[Iczesc]->CzyStatek = false;
-				board.Pola[IIczesc]->CzyStatek = false;
-				CzyUstawiony = false;
-				for (auto& pole : wokol) {
-					board.Pola[pole]->wokolStatku = false;
-				}
-			}
+		}*/
+		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN && event.mouse.button == 1 && !CzyUstawiony) {
+			isDragged = true;
 		}
 	}
 	if (event.type == ALLEGRO_EVENT_MOUSE_AXES && isDragged) {
@@ -356,6 +337,12 @@ Statek3::Statek3(char statek3[], float x, float y, int defaultx, int defaulty) {
 	this->defaultY = defaulty;
 	this->isDragged = false;
 	this->CzyUstawiony = false;
+}
+
+void zaznaczwokol3(ALLEGRO_EVENT event, PlanszaGry& board) {
+	if (Statek3::Iczesc % 10 != 0) {
+		board.Pola[Statek3::Iczesc - 1]->wokolStatku = true;     //gora statku
+	}
 }
 
 void Statek3::drawstatek3(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& screen) {
@@ -523,18 +510,21 @@ void ArmiaGracz::restart(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& scr
 		boat->y = boat->defaultY;
 		boat->degree = 0;
 		boat->isDragged = false;
+		boat->CzyUstawiony = false;
 	}
 	for (auto& boat : statki3) {
 		boat->x = boat->defaultX;
 		boat->y = boat->defaultY;
 		boat->degree = 0;
 		boat->isDragged = false;
+		boat->CzyUstawiony = false;
 	}
 	for (auto& boat : statki4) {
 		boat->x = boat->defaultX;
 		boat->y = boat->defaultY;
 		boat->degree = 0;
 		boat->isDragged = false;
+		boat->CzyUstawiony = false;
 	}
 }
 
@@ -557,3 +547,25 @@ void ArmiaGracz::destroy() {
 	statki4.clear();
 }
 
+void GamePlay::init(Ustawianie &ustawianie) {
+	this->SrodPanel = ustawianie.SrodPanel;
+	this->Litery = ustawianie.Litery;
+	this->Cyfry = ustawianie.Cyfry;
+	this->Exit = ustawianie.Exit;
+}
+
+void GamePlay::drawgameplay() {
+	this->CzyGameplay = true;
+	al_draw_bitmap(SrodPanel, 500, 0, 0);
+	al_draw_bitmap(Litery, 76, 44, 0);
+	al_draw_bitmap(Cyfry, 24, 94, 0);
+	al_draw_bitmap(Exit, 514, 461, 0);
+}
+
+void GamePlay::destroy() {
+	this->CzyGameplay = false;
+	al_destroy_bitmap(SrodPanel);
+	al_destroy_bitmap(Litery);
+	al_destroy_bitmap(Cyfry);
+	al_destroy_bitmap(Exit);
+}
