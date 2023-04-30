@@ -66,7 +66,6 @@ public:
 class PlanszaGry : public GameSystem {
 public:
     std::vector <Pole*> Pola;
-    int ZajetePola;
 
     void init();
     void destroy();
@@ -84,9 +83,10 @@ public:                                       //klasa ekranu ustawiania statkow
     ALLEGRO_BITMAP* Reset;
     ALLEGRO_BITMAP* Exit;
     ALLEGRO_BITMAP* Graj;
+    int ZajetePola{0};
 
     void init(char Napis[], char Panel[], char litery[], char cyfry[], char reset[], char exit[] ,char graj[]);    //metody do jej inicjalizacji, rysowania i zniszczenia
-    void drawUstawianie(PlanszaGry board);
+    void drawUstawianie(PlanszaGry &board);
     void destroy();
 };
 
@@ -101,30 +101,31 @@ public:
     bool isDragged;
     bool CzyUstawiony;
     int Iczesc;
-    std::vector <int> wokol;
 
     Statek1(char statek1[], float x, float y, int defaultx, int defaulty);
-    void drawstatek1(ALLEGRO_EVENT event, PlanszaGry board);
-    void zaznaczwokol1(ALLEGRO_EVENT event, PlanszaGry board);
+    void drawstatek1(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie &screen);
+    void zaznaczwokol1(ALLEGRO_EVENT event, PlanszaGry &board);
 };
 
 class Statek2 : public GameSystem {
 public:
     ALLEGRO_BITMAP* ship2;
+    ALLEGRO_BITMAP* ship2rotated;
     int defaultX;
     int defaultY;
     float x;
     float y;
     float degree;
+    bool obrocony;/////////////////////////////////////////////////////////////////////////////
     bool isDragged;
     bool CzyUstawiony;
     int Iczesc;
     int IIczesc;
     std::vector <int> wokol;
 
-    Statek2(char statek2[], float x, float y, int defaultx, int defaulty);
-    void drawstatek2(ALLEGRO_EVENT event, PlanszaGry board);
-    void zaznaczwokol2(ALLEGRO_EVENT event, PlanszaGry board);
+    Statek2(char statek2[], char statek2r[], float x, float y, int defaultx, int defaulty);
+    void drawstatek2(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& screen);
+    void zaznaczwokol2(ALLEGRO_EVENT event, PlanszaGry &board);
 };
 
 class Statek3 : public GameSystem {
@@ -143,7 +144,7 @@ public:
     std::vector <int> wokol;
 
     Statek3(char statek3[], float x, float y, int defaultx, int defaulty);
-    void drawstatek3(ALLEGRO_EVENT event, PlanszaGry board);
+    void drawstatek3(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& screen);
 };
 
 class Statek4 : public GameSystem {
@@ -163,7 +164,7 @@ public:
     std::vector <int> wokol;
 
     Statek4(char statek4[], float x, float y, int defaultx, int defaulty);
-    void drawstatek4(ALLEGRO_EVENT event, PlanszaGry board);
+    void drawstatek4(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& screen);
 };
 
 class ArmiaGracz : public GameSystem {
@@ -174,7 +175,7 @@ public:
     std::vector <Statek4*> statki4;
 
     void init();
-    void drawarmia(ALLEGRO_EVENT event, PlanszaGry board);
-    void restart(ALLEGRO_EVENT event, PlanszaGry board);
+    void drawarmia(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie &screen);
+    void restart(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& screen);
     void destroy();
 };

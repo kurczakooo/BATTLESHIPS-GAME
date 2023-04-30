@@ -61,7 +61,7 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 			al_clear_to_color(al_map_rgb(255, 255, 255));
 			ustawianie.drawUstawianie(plansza);
 			plansza.drawplansza();
-			armiagracz.drawarmia(gamesystem.event, plansza);
+			armiagracz.drawarmia(gamesystem.event, plansza, ustawianie);
 
 			if (gamesystem.event.mouse.x >= 514 && gamesystem.event.mouse.x <= 570 && gamesystem.event.mouse.y >= 461 && gamesystem.event.mouse.y <= 521) {
 				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
@@ -74,7 +74,7 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 
 			if (gamesystem.event.mouse.x >= 617 && gamesystem.event.mouse.x <= 680 && gamesystem.event.mouse.y >= 461 && gamesystem.event.mouse.y <= 521) {
 				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
-					armiagracz.restart(gamesystem.event, plansza);
+					armiagracz.restart(gamesystem.event, plansza, ustawianie);
 				}
 			}
 		}
