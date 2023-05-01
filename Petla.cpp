@@ -3,6 +3,10 @@
 w visual studio do projektu mozna przulaczyc tylko jeden plik naglowkowy, abu podlaczyc kolejny nalezy wejsc projekt->
 wlasciwosci->c++/c->zaawansowane->plik wymuszonego doloczenia i wpisac sciezke do pliku naglowkowego*/
 
+char exitscreen[] = "elements/exit_gameplay.png";
+char win[] = "elments/win.png";
+char lose[] = "elements/lose.png";
+
 void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, PlanszaGry& plansza, ArmiaGracz& armiagracz, GamePlay& gamescreen) {
 
 	while (gamesystem.running) { //glowna petla
@@ -41,7 +45,6 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 		if (menu.CzyMenu) {
 			if (gamesystem.event.mouse.x >= 483 && gamesystem.event.mouse.x <= 718 && gamesystem.event.mouse.y >= 410 && gamesystem.event.mouse.y <= 485) {
 				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
-					std::cout << "koniec ";
 					gamesystem.running = false;
 				}
 			}
@@ -66,6 +69,7 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 			if (gamesystem.event.mouse.x >= 514 && gamesystem.event.mouse.x <= 570 && gamesystem.event.mouse.y >= 461 && gamesystem.event.mouse.y <= 521) {
 				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
 					ustawianie.CzyUstawianie = false;
+					ustawianie.ZajetePola = 0;
 					plansza.destroy();
 					armiagracz.destroy();
 					menu.drawMenu();
@@ -82,7 +86,7 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 				if (gamesystem.event.mouse.x >= 508 && gamesystem.event.mouse.x <= 692 && gamesystem.event.mouse.y >= 235 && gamesystem.event.mouse.y <= 305) {
 					ustawianie.CzyUstawianie = false;
 					gamescreen.CzyGameplay = true;
-					gamescreen.init(ustawianie);
+					gamescreen.init(ustawianie, exitscreen, win, lose);
 				}
 			}
 		}
@@ -98,12 +102,21 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 			if (gamesystem.event.mouse.x >= 514 && gamesystem.event.mouse.x <= 570 && gamesystem.event.mouse.y >= 461 && gamesystem.event.mouse.y <= 521) {
 				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
 					gamescreen.CzyGameplay = false;
-					ustawianie.ZajetePola = 0;
-					plansza.destroy();
-					armiagracz.destroy();
-					menu.drawMenu();
+					gamescreen.CzyExit = true;
 				}
 			}
+
+			/*ustawianie.ZajetePola = 0;
+					plansza.destroy();
+					armiagracz.destroy();
+					menu.drawMenu();*/
+		}
+
+		if (gamescreen.CzyExit) {
+			menu.CzyMenu = false;
+			ustawianie.CzyUstawianie = false;
+			gamescreen.CzyGameplay = false;
+			al_draw_bitmap(gamescreen.ExitScreen, DisplayWidth / 2 - 300, DisplayHeight / 2 - 200, 0);
 		}
 		al_flip_display();
 	}

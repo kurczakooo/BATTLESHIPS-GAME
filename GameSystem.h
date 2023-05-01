@@ -116,7 +116,7 @@ public:
     float x;
     float y;
     float degree;
-    bool obrocony;/////////////////////////////////////////////////////////////////////////////
+    bool obrocony;
     bool isDragged;
     bool CzyUstawiony;
     int Iczesc;
@@ -182,12 +182,18 @@ public:
 class GamePlay : public GameSystem {
 public:
     bool CzyGameplay;
+    bool CzyExit;
+    bool CzyWin;
+    bool CzyLose;
     ALLEGRO_BITMAP* SrodPanel;
     ALLEGRO_BITMAP* Litery;
     ALLEGRO_BITMAP* Cyfry;
     ALLEGRO_BITMAP* Exit;
+    ALLEGRO_BITMAP* ExitScreen;
+    ALLEGRO_BITMAP* Win;
+    ALLEGRO_BITMAP* Lose;
 
-    void init(Ustawianie &ustawianie);
+    void init(Ustawianie &ustawianie, char exitscreen[], char win[], char lose[]);
     void drawgameplay();
     void partia();
     void destroy();

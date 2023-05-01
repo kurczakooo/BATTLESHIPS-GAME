@@ -150,29 +150,29 @@ Statek1::Statek1(char statek1[], float x, float y, int defaultx, int defaulty) {
 }
 
 void Statek1::zaznaczwokol1(ALLEGRO_EVENT event, PlanszaGry &board) {
-	if ((Statek1::Iczesc + 1) % 10 != 0 && Statek1::Iczesc != 99) {
+	if ((Iczesc + 1) % 10 != 0 && Iczesc != 99) {
 		board.Pola[Iczesc + 1]->wokolStatku = true;     //dol statku
 	}
-	if (Statek1::Iczesc % 10 != 0 && Statek1::Iczesc != 0) {
+	if (Iczesc % 10 != 0 && Iczesc != 0) {
 		board.Pola[Iczesc - 1]->wokolStatku = true;     //gora statku
 	}
-	if ((Statek1::Iczesc - 10) >= 0) {
-		board.Pola[Statek1::Iczesc - 10]->wokolStatku = true;    //lewo statku
+	if ((Iczesc - 10) >= 0) {
+		board.Pola[Iczesc - 10]->wokolStatku = true;    //lewo statku
 	}
-	if ((Statek1::Iczesc + 10) < 99) {
-		board.Pola[Statek1::Iczesc + 10]->wokolStatku = true;    //prawo statku
+	if ((Iczesc + 10) <= 99) {
+		board.Pola[Iczesc + 10]->wokolStatku = true;    //prawo statku
 	}
-	if ((Statek1::Iczesc - 9) >= 0 && (Statek1::Iczesc - 9) % 10 != 0) {
-		board.Pola[Statek1::Iczesc - 9]->wokolStatku = true;    //lewo dol statku
+	if ((Iczesc - 9) >= 0 && (Iczesc - 9) % 10 != 0) {
+		board.Pola[Iczesc - 9]->wokolStatku = true;    //lewo dol statku
 	}
-	if ((Statek1::Iczesc - 11) >= 0 && (Statek1::Iczesc - 10) % 10 != 0) {
-		board.Pola[Statek1::Iczesc - 11]->wokolStatku = true;    //lewo gora statku
+	if ((Iczesc - 11) >= 0 && (Iczesc - 10) % 10 != 0) {
+		board.Pola[Iczesc - 11]->wokolStatku = true;    //lewo gora statku
 	}
-	if ((Statek1::Iczesc + 9) < 99 && Statek1::Iczesc % 10 != 0) {
-		board.Pola[Statek1::Iczesc + 9]->wokolStatku = true;    //prawo gora statku
+	if ((Iczesc + 9) < 99 && Iczesc % 10 != 0) {
+		board.Pola[Iczesc + 9]->wokolStatku = true;    //prawo gora statku
 	}
-	if ((Statek1::Iczesc + 11) < 99 && (Statek1::Iczesc + 11) % 10 != 0) {
-		board.Pola[Statek1::Iczesc + 11]->wokolStatku = true;    //prawo dol statku
+	if ((Iczesc + 11) <= 99 && (Iczesc + 11) % 10 != 0) {
+		board.Pola[Iczesc + 11]->wokolStatku = true;    //prawo dol statku
 	}
 }
 
@@ -234,35 +234,35 @@ Statek2::Statek2(char statek2[], char statek2r[], float x, float y, int defaultx
 }
 
 void Statek2::zaznaczwokol2(ALLEGRO_EVENT event, PlanszaGry &board) {
-	if (Statek2::Iczesc % 10 != 0) {
-		board.Pola[Statek2::Iczesc - 1]->wokolStatku = true;     //gora statku
+	if (Iczesc % 10 != 0) {
+		board.Pola[Iczesc - 1]->wokolStatku = true;     //gora statku
 	}
-	if ((Statek2::IIczesc + 1) % 10 != 0 && Statek2::IIczesc != 99) {
-		board.Pola[Statek2::IIczesc + 1]->wokolStatku = true;     //dol statku
+	if ((IIczesc + 1) % 10 != 0 && IIczesc != 99) {
+		board.Pola[IIczesc + 1]->wokolStatku = true;     //dol statku
 	}
-	if ((Statek2::Iczesc - 11) >= 0 && (Statek2::Iczesc - 10) % 10 != 0) {
-		board.Pola[Statek2::Iczesc - 11]->wokolStatku = true;    //lewo gora statku
+	if ((Iczesc - 11) >= 0 && (Iczesc - 10) % 10 != 0) {
+		board.Pola[Iczesc - 11]->wokolStatku = true;    //lewo gora statku
 	}
-	if ((Statek2::Iczesc + 9) < 99 && Statek2::Iczesc % 10 != 0) {
-		board.Pola[Statek2::Iczesc + 9]->wokolStatku = true;    //prawo gora statku
+	if ((Iczesc + 9) < 99 && Iczesc % 10 != 0) {
+		board.Pola[Iczesc + 9]->wokolStatku = true;    //prawo gora statku
 	}
-	if ((Statek2::Iczesc - 10) >= 0) {
-		board.Pola[Statek2::Iczesc - 10]->wokolStatku = true;    //lewo I czesci 
+	if ((Iczesc - 10) >= 0) {
+		board.Pola[Iczesc - 10]->wokolStatku = true;    //lewo I czesci 
 	}
-	if ((Statek2::Iczesc + 10) < 99) {
-		board.Pola[Statek2::Iczesc + 10]->wokolStatku = true;    //prawo I czesci
+	if ((Iczesc + 10) < 99) {
+		board.Pola[Iczesc + 10]->wokolStatku = true;    //prawo I czesci
 	}
-	if ((Statek2::IIczesc - 10) >= 0) {
-		board.Pola[Statek2::IIczesc - 10]->wokolStatku = true;    //lewo II czesci 
+	if ((IIczesc - 10) >= 0) {
+		board.Pola[IIczesc - 10]->wokolStatku = true;    //lewo II czesci 
 	}
-	if ((Statek2::IIczesc + 10) <= 99) {
-		board.Pola[Statek2::IIczesc + 10]->wokolStatku = true;    //prawo II czesci
+	if ((IIczesc + 10) <= 99) {
+		board.Pola[IIczesc + 10]->wokolStatku = true;    //prawo II czesci
 	}
-	if ((Statek2::IIczesc - 9) >= 0 && (Statek2::IIczesc - 9) % 10 != 0) {
-		board.Pola[Statek2::IIczesc - 9]->wokolStatku = true;    //lewo dol statku
+	if ((IIczesc - 9) >= 0 && (IIczesc - 9) % 10 != 0) {
+		board.Pola[IIczesc - 9]->wokolStatku = true;    //lewo dol statku
 	}
-	if ((Statek2::IIczesc + 11) < 99 && (Statek2::IIczesc + 11) % 10 != 0) {
-		board.Pola[Statek2::IIczesc + 11]->wokolStatku = true;    //prawo dol statku
+	if ((IIczesc + 11) < 99 && (IIczesc + 11) % 10 != 0) {
+		board.Pola[IIczesc + 11]->wokolStatku = true;    //prawo dol statku
 	}
 }
 
@@ -339,15 +339,48 @@ Statek3::Statek3(char statek3[], float x, float y, int defaultx, int defaulty) {
 	this->CzyUstawiony = false;
 }
 
-void zaznaczwokol3(ALLEGRO_EVENT event, PlanszaGry& board) {
-	if (Statek3::Iczesc % 10 != 0) {
-		board.Pola[Statek3::Iczesc - 1]->wokolStatku = true;     //gora statku
+void Statek3::zaznaczwokol3(ALLEGRO_EVENT event, PlanszaGry& board) {
+	if (Iczesc % 10 != 0) {
+		board.Pola[Iczesc - 1]->wokolStatku = true;     //gora statku
+	}
+	if ((Iczesc - 11) >= 0 && (Iczesc - 10) % 10 != 0) {
+		board.Pola[Iczesc - 11]->wokolStatku = true;    //lewo gora statku
+	}
+	if ((Iczesc + 9) < 99 && Iczesc % 10 != 0) {
+		board.Pola[Iczesc + 9]->wokolStatku = true;    //prawo gora statku
+	}
+	if ((Iczesc - 10) >= 0) {
+		board.Pola[Iczesc - 10]->wokolStatku = true;    //lewo I czesci 
+	}
+	if ((Iczesc + 10) < 99) {
+		board.Pola[Iczesc + 10]->wokolStatku = true;    //prawo I czesci
+	}
+	if ((IIczesc - 10) >= 0) {
+		board.Pola[IIczesc - 10]->wokolStatku = true;    //lewo II czesci 
+	}
+	if ((IIczesc + 10) <= 99) {
+		board.Pola[IIczesc + 10]->wokolStatku = true;    //prawo II czesci
+	}
+	if ((IIIczesc - 10) >= 0 && (IIIczesc - 10) % 10 != 0) {
+		board.Pola[IIIczesc - 10]->wokolStatku = true;    //lewo III czesci
+	}
+	if ((IIIczesc + 10) <= 99 && (IIIczesc + 10) % 10 != 0) {
+		board.Pola[IIIczesc + 10]->wokolStatku = true;    //prawo III czesci
+	}
+	if ((IIIczesc + 1) % 10 != 0 && IIIczesc != 99) {
+		board.Pola[IIIczesc + 1]->wokolStatku = true;      //dol statku
+	}
+	if ((IIIczesc - 9) >= 0 && (IIIczesc - 9) % 10 != 0) {
+		board.Pola[IIIczesc - 9]->wokolStatku = true;    //lewo dol statku
+	}
+	if ((IIIczesc + 11) < 99 && (IIIczesc + 11) % 10 != 0) {
+		board.Pola[IIIczesc + 11]->wokolStatku = true;    //prawo dol statku
 	}
 }
 
 void Statek3::drawstatek3(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& screen) {
 	if (event.mouse.x >= x && event.mouse.x <= x + 40 && event.mouse.y >= y && event.mouse.y <= y + 120) {
-		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
+		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && event.mouse.button == 1 && !CzyUstawiony) {
 			isDragged = false;
 			for (int i = 0; i < 100; i++) {
 				if (x + 20 >= board.Pola[i]->x && x + 20 <= board.Pola[i]->x + 40 && y + 20 >= board.Pola[i]->y && y + 20 <= board.Pola[i]->y + 40) {
@@ -361,6 +394,8 @@ void Statek3::drawstatek3(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& sc
 						board.Pola[IIczesc]->CzyStatek = true;
 						board.Pola[IIIczesc]->CzyStatek = true;
 						screen.ZajetePola += 3;
+						zaznaczwokol3(event, board);
+						CzyUstawiony = true;
 						break;
 					}
 					else {
@@ -376,16 +411,13 @@ void Statek3::drawstatek3(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& sc
 				degree = 0;
 			}
 		}
-		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && event.mouse.button == 2 && !CzyUstawiony) {
+		/*if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && event.mouse.button == 2 && !CzyUstawiony) {
 			degree += 90;
 			if (degree > 90)
 				degree = 0;
-		}
-		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
+		}*/
+		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN && event.mouse.button == 1 && !CzyUstawiony) {
 			isDragged = true;
-			board.Pola[Iczesc]->CzyStatek = false;
-			board.Pola[IIczesc]->CzyStatek = false;
-			board.Pola[IIIczesc]->CzyStatek = false;
 		}
 	}
 
@@ -407,9 +439,54 @@ Statek4::Statek4(char statek4[], float x, float y, int defaultx, int defaulty) {
 	this->CzyUstawiony = false;
 }
 
+void Statek4::zaznaczwokol4(ALLEGRO_EVENT event, PlanszaGry& board) {
+	if (Iczesc % 10 != 0) {
+		board.Pola[Iczesc - 1]->wokolStatku = true;     //gora statku
+	}
+	if ((Iczesc - 11) >= 0 && (Iczesc - 10) % 10 != 0) {
+		board.Pola[Iczesc - 11]->wokolStatku = true;    //lewo gora statku
+	}
+	if ((Iczesc + 9) < 99 && Iczesc % 10 != 0) {
+		board.Pola[Iczesc + 9]->wokolStatku = true;    //prawo gora statku
+	}
+	if ((Iczesc - 10) >= 0) {
+		board.Pola[Iczesc - 10]->wokolStatku = true;    //lewo I czesci 
+	}
+	if ((Iczesc + 10) < 99) {
+		board.Pola[Iczesc + 10]->wokolStatku = true;    //prawo I czesci
+	}
+	if ((IIczesc - 10) >= 0) {
+		board.Pola[IIczesc - 10]->wokolStatku = true;    //lewo II czesci 
+	}
+	if ((IIczesc + 10) <= 99) {
+		board.Pola[IIczesc + 10]->wokolStatku = true;    //prawo II czesci
+	}
+	if ((IIIczesc - 10) >= 0 && (IIIczesc - 10) % 10 != 0) {
+		board.Pola[IIIczesc - 10]->wokolStatku = true;    //lewo III czesci
+	}
+	if ((IIIczesc + 10) <= 99 && (IIIczesc + 10) % 10 != 0) {
+		board.Pola[IIIczesc + 10]->wokolStatku = true;    //prawo III czesci
+	}
+	if ((IIIczesc - 9) >= 0 && (IIIczesc - 9) % 10 != 0) {
+		board.Pola[IIIczesc - 9]->wokolStatku = true;    //lewo IVczesci
+	}
+	if ((IIIczesc + 11) < 99 && (IIIczesc + 11) % 10 != 0) {
+		board.Pola[IIIczesc + 11]->wokolStatku = true;    //prawo IVczesci
+	}
+	if ((IVczesc + 1) % 10 != 0 && IVczesc != 99) {
+		board.Pola[IVczesc + 1]->wokolStatku = true;      //dol statku
+	}
+	if ((IVczesc - 9) >= 0 && (IVczesc - 9) % 10 != 0) {
+		board.Pola[IVczesc - 9]->wokolStatku = true;    //lewo dol statku
+	}
+	if ((IVczesc + 11) < 99 && (IVczesc + 11) % 10 != 0) {
+		board.Pola[IVczesc + 11]->wokolStatku = true;    //prawo dol statku
+	}
+}
+
 void Statek4::drawstatek4(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& screen) {
 	if (event.mouse.x >= x && event.mouse.x <= x + 40 && event.mouse.y >= y && event.mouse.y <= y + 160) {
-		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
+		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && event.mouse.button == 1 && !CzyUstawiony) {
 			isDragged = false;
 			for (int i = 0; i < 100; i++) {
 				if (x + 20 >= board.Pola[i]->x && x + 20 <= board.Pola[i]->x + 40 && y + 20 >= board.Pola[i]->y && y + 20 <= board.Pola[i]->y + 40) {
@@ -425,6 +502,8 @@ void Statek4::drawstatek4(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& sc
 						board.Pola[IIIczesc]->CzyStatek = true;
 						board.Pola[IVczesc]->CzyStatek = true;
 						screen.ZajetePola += 4;
+						zaznaczwokol4(event, board);
+						CzyUstawiony = true;
 						break;
 					}
 					else {
@@ -440,17 +519,19 @@ void Statek4::drawstatek4(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& sc
 				degree = 0;
 			}
 		}
-		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && event.mouse.button == 2 && !CzyUstawiony) {
-			degree += 90;
-			if (degree > 90)
-				degree = 0;
+		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && event.mouse.button == 2) {
+		//	degree += 90;
+		//	if (degree > 90)
+		//		degree = 0;
+			std::cout << "\n";
+			for (int i = 1; i <= 100; i++) {
+				std::cout << board.Pola[i - 1]->wokolStatku << " ";
+				if (i % 10 == 0)
+					std::cout << "\n";
+			}
 		}
-		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
+		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN && event.mouse.button == 1 && !CzyUstawiony) {
 			isDragged = true;
-			board.Pola[Iczesc]->CzyStatek = false;
-			board.Pola[IIczesc]->CzyStatek = false;
-			board.Pola[IIIczesc]->CzyStatek = false;
-			board.Pola[IVczesc]->CzyStatek = false;
 		}
 	}
 
@@ -547,11 +628,14 @@ void ArmiaGracz::destroy() {
 	statki4.clear();
 }
 
-void GamePlay::init(Ustawianie &ustawianie) {
+void GamePlay::init(Ustawianie& ustawianie, char exitscreen[], char win[], char lose[]) {
 	this->SrodPanel = ustawianie.SrodPanel;
 	this->Litery = ustawianie.Litery;
 	this->Cyfry = ustawianie.Cyfry;
 	this->Exit = ustawianie.Exit;
+	this->ExitScreen = al_load_bitmap(exitscreen);
+	this->Win = al_load_bitmap(win);
+	this->Lose = al_load_bitmap(lose);
 }
 
 void GamePlay::drawgameplay() {
