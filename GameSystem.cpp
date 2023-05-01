@@ -95,11 +95,6 @@ void PlanszaGry::destroy() {
 
 void PlanszaGry::drawplansza() {
 	for (auto& tile1 : Pola) {
-		if (tile1->wokolStatku)
-			tile1->pole = tile1->miss;
-		else
-			tile1->pole = tile1->hit;
-
 		al_draw_bitmap(tile1->pole, tile1->x, tile1->y, 0);
 	}
 }
@@ -261,7 +256,7 @@ void Statek2::zaznaczwokol2(ALLEGRO_EVENT event, PlanszaGry &board) {
 	if ((IIczesc - 9) >= 0 && (IIczesc - 9) % 10 != 0) {
 		board.Pola[IIczesc - 9]->wokolStatku = true;    //lewo dol statku
 	}
-	if ((IIczesc + 11) < 99 && (IIczesc + 11) % 10 != 0) {
+	if ((IIczesc + 11) <= 99 && (IIczesc + 11) % 10 != 0) {
 		board.Pola[IIczesc + 11]->wokolStatku = true;    //prawo dol statku
 	}
 }
@@ -373,7 +368,7 @@ void Statek3::zaznaczwokol3(ALLEGRO_EVENT event, PlanszaGry& board) {
 	if ((IIIczesc - 9) >= 0 && (IIIczesc - 9) % 10 != 0) {
 		board.Pola[IIIczesc - 9]->wokolStatku = true;    //lewo dol statku
 	}
-	if ((IIIczesc + 11) < 99 && (IIIczesc + 11) % 10 != 0) {
+	if ((IIIczesc + 11) <= 99 && (IIIczesc + 11) % 10 != 0) {
 		board.Pola[IIIczesc + 11]->wokolStatku = true;    //prawo dol statku
 	}
 }
@@ -384,7 +379,8 @@ void Statek3::drawstatek3(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& sc
 			isDragged = false;
 			for (int i = 0; i < 100; i++) {
 				if (x + 20 >= board.Pola[i]->x && x + 20 <= board.Pola[i]->x + 40 && y + 20 >= board.Pola[i]->y && y + 20 <= board.Pola[i]->y + 40) {
-					if (!board.Pola[i]->CzyStatek && !board.Pola[i]->wokolStatku && i != 99 && i != 98 && (i + 1) % 10 != 0) {
+					if (!board.Pola[i]->CzyStatek && !board.Pola[i+1]->CzyStatek && !board.Pola[i+2]->CzyStatek && !board.Pola[i]->wokolStatku 
+						&& !board.Pola[i+1]->wokolStatku && !board.Pola[i+2]->wokolStatku && i != 99 && i != 98 && (i + 1) % 10 != 0) {
 						x = board.Pola[i]->x;
 						y = board.Pola[i]->y;
 						Iczesc = i;
@@ -470,7 +466,7 @@ void Statek4::zaznaczwokol4(ALLEGRO_EVENT event, PlanszaGry& board) {
 	if ((IIIczesc - 9) >= 0 && (IIIczesc - 9) % 10 != 0) {
 		board.Pola[IIIczesc - 9]->wokolStatku = true;    //lewo IVczesci
 	}
-	if ((IIIczesc + 11) < 99 && (IIIczesc + 11) % 10 != 0) {
+	if ((IIIczesc + 11) <= 99 && (IIIczesc + 11) % 10 != 0) {
 		board.Pola[IIIczesc + 11]->wokolStatku = true;    //prawo IVczesci
 	}
 	if ((IVczesc + 1) % 10 != 0 && IVczesc != 99) {
@@ -479,7 +475,7 @@ void Statek4::zaznaczwokol4(ALLEGRO_EVENT event, PlanszaGry& board) {
 	if ((IVczesc - 9) >= 0 && (IVczesc - 9) % 10 != 0) {
 		board.Pola[IVczesc - 9]->wokolStatku = true;    //lewo dol statku
 	}
-	if ((IVczesc + 11) < 99 && (IVczesc + 11) % 10 != 0) {
+	if ((IVczesc + 11) <= 99 && (IVczesc + 11) % 10 != 0) {
 		board.Pola[IVczesc + 11]->wokolStatku = true;    //prawo dol statku
 	}
 }
@@ -490,7 +486,8 @@ void Statek4::drawstatek4(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& sc
 			isDragged = false;
 			for (int i = 0; i < 100; i++) {
 				if (x + 20 >= board.Pola[i]->x && x + 20 <= board.Pola[i]->x + 40 && y + 20 >= board.Pola[i]->y && y + 20 <= board.Pola[i]->y + 40) {
-					if (!board.Pola[i]->CzyStatek && !board.Pola[i]->wokolStatku && i != 99 && i != 98 && i != 97 && (i + 1) % 10 != 0) {
+					if (!board.Pola[i]->CzyStatek && !board.Pola[i+1]->CzyStatek && !board.Pola[i+2]->CzyStatek && !board.Pola[i+3]->CzyStatek 
+						&& !board.Pola[i]->wokolStatku && !board.Pola[i+1]->wokolStatku && !board.Pola[i+2]->wokolStatku && !board.Pola[i+3]->wokolStatku && i <= 96) {
 						x = board.Pola[i]->x;
 						y = board.Pola[i]->y;
 						Iczesc = i;
