@@ -6,6 +6,7 @@ wlasciwosci->c++/c->zaawansowane->plik wymuszonego doloczenia i wpisac sciezke d
 char exitscreen[] = "elements/exit_gameplay.png";
 char win[] = "elments/win.png";
 char lose[] = "elements/lose.png";
+char tiletemp[] = "elements/pole.png";
 
 void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, PlanszaGry& plansza, PlanszaPrzeciwnik& enemyboard, ArmiaGracz& armiagracz, GamePlay& gamescreen) {
 
@@ -95,6 +96,10 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 					gamescreen.CzyGameplay = true;
 					gamescreen.init(ustawianie, exitscreen, win, lose);
 					enemyboard.init();
+					for (auto tile1 : enemyboard.PolaPrzeciwnik) {
+						tile1->czyTrafione = false;
+						tile1->pole = al_load_bitmap(tiletemp);
+					}
 				}
 			}
 		}
@@ -106,8 +111,8 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 			menu.CzyInstrukcje = false;
 			al_clear_to_color(al_map_rgb(255, 255, 255));
 			gamescreen.drawgameplay(enemyboard);
-			plansza.drawplansza();
 			armiagracz.drawarmia(gamesystem.event, plansza, ustawianie);
+			plansza.drawplansza();
 			gamescreen.partia(gamesystem.event, plansza, enemyboard, ustawianie);
 
 			if (gamesystem.event.mouse.x >= 514 && gamesystem.event.mouse.x <= 570 && gamesystem.event.mouse.y >= 461 && gamesystem.event.mouse.y <= 521) {
@@ -138,7 +143,6 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && gamesystem.event.mouse.button == 1) {
 					gamescreen.CzyExit = false;
 					gamescreen.CzyGameplay = true;
-
 				}
 			}
 		}

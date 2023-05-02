@@ -5,6 +5,7 @@
 #include <allegro5/allegro_color.h>
 #include <allegro5/allegro_native_dialog.h>
 #include <vector>
+#include <ctime>
 
 /*Plik w ktorym znajduja sie klasy obiektow jakie sa w grze*/
 
@@ -200,6 +201,7 @@ public:
     ALLEGRO_BITMAP* ExitScreen;
     ALLEGRO_BITMAP* Win;
     ALLEGRO_BITMAP* Lose;
+    bool TuraGracza;
 
     void init(Ustawianie &ustawianie, char exitscreen[], char win[], char lose[]);
     void drawgameplay(PlanszaPrzeciwnik& enemyboard);

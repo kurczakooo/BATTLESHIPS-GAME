@@ -2,7 +2,7 @@
 
 /*Plik definiujacy metody klas z GameSystem.h*/
 
-char tile[] = "elements/tile1.png";
+char tile[] = "elements/pole.png";
 char hit[] = "elements/hit.png";
 char miss[] = "elements/miss.png";
 char statek1[] = "elements/1statek.png";
@@ -94,8 +94,12 @@ void PlanszaGry::destroy() {
 }
 
 void PlanszaGry::drawplansza() {
-	for (auto& tile1 : Pola) {
-		al_draw_bitmap(tile1->pole, tile1->x, tile1->y, 0);
+	for (auto& tile : Pola) {
+		if (tile->czyTrafione && tile->CzyStatek)
+			tile->pole = tile->hit;
+		else if (tile->czyTrafione && !tile->CzyStatek)
+			tile->pole = tile->miss;
+		al_draw_bitmap(tile->pole, tile->x, tile->y, 0);
 	}
 }
 
@@ -685,6 +689,7 @@ void GamePlay::init(Ustawianie& ustawianie, char exitscreen[], char win[], char 
 	this->ExitScreen = al_load_bitmap(exitscreen);
 	this->Win = al_load_bitmap(win);
 	this->Lose = al_load_bitmap(lose);
+	this->TuraGracza = true;
 }
 
 void GamePlay::drawgameplay(PlanszaPrzeciwnik& enemyboard) {
@@ -699,16 +704,33 @@ void GamePlay::drawgameplay(PlanszaPrzeciwnik& enemyboard) {
 }
 
 void GamePlay::partia(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaPrzeciwnik& enemyboard, Ustawianie& screen) {
-	
-	if (event.mouse.x >= 727 && event.mouse.x <= 1127 && event.mouse.y >= 94 && event.mouse.y <= 494) {
-		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && event.mouse.button == 1) {
-			for (int i = 0; i < 100; i++) {
-				if (event.mouse.x > enemyboard.PolaPrzeciwnik[i]->x && event.mouse.x < enemyboard.PolaPrzeciwnik[i]->x + 40
-					&& event.mouse.y > enemyboard.PolaPrzeciwnik[i]->y && event.mouse.y < enemyboard.PolaPrzeciwnik[i]->y + 40) {
+
+	if (TuraGracza) {
+		if (event.mouse.x >= 727 && event.mouse.x <= 1127 && event.mouse.y >= 94 && event.mouse.y <= 494) {
+			if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && event.mouse.button == 1) {
+				for (int i = 0; i < 100; i++) {
+					if (event.mouse.x > enemyboard.PolaPrzeciwnik[i]->x && event.mouse.x < enemyboard.PolaPrzeciwnik[i]->x + 40
+						&& event.mouse.y > enemyboard.PolaPrzeciwnik[i]->y && event.mouse.y < enemyboard.PolaPrzeciwnik[i]->y + 40) {
 						enemyboard.PolaPrzeciwnik[i]->czyTrafione = true;
-						std::cout << i << "\n";
+						//std::cout << i << "\n";
+						TuraGracza = false;
+					}
 				}
 			}
+		}
+	}
+
+	if (!TuraGracza) {
+		std::srand(std::time(nullptr));
+		int WylosowanePole = std::rand() % 100;
+		std::cout << WylosowanePole << "\n";
+		if (board.Pola[WylosowanePole]->czyTrafione) {
+			std::cout << "wylosowano trafione pole nr: " << WylosowanePole << "\n";
+			TuraGracza = true;
+		}	
+		else {
+			board.Pola[WylosowanePole]->czyTrafione = true;
+			TuraGracza = true;
 		}
 	}
 	
