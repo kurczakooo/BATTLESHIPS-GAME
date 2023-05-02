@@ -75,7 +75,6 @@ public:
 class Ustawianie : public GameSystem {
 public:                                       //klasa ekranu ustawiania statkow
     bool CzyUstawianie;
-    std::vector <Pole> plansza;
     ALLEGRO_BITMAP* NapisObracanie;
     ALLEGRO_BITMAP* SrodPanel;
     ALLEGRO_BITMAP* Litery;
@@ -179,6 +178,15 @@ public:
     void destroy();
 };
 
+class PlanszaPrzeciwnik {
+public:
+    std::vector <Pole*> PolaPrzeciwnik;
+
+    void init();
+    void destroy();
+    void drawplanszaprzeciwnika();
+};
+
 class GamePlay : public GameSystem {
 public:
     bool CzyGameplay;
@@ -194,7 +202,7 @@ public:
     ALLEGRO_BITMAP* Lose;
 
     void init(Ustawianie &ustawianie, char exitscreen[], char win[], char lose[]);
-    void drawgameplay();
-    void partia();
+    void drawgameplay(PlanszaPrzeciwnik& enemyboard);
+    void partia(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaPrzeciwnik& enemyboard, Ustawianie& screen);
     void destroy();
 };

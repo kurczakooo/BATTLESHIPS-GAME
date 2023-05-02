@@ -69,7 +69,7 @@ void Menu::destroy() {
 
 Pole::Pole(char Pole[], char Hit[], char Miss[], int x, int y, bool statek, bool trafione, bool wokol) {
 	this->pole = al_load_bitmap(Pole);
-	this->hit = al_load_bitmap(Pole);                            //do zaznacania potem zmienic
+	this->hit = al_load_bitmap(Hit);                            //do zaznacania potem zmienic
 	this->miss = al_load_bitmap(Miss);
 	this->x = x;
 	this->y = y;
@@ -267,7 +267,7 @@ void Statek2::drawstatek2(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& sc
 			isDragged = false;
 			for (int i = 0; i < 100; i++) {
 				if (x + 20 >= board.Pola[i]->x && x + 20 <= board.Pola[i]->x + 40 && y + 20 >= board.Pola[i]->y && y + 20 <= board.Pola[i]->y + 40) {
-					if (!board.Pola[i]->CzyStatek && !board.Pola[i]->wokolStatku && !board.Pola[i + 1]->wokolStatku && i != 99 && (i + 1) % 10 != 0) {
+					if (i <= 98 && (i + 1) % 10 != 0 && !board.Pola[i]->CzyStatek && !board.Pola[i]->wokolStatku && !board.Pola[i + 1]->wokolStatku) {
 						x = board.Pola[i]->x;
 						y = board.Pola[i]->y;
 						Iczesc = i;
@@ -379,8 +379,8 @@ void Statek3::drawstatek3(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& sc
 			isDragged = false;
 			for (int i = 0; i < 100; i++) {
 				if (x + 20 >= board.Pola[i]->x && x + 20 <= board.Pola[i]->x + 40 && y + 20 >= board.Pola[i]->y && y + 20 <= board.Pola[i]->y + 40) {
-					if (!board.Pola[i]->CzyStatek && !board.Pola[i+1]->CzyStatek && !board.Pola[i+2]->CzyStatek && !board.Pola[i]->wokolStatku 
-						&& !board.Pola[i+1]->wokolStatku && !board.Pola[i+2]->wokolStatku && i != 99 && i != 98 && (i + 1) % 10 != 0) {
+					if (i <= 97 && (i + 1) % 10 != 0 && (i + 2) % 10 != 0 && !board.Pola[i]->CzyStatek && !board.Pola[i+1]->CzyStatek && !board.Pola[i+2]->CzyStatek && !board.Pola[i]->wokolStatku
+						&& !board.Pola[i+1]->wokolStatku && !board.Pola[i+2]->wokolStatku) {
 						x = board.Pola[i]->x;
 						y = board.Pola[i]->y;
 						Iczesc = i;
@@ -486,8 +486,9 @@ void Statek4::drawstatek4(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& sc
 			isDragged = false;
 			for (int i = 0; i < 100; i++) {
 				if (x + 20 >= board.Pola[i]->x && x + 20 <= board.Pola[i]->x + 40 && y + 20 >= board.Pola[i]->y && y + 20 <= board.Pola[i]->y + 40) {
-					if (!board.Pola[i]->CzyStatek && !board.Pola[i+1]->CzyStatek && !board.Pola[i+2]->CzyStatek && !board.Pola[i+3]->CzyStatek 
-						&& !board.Pola[i]->wokolStatku && !board.Pola[i+1]->wokolStatku && !board.Pola[i+2]->wokolStatku && !board.Pola[i+3]->wokolStatku && i <= 96) {
+					if (i <= 96 && (i + 1) % 10 != 0 && (i + 2) % 10 != 0 && (i + 3) % 10 != 0 && !board.Pola[i]->CzyStatek && !board.Pola[i+1]->CzyStatek && !board.Pola[i+2]->CzyStatek 
+						&& !board.Pola[i+3]->CzyStatek && !board.Pola[i]->wokolStatku && !board.Pola[i+1]->wokolStatku && !board.Pola[i+2]->wokolStatku && !board.Pola[i+3]->wokolStatku) {
+						
 						x = board.Pola[i]->x;
 						y = board.Pola[i]->y;
 						Iczesc = i;
@@ -625,6 +626,57 @@ void ArmiaGracz::destroy() {
 	statki4.clear();
 }
 
+void PlanszaPrzeciwnik::init() {
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 10; j++) {
+			this->PolaPrzeciwnik.push_back(new Pole(tile, hit, miss, (i * 40) + 727, (j * 40) + 94, false, false, false));
+		}
+	}
+	PolaPrzeciwnik[0]->CzyStatek = true;          //podwojny
+	PolaPrzeciwnik[1]->CzyStatek = true;
+
+	PolaPrzeciwnik[3]->CzyStatek = true;          //podwojny
+	PolaPrzeciwnik[4]->CzyStatek = true;
+
+	PolaPrzeciwnik[6]->CzyStatek = true;          //podwojny
+	PolaPrzeciwnik[7]->CzyStatek = true;
+
+	PolaPrzeciwnik[9]->CzyStatek = true;
+	PolaPrzeciwnik[20]->CzyStatek = true;         //pojedyncze
+	PolaPrzeciwnik[22]->CzyStatek = true;
+	PolaPrzeciwnik[24]->CzyStatek = true;
+
+	PolaPrzeciwnik[26]->CzyStatek = true;           //potrojny
+	PolaPrzeciwnik[27]->CzyStatek = true;
+	PolaPrzeciwnik[28]->CzyStatek = true;
+
+	PolaPrzeciwnik[40]->CzyStatek = true;          //potrojny
+	PolaPrzeciwnik[41]->CzyStatek = true;
+	PolaPrzeciwnik[42]->CzyStatek = true;
+
+	PolaPrzeciwnik[44]->CzyStatek = true;
+	PolaPrzeciwnik[45]->CzyStatek = true;          //poczworny
+	PolaPrzeciwnik[46]->CzyStatek = true;
+	PolaPrzeciwnik[47]->CzyStatek = true;
+}
+
+void PlanszaPrzeciwnik::destroy() {
+	for (auto tile = PolaPrzeciwnik.begin(); tile != PolaPrzeciwnik.end(); tile++) {
+		delete* tile;
+	}
+	PolaPrzeciwnik.clear();
+}
+
+void PlanszaPrzeciwnik::drawplanszaprzeciwnika() {
+	for (auto& tile : PolaPrzeciwnik) {
+		if (tile->czyTrafione && tile->CzyStatek)
+			tile->pole = tile->hit;
+		else if (tile->czyTrafione && !tile->CzyStatek)
+			tile->pole = tile->miss;
+		al_draw_bitmap(tile->pole, tile->x, tile->y, 0);
+	}
+}
+
 void GamePlay::init(Ustawianie& ustawianie, char exitscreen[], char win[], char lose[]) {
 	this->SrodPanel = ustawianie.SrodPanel;
 	this->Litery = ustawianie.Litery;
@@ -635,12 +687,32 @@ void GamePlay::init(Ustawianie& ustawianie, char exitscreen[], char win[], char 
 	this->Lose = al_load_bitmap(lose);
 }
 
-void GamePlay::drawgameplay() {
+void GamePlay::drawgameplay(PlanszaPrzeciwnik& enemyboard) {
 	this->CzyGameplay = true;
 	al_draw_bitmap(SrodPanel, 500, 0, 0);
 	al_draw_bitmap(Litery, 76, 44, 0);
 	al_draw_bitmap(Cyfry, 24, 94, 0);
 	al_draw_bitmap(Exit, 514, 461, 0);
+	enemyboard.drawplanszaprzeciwnika();
+	al_draw_bitmap(Litery, 727, 44, 0);
+	al_draw_bitmap(Cyfry, 1127, 94, 0);
+}
+
+void GamePlay::partia(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaPrzeciwnik& enemyboard, Ustawianie& screen) {
+	
+	if (event.mouse.x >= 727 && event.mouse.x <= 1127 && event.mouse.y >= 94 && event.mouse.y <= 494) {
+		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && event.mouse.button == 1) {
+			for (int i = 0; i < 100; i++) {
+				if (event.mouse.x > enemyboard.PolaPrzeciwnik[i]->x && event.mouse.x < enemyboard.PolaPrzeciwnik[i]->x + 40
+					&& event.mouse.y > enemyboard.PolaPrzeciwnik[i]->y && event.mouse.y < enemyboard.PolaPrzeciwnik[i]->y + 40) {
+						enemyboard.PolaPrzeciwnik[i]->czyTrafione = true;
+						std::cout << i << "\n";
+				}
+			}
+		}
+	}
+	
+	enemyboard.drawplanszaprzeciwnika();
 }
 
 void GamePlay::destroy() {

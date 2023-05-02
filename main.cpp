@@ -22,6 +22,7 @@ int main() {
 	Menu menuscreen;
 	Ustawianie ustawianiescreen;
 	PlanszaGry plansza;
+	PlanszaPrzeciwnik enemyboard;
 	ArmiaGracz armiagracz;
 	GamePlay gameplayscreen;
 
@@ -30,7 +31,7 @@ int main() {
 	menuscreen.drawMenu();
 	ustawianiescreen.init(napisobracanie, srodpanel, litery, cyfry, reset, exitustawianie, grajustawianie);
 	
-	PetlaGry(gamesystem, menuscreen, ustawianiescreen, plansza, armiagracz, gameplayscreen);
+	PetlaGry(gamesystem, menuscreen, ustawianiescreen, plansza, enemyboard, armiagracz, gameplayscreen);
 
 	armiagracz.destroy();
 	plansza.destroy();

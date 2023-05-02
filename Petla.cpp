@@ -7,7 +7,7 @@ char exitscreen[] = "elements/exit_gameplay.png";
 char win[] = "elments/win.png";
 char lose[] = "elements/lose.png";
 
-void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, PlanszaGry& plansza, ArmiaGracz& armiagracz, GamePlay& gamescreen) {
+void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, PlanszaGry& plansza, PlanszaPrzeciwnik& enemyboard, ArmiaGracz& armiagracz, GamePlay& gamescreen) {
 
 	while (gamesystem.running) { //glowna petla
 
@@ -94,6 +94,7 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 					ustawianie.CzyUstawianie = false;
 					gamescreen.CzyGameplay = true;
 					gamescreen.init(ustawianie, exitscreen, win, lose);
+					enemyboard.init();
 				}
 			}
 		}
@@ -104,9 +105,10 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 			gamescreen.CzyExit = false;
 			menu.CzyInstrukcje = false;
 			al_clear_to_color(al_map_rgb(255, 255, 255));
-			gamescreen.drawgameplay();
+			gamescreen.drawgameplay(enemyboard);
 			plansza.drawplansza();
 			armiagracz.drawarmia(gamesystem.event, plansza, ustawianie);
+			gamescreen.partia(gamesystem.event, plansza, enemyboard, ustawianie);
 
 			if (gamesystem.event.mouse.x >= 514 && gamesystem.event.mouse.x <= 570 && gamesystem.event.mouse.y >= 461 && gamesystem.event.mouse.y <= 521) {
 				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && gamesystem.event.mouse.button == 1) {
