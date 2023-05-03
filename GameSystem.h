@@ -6,6 +6,7 @@
 #include <allegro5/allegro_native_dialog.h>
 #include <vector>
 #include <ctime>
+#include <random>
 
 /*Plik w ktorym znajduja sie klasy obiektow jakie sa w grze*/
 
@@ -194,6 +195,8 @@ public:
     bool CzyExit;
     bool CzyWin;
     bool CzyLose;
+    int TrafionePlanszaGracz{ 0 };
+    int TrafionePlanszaAI{ 0 };
     ALLEGRO_BITMAP* SrodPanel;
     ALLEGRO_BITMAP* Litery;
     ALLEGRO_BITMAP* Cyfry;
@@ -205,6 +208,8 @@ public:
 
     void init(Ustawianie &ustawianie, char exitscreen[], char win[], char lose[]);
     void drawgameplay(PlanszaPrzeciwnik& enemyboard);
-    void partia(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaPrzeciwnik& enemyboard, Ustawianie& screen);
+    void WyborPolaPrzezGracza(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaPrzeciwnik& enemyboard);
+    void GetRandomPole(PlanszaGry& board, PlanszaPrzeciwnik& enemyboard);
+    void Rozgrywka(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaPrzeciwnik& enemyboard, Ustawianie& screen);
     void destroy();
 };

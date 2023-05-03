@@ -690,6 +690,8 @@ void GamePlay::init(Ustawianie& ustawianie, char exitscreen[], char win[], char 
 	this->Win = al_load_bitmap(win);
 	this->Lose = al_load_bitmap(lose);
 	this->TuraGracza = true;
+	this->CzyWin = false;
+	this->CzyLose = false;
 }
 
 void GamePlay::drawgameplay(PlanszaPrzeciwnik& enemyboard) {
@@ -703,37 +705,51 @@ void GamePlay::drawgameplay(PlanszaPrzeciwnik& enemyboard) {
 	al_draw_bitmap(Cyfry, 1127, 94, 0);
 }
 
-void GamePlay::partia(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaPrzeciwnik& enemyboard, Ustawianie& screen) {
-
-	if (TuraGracza) {
-		if (event.mouse.x >= 727 && event.mouse.x <= 1127 && event.mouse.y >= 94 && event.mouse.y <= 494) {
-			if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && event.mouse.button == 1) {
-				for (int i = 0; i < 100; i++) {
-					if (event.mouse.x > enemyboard.PolaPrzeciwnik[i]->x && event.mouse.x < enemyboard.PolaPrzeciwnik[i]->x + 40
-						&& event.mouse.y > enemyboard.PolaPrzeciwnik[i]->y && event.mouse.y < enemyboard.PolaPrzeciwnik[i]->y + 40) {
-						enemyboard.PolaPrzeciwnik[i]->czyTrafione = true;
-						//std::cout << i << "\n";
-						TuraGracza = false;
-					}
+void GamePlay::WyborPolaPrzezGracza(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaPrzeciwnik& enemyboard) {
+	if (event.mouse.x >= 727 && event.mouse.x <= 1127 && event.mouse.y >= 94 && event.mouse.y <= 494) {
+		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && event.mouse.button == 1) {
+			for (int i = 0; i < 100; i++) {
+				if (event.mouse.x > enemyboard.PolaPrzeciwnik[i]->x && event.mouse.x < enemyboard.PolaPrzeciwnik[i]->x + 40
+					&& event.mouse.y > enemyboard.PolaPrzeciwnik[i]->y && event.mouse.y < enemyboard.PolaPrzeciwnik[i]->y + 40) {
+					enemyboard.PolaPrzeciwnik[i]->czyTrafione = true;
+					//std::cout << i << "\n";
+					TuraGracza = false;
+					if (enemyboard.PolaPrzeciwnik[i]->CzyStatek && enemyboard.PolaPrzeciwnik[i]->czyTrafione)
+						TrafionePlanszaAI++;
 				}
 			}
 		}
 	}
+}
+
+void GamePlay::GetRandomPole(PlanszaGry& board, PlanszaPrzeciwnik& enemyboard) {
+	std::random_device random;
+	std::mt19937 gen(random());
+	std::uniform_int_distribution<> dis(0, 99);
+
+	int WylosowanePole = dis(gen);
+	//std::cout << WylosowanePole << "\n";
+	if (!board.Pola[WylosowanePole]->czyTrafione) {
+		board.Pola[WylosowanePole]->czyTrafione = true;
+		TuraGracza = true;
+		if (board.Pola[WylosowanePole]->CzyStatek && board.Pola[WylosowanePole]->czyTrafione)
+			TrafionePlanszaGracz++;
+	}
+	else {
+		GetRandomPole(board, enemyboard);
+	}
+}
+
+void GamePlay::Rozgrywka(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaPrzeciwnik& enemyboard, Ustawianie& screen) {
+
+	if (TuraGracza) {
+		WyborPolaPrzezGracza(event, board, enemyboard);
+	}
 
 	if (!TuraGracza) {
-		std::srand(std::time(nullptr));
-		int WylosowanePole = std::rand() % 100;
-		std::cout << WylosowanePole << "\n";
-		if (board.Pola[WylosowanePole]->czyTrafione) {
-			std::cout << "wylosowano trafione pole nr: " << WylosowanePole << "\n";
-			TuraGracza = true;
-		}	
-		else {
-			board.Pola[WylosowanePole]->czyTrafione = true;
-			TuraGracza = true;
-		}
+		GetRandomPole(board, enemyboard);	
 	}
-	
+
 	enemyboard.drawplanszaprzeciwnika();
 }
 

@@ -4,7 +4,7 @@ w visual studio do projektu mozna przulaczyc tylko jeden plik naglowkowy, abu po
 wlasciwosci->c++/c->zaawansowane->plik wymuszonego doloczenia i wpisac sciezke do pliku naglowkowego*/
 
 char exitscreen[] = "elements/exit_gameplay.png";
-char win[] = "elments/win.png";
+char win[] = "elements/win.png";
 char lose[] = "elements/lose.png";
 char tiletemp[] = "elements/pole.png";
 
@@ -23,6 +23,8 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 			ustawianie.CzyUstawianie = false;
 			gamescreen.CzyGameplay = false;
 			gamescreen.CzyExit = false;
+			gamescreen.CzyWin = false;
+			gamescreen.CzyLose = false;
 			menu.CzyInstrukcje = false;
 			menu.drawMenu();
 
@@ -68,6 +70,8 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 			menu.CzyMenu = false;
 			gamescreen.CzyGameplay = false;
 			gamescreen.CzyExit = false;
+			gamescreen.CzyWin = false;
+			gamescreen.CzyLose = false;
 			menu.CzyInstrukcje = false;
 			al_clear_to_color(al_map_rgb(255, 255, 255));
 			ustawianie.drawUstawianie(plansza);
@@ -80,7 +84,7 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 					ustawianie.ZajetePola = 0;
 					plansza.destroy();
 					armiagracz.destroy();
-					menu.drawMenu();
+					menu.CzyMenu = true;
 				}
 			}
 
@@ -113,12 +117,90 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 			gamescreen.drawgameplay(enemyboard);
 			armiagracz.drawarmia(gamesystem.event, plansza, ustawianie);
 			plansza.drawplansza();
-			gamescreen.partia(gamesystem.event, plansza, enemyboard, ustawianie);
+			gamescreen.Rozgrywka(gamesystem.event, plansza, enemyboard, ustawianie);
+
+			if (gamescreen.TrafionePlanszaAI == 20) {
+				gamescreen.CzyWin = true;
+			}
+			
+			if (gamescreen.TrafionePlanszaGracz == 20) {
+				gamescreen.CzyLose = true;
+			}
 
 			if (gamesystem.event.mouse.x >= 514 && gamesystem.event.mouse.x <= 570 && gamesystem.event.mouse.y >= 461 && gamesystem.event.mouse.y <= 521) {
 				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && gamesystem.event.mouse.button == 1) {
 					gamescreen.CzyGameplay = false;
 					gamescreen.CzyExit = true;
+					//std::cout << "\ntrafione na pl ai: " << gamescreen.TrafionePlanszaAI;
+					//std::cout << "\n\ntrafione na pl gracza: " << gamescreen.TrafionePlanszaGracz;
+				}
+			}
+		}
+
+		if (gamescreen.CzyWin) {
+			menu.CzyMenu = false;
+			ustawianie.CzyUstawianie = false;
+			menu.CzyInstrukcje = false;
+			al_draw_bitmap(gamescreen.Win, DisplayWidth / 2 - 300, DisplayHeight / 2 - 200, 0);
+
+			if (gamesystem.event.mouse.x >= 345 && gamesystem.event.mouse.x <= 465 && gamesystem.event.mouse.y >= 380 && gamesystem.event.mouse.y <= 425) {
+				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && gamesystem.event.mouse.button == 1) {
+					ustawianie.ZajetePola = 0;
+					gamescreen.TrafionePlanszaAI = 0;
+					gamescreen.TrafionePlanszaGracz = 0;
+					plansza.destroy();
+					armiagracz.destroy();
+					enemyboard.destroy();
+					menu.CzyMenu = true;
+				}
+			}
+
+			if (gamesystem.event.mouse.x >= 590 && gamesystem.event.mouse.x <= 860 && gamesystem.event.mouse.y >= 380 && gamesystem.event.mouse.y <= 425) {
+				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && gamesystem.event.mouse.button == 1) {
+					ustawianie.ZajetePola = 0;
+					gamescreen.TrafionePlanszaAI = 0;
+					gamescreen.TrafionePlanszaGracz = 0;
+					plansza.destroy();
+					armiagracz.destroy();
+					enemyboard.destroy();
+					armiagracz.init();
+					plansza.init();
+					gamescreen.CzyWin = false;
+					ustawianie.CzyUstawianie = true;
+				}
+			}
+		}
+
+		if (gamescreen.CzyLose) {
+			menu.CzyMenu = false;
+			ustawianie.CzyUstawianie = false;
+			menu.CzyInstrukcje = false;
+			al_draw_bitmap(gamescreen.Lose, DisplayWidth / 2 - 300, DisplayHeight / 2 - 200, 0);
+
+			if (gamesystem.event.mouse.x >= 345 && gamesystem.event.mouse.x <= 465 && gamesystem.event.mouse.y >= 380 && gamesystem.event.mouse.y <= 425) {
+				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && gamesystem.event.mouse.button == 1) {
+					ustawianie.ZajetePola = 0;
+					gamescreen.TrafionePlanszaAI = 0;
+					gamescreen.TrafionePlanszaGracz = 0;
+					plansza.destroy();
+					armiagracz.destroy();
+					enemyboard.destroy();
+					menu.CzyMenu = true;
+				}
+			}
+
+			if (gamesystem.event.mouse.x >= 590 && gamesystem.event.mouse.x <= 860 && gamesystem.event.mouse.y >= 380 && gamesystem.event.mouse.y <= 425) {
+				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && gamesystem.event.mouse.button == 1) {
+					ustawianie.ZajetePola = 0;
+					gamescreen.TrafionePlanszaAI = 0;
+					gamescreen.TrafionePlanszaGracz = 0;
+					plansza.destroy();
+					armiagracz.destroy();
+					enemyboard.destroy();
+					armiagracz.init();
+					plansza.init();
+					gamescreen.CzyWin = false;
+					ustawianie.CzyUstawianie = true;
 				}
 			}
 		}
@@ -128,14 +210,16 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 			ustawianie.CzyUstawianie = false;
 			menu.CzyInstrukcje = false;
 			al_draw_bitmap(gamescreen.ExitScreen, DisplayWidth / 2 - 300, DisplayHeight / 2 - 200, 0);
-
+	
 			if (gamesystem.event.mouse.x >= 345 && gamesystem.event.mouse.x <= 480 && gamesystem.event.mouse.y >= 380 && gamesystem.event.mouse.y <= 425) {
 				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && gamesystem.event.mouse.button == 1) {
 					ustawianie.ZajetePola = 0;
-					al_clear_to_color(al_map_rgb(255, 255, 255));
+					gamescreen.TrafionePlanszaAI = 0;
+					gamescreen.TrafionePlanszaGracz = 0;
 					plansza.destroy();
 					armiagracz.destroy();
-					menu.drawMenu();
+					enemyboard.destroy();
+					menu.CzyMenu = true;
 				}
 			}
 
