@@ -6,6 +6,8 @@ wlasciwosci->c++/c->zaawansowane->plik wymuszonego doloczenia i wpisac sciezke d
 char exitscreen[] = "elements/exit_gameplay.png";
 char win[] = "elements/win.png";
 char lose[] = "elements/lose.png";
+char wrongchoice[] = "elements/wrong_choice.png";
+char outofboard[] = "elements/out_of_board.png";
 char tiletemp[] = "elements/pole.png";
 
 void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, PlanszaGry& plansza, PlanszaPrzeciwnik& enemyboard, ArmiaGracz& armiagracz, GamePlay& gamescreen) {
@@ -98,7 +100,7 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 				if (gamesystem.event.mouse.x >= 508 && gamesystem.event.mouse.x <= 692 && gamesystem.event.mouse.y >= 235 && gamesystem.event.mouse.y <= 305) {
 					ustawianie.CzyUstawianie = false;
 					gamescreen.CzyGameplay = true;
-					gamescreen.init(ustawianie, exitscreen, win, lose);
+					gamescreen.init(ustawianie, exitscreen, win, lose, wrongchoice, outofboard);
 					enemyboard.init();
 					for (auto tile1 : enemyboard.PolaPrzeciwnik) {
 						tile1->czyTrafione = false;
@@ -138,6 +140,7 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 		}
 
 		if (gamescreen.CzyWin) {
+			gamescreen.CzyGameplay = false;
 			menu.CzyMenu = false;
 			ustawianie.CzyUstawianie = false;
 			menu.CzyInstrukcje = false;
@@ -172,6 +175,7 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 		}
 
 		if (gamescreen.CzyLose) {
+			gamescreen.CzyGameplay = false;
 			menu.CzyMenu = false;
 			ustawianie.CzyUstawianie = false;
 			menu.CzyInstrukcje = false;
@@ -206,6 +210,7 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 		}
 
 		if (gamescreen.CzyExit) {
+			gamescreen.CzyGameplay = false;
 			menu.CzyMenu = false;
 			ustawianie.CzyUstawianie = false;
 			menu.CzyInstrukcje = false;

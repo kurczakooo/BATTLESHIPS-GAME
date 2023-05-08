@@ -204,9 +204,11 @@ public:
     ALLEGRO_BITMAP* ExitScreen;
     ALLEGRO_BITMAP* Win;
     ALLEGRO_BITMAP* Lose;
+    ALLEGRO_BITMAP* WrongChoice;
+    ALLEGRO_BITMAP* OutOfBoard;
     bool TuraGracza;
 
-    void init(Ustawianie &ustawianie, char exitscreen[], char win[], char lose[]);
+    void init(Ustawianie &ustawianie, char exitscreen[], char win[], char lose[], char wrongchoice[], char outofboard[]);
     void drawgameplay(PlanszaPrzeciwnik& enemyboard);
     void WyborPolaPrzezGracza(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaPrzeciwnik& enemyboard);
     void GetRandomPole(PlanszaGry& board, PlanszaPrzeciwnik& enemyboard);

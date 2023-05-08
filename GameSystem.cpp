@@ -681,7 +681,7 @@ void PlanszaPrzeciwnik::drawplanszaprzeciwnika() {
 	}
 }
 
-void GamePlay::init(Ustawianie& ustawianie, char exitscreen[], char win[], char lose[]) {
+void GamePlay::init(Ustawianie& ustawianie, char exitscreen[], char win[], char lose[], char wrongchoice[], char outofboard[]) {
 	this->SrodPanel = ustawianie.SrodPanel;
 	this->Litery = ustawianie.Litery;
 	this->Cyfry = ustawianie.Cyfry;
@@ -689,6 +689,8 @@ void GamePlay::init(Ustawianie& ustawianie, char exitscreen[], char win[], char 
 	this->ExitScreen = al_load_bitmap(exitscreen);
 	this->Win = al_load_bitmap(win);
 	this->Lose = al_load_bitmap(lose);
+	this->WrongChoice = al_load_bitmap(wrongchoice);
+	this->OutOfBoard = al_load_bitmap(outofboard);
 	this->TuraGracza = true;
 	this->CzyWin = false;
 	this->CzyLose = false;
@@ -711,14 +713,22 @@ void GamePlay::WyborPolaPrzezGracza(ALLEGRO_EVENT event, PlanszaGry& board, Plan
 			for (int i = 0; i < 100; i++) {
 				if (event.mouse.x > enemyboard.PolaPrzeciwnik[i]->x && event.mouse.x < enemyboard.PolaPrzeciwnik[i]->x + 40
 					&& event.mouse.y > enemyboard.PolaPrzeciwnik[i]->y && event.mouse.y < enemyboard.PolaPrzeciwnik[i]->y + 40) {
-					enemyboard.PolaPrzeciwnik[i]->czyTrafione = true;
-					//std::cout << i << "\n";
-					TuraGracza = false;
-					if (enemyboard.PolaPrzeciwnik[i]->CzyStatek && enemyboard.PolaPrzeciwnik[i]->czyTrafione)
-						TrafionePlanszaAI++;
+					if (!enemyboard.PolaPrzeciwnik[i]->czyTrafione) {
+						if(enemyboard.PolaPrzeciwnik[i]->CzyStatek)
+							TrafionePlanszaAI++;
+						else
+							TuraGracza = false;
+						enemyboard.PolaPrzeciwnik[i]->czyTrafione = true;
+					}
+					else {
+						al_draw_bitmap(this->WrongChoice, 500, 54, 0);
+					}
 				}
 			}
 		}
+	}
+	else {
+		al_draw_bitmap(OutOfBoard, 500, 54, 0);
 	}
 }
 
@@ -728,12 +738,14 @@ void GamePlay::GetRandomPole(PlanszaGry& board, PlanszaPrzeciwnik& enemyboard) {
 	std::uniform_int_distribution<> dis(0, 99);
 
 	int WylosowanePole = dis(gen);
-	//std::cout << WylosowanePole << "\n";
+
 	if (!board.Pola[WylosowanePole]->czyTrafione) {
-		board.Pola[WylosowanePole]->czyTrafione = true;
-		TuraGracza = true;
-		if (board.Pola[WylosowanePole]->CzyStatek && board.Pola[WylosowanePole]->czyTrafione)
+		if (board.Pola[WylosowanePole]->CzyStatek) {
 			TrafionePlanszaGracz++;
+		}
+		else
+			TuraGracza = true;
+		board.Pola[WylosowanePole]->czyTrafione = true;
 	}
 	else {
 		GetRandomPole(board, enemyboard);
