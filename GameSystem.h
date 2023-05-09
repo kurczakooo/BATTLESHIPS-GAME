@@ -85,9 +85,10 @@ public:                                       //klasa ekranu ustawiania statkow
     ALLEGRO_BITMAP* Exit;
     ALLEGRO_BITMAP* Graj;
     ALLEGRO_BITMAP* Losuj;
+    ALLEGRO_BITMAP* LosujWarning;
     int ZajetePola{0};
 
-    void init(char Napis[], char Panel[], char litery[], char cyfry[], char reset[], char exit[] ,char graj[], char losujustawianie[]);    //metody do jej inicjalizacji, rysowania i zniszczenia
+    void init(char Napis[], char Panel[], char litery[], char cyfry[], char reset[], char exit[] ,char graj[], char losujustawianie[], char losujwarning[]);    //metody do jej inicjalizacji, rysowania i zniszczenia
     void DrawUstawianie(PlanszaGry &board);
     void destroy();
 };
@@ -174,12 +175,16 @@ public:
     std::vector <Statek2*> statki2;
     std::vector <Statek3*> statki3;
     std::vector <Statek4*> statki4;
+    bool CzyMoznaLosowac;
 
     void init();
     void drawarmia(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie &screen);
     void restart(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& screen);
-    bool LosujPojedyncze(int n, int wylosowane, ALLEGRO_EVENT event, PlanszaGry& board);
-    void LosujPlansze(ALLEGRO_EVENT event, PlanszaGry& board);
+    void LosujPojedyncze(int n, ALLEGRO_EVENT event, PlanszaGry& board, Ustawianie& screen);
+    void LosujPodwojne(int n, ALLEGRO_EVENT event, PlanszaGry& board, Ustawianie& screen);
+    void LosujPotrojne(int n, ALLEGRO_EVENT event, PlanszaGry& board, Ustawianie& screen);
+    void LosujPoczworny(ALLEGRO_EVENT event, PlanszaGry& board, Ustawianie& screen);
+    void LosujPlansze(ALLEGRO_EVENT event, PlanszaGry& board, Ustawianie& screen);
     void destroy();
 };
 

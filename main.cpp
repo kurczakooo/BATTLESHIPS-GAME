@@ -18,6 +18,7 @@ int main() {
 	char grajustawianie[] = "elements/graj_ustawianie.png";
 	char exitustawianie[] = "elements/wyjscie.png";
 	char losujustawianie[] = "elements/losuj_ustawianie.png";
+	char losujwarning[] = "elements/zresetuj_statki.png";
 
 	GameSystem gamesystem;
 	Menu menuscreen;
@@ -30,7 +31,7 @@ int main() {
 	gamesystem.init();
 	menuscreen.init(tytul, tlo, graj, exit, jakgrac, instrukcje);
 	menuscreen.drawMenu();
-	ustawianiescreen.init(napisobracanie, srodpanel, litery, cyfry, reset, exitustawianie, grajustawianie, losujustawianie);
+	ustawianiescreen.init(napisobracanie, srodpanel, litery, cyfry, reset, exitustawianie, grajustawianie, losujustawianie, losujwarning);
 	
 	PetlaGry(gamesystem, menuscreen, ustawianiescreen, plansza, enemyboard, armiagracz, gameplayscreen);
 

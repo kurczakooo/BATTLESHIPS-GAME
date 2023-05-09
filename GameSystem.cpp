@@ -103,7 +103,7 @@ void PlanszaGry::drawplansza() {
 	}
 }
 
-void Ustawianie::init(char Napis[], char Panel[], char litery[], char cyfry[], char reset[], char exit[], char graj[], char losujustawianie[]) {
+void Ustawianie::init(char Napis[], char Panel[], char litery[], char cyfry[], char reset[], char exit[], char graj[], char losujustawianie[], char losujwarning[]) {
 	this->NapisObracanie = al_load_bitmap(Napis);          //inicjalizacja ekranu ustawiania statkow
 	this->SrodPanel = al_load_bitmap(Panel);
 	this->Litery = al_load_bitmap(litery);
@@ -112,6 +112,7 @@ void Ustawianie::init(char Napis[], char Panel[], char litery[], char cyfry[], c
 	this->Exit = al_load_bitmap(exit);
 	this->Graj = al_load_bitmap(graj);
 	this->Losuj = al_load_bitmap(losujustawianie);
+	this->LosujWarning = al_load_bitmap(losujwarning);
 }
 
 void Ustawianie::DrawUstawianie(PlanszaGry &board) {
@@ -560,6 +561,8 @@ void ArmiaGracz::init() {
 	this->statki3.push_back(new Statek3(statek3, 848.0, 334.0, 848, 334));
 
 	this->statki4.push_back(new Statek4(statek4, 1008.0, 214.0, 1008, 214));
+
+	CzyMoznaLosowac = true;
 }
 
 void ArmiaGracz::drawarmia(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie &screen) {
@@ -579,6 +582,7 @@ void ArmiaGracz::drawarmia(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie &s
  
 void ArmiaGracz::restart(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& screen) {
 	screen.ZajetePola = 0;
+	CzyMoznaLosowac = true;
 	for (auto& tile1 : board.Pola) {
 		tile1->CzyStatek = false;
 		tile1->wokolStatku = false;
@@ -613,56 +617,117 @@ void ArmiaGracz::restart(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& scr
 	}
 }
 
-bool ArmiaGracz::LosujPojedyncze(int n, int wylosowane, ALLEGRO_EVENT event, PlanszaGry& board) {
-	if (!board.Pola[wylosowane]->CzyStatek && !board.Pola[wylosowane]->wokolStatku) {
-		if (!statki1[n]->CzyUstawiony) {
-			statki1[n]->x = board.Pola[wylosowane]->x;
-			statki1[n]->y = board.Pola[wylosowane]->y;
-			board.Pola[wylosowane]->CzyStatek = true;
-			statki1[n]->Iczesc = wylosowane;
-			statki1[n]->CzyUstawiony = true;
-			statki1[n]->zaznaczwokol1(event, board);
-			return true;
-		}
-		else return false;
-	}
-	else return false;
-}
-
-void ArmiaGracz::LosujPlansze(ALLEGRO_EVENT event, PlanszaGry& board) {
+void ArmiaGracz::LosujPojedyncze(int n, ALLEGRO_EVENT event, PlanszaGry& board, Ustawianie& screen) {
 	std::random_device random;
 	std::mt19937 gen(random());
 	std::uniform_int_distribution<> dis(0, 99);
+	int wylosowane = dis(gen);
+	
+	if (CzyMoznaLosowac && !statki1[n]->CzyUstawiony && !board.Pola[wylosowane]->CzyStatek && !board.Pola[wylosowane]->wokolStatku) {
+		statki1[n]->x = board.Pola[wylosowane]->x;
+		statki1[n]->y = board.Pola[wylosowane]->y;
+		statki1[n]->Iczesc = wylosowane;
+		board.Pola[statki1[n]->Iczesc]->CzyStatek = true;
+		statki1[n]->CzyUstawiony = true;
+		statki1[n]->zaznaczwokol1(event, board);
+		screen.ZajetePola++;
+	}
+	else if (!CzyMoznaLosowac)
+		al_draw_bitmap(screen.LosujWarning, 500, 54, 0);
+	else LosujPojedyncze(n, event, board, screen);
+}
+
+void ArmiaGracz::LosujPodwojne(int n, ALLEGRO_EVENT event, PlanszaGry& board, Ustawianie& screen) {
+	std::random_device random;
+	std::mt19937 gen(random());
+	std::uniform_int_distribution<> dis(0, 99);
+	int wylosowane = dis(gen);
+
+	if (CzyMoznaLosowac && wylosowane + 1 != 99 && (wylosowane + 1) % 10 != 0 && !statki2[n]->CzyUstawiony && !board.Pola[wylosowane]->CzyStatek 
+		&& !board.Pola[wylosowane]->wokolStatku && !board.Pola[wylosowane+1]->CzyStatek && !board.Pola[wylosowane+1]->wokolStatku) {
+		statki2[n]->x = board.Pola[wylosowane]->x;
+		statki2[n]->y = board.Pola[wylosowane]->y;
+		statki2[n]->Iczesc = wylosowane;
+		statki2[n]->IIczesc = wylosowane + 1;
+		board.Pola[statki2[n]->Iczesc]->CzyStatek = true;
+		board.Pola[statki2[n]->IIczesc]->CzyStatek = true;
+		statki2[n]->CzyUstawiony = true;
+		statki2[n]->zaznaczwokol2(event, board);
+		screen.ZajetePola += 2;
+	}
+	else if (!CzyMoznaLosowac)
+		al_draw_bitmap(screen.LosujWarning, 500, 54, 0);
+	else LosujPodwojne(n, event, board, screen);
+}
+
+void ArmiaGracz::LosujPotrojne(int n, ALLEGRO_EVENT event, PlanszaGry& board, Ustawianie& screen) {
+	std::random_device random;
+	std::mt19937 gen(random());
+	std::uniform_int_distribution<> dis(0, 99);
+	int wylosowane = dis(gen);
+	
+	if (CzyMoznaLosowac && wylosowane <= 97 && (wylosowane + 1) % 10 != 0 && (wylosowane + 2) % 10 != 0 && !statki3[n]->CzyUstawiony 
+		&& !board.Pola[wylosowane]->CzyStatek && !board.Pola[wylosowane]->wokolStatku && !board.Pola[wylosowane + 1]->CzyStatek 
+		&& !board.Pola[wylosowane + 1]->wokolStatku && !board.Pola[wylosowane + 2]->CzyStatek && !board.Pola[wylosowane + 2]->wokolStatku) {
+		statki3[n]->x = board.Pola[wylosowane]->x;
+		statki3[n]->y = board.Pola[wylosowane]->y;
+		statki3[n]->Iczesc = wylosowane;
+		statki3[n]->IIczesc = wylosowane + 1;
+		statki3[n]->IIIczesc = wylosowane + 2;
+		board.Pola[statki3[n]->Iczesc]->CzyStatek = true;
+		board.Pola[statki3[n]->IIczesc]->CzyStatek = true;
+		board.Pola[statki3[n]->IIIczesc]->CzyStatek = true;
+		statki3[n]->CzyUstawiony = true;
+		statki3[n]->zaznaczwokol3(event, board);
+		screen.ZajetePola += 3;
+	}
+	else if (!CzyMoznaLosowac)
+		al_draw_bitmap(screen.LosujWarning, 500, 54, 0);
+	else LosujPotrojne(n, event, board, screen);
+}
+
+void ArmiaGracz::LosujPoczworny(ALLEGRO_EVENT event, PlanszaGry& board, Ustawianie& screen) {
+	std::random_device random;
+	std::mt19937 gen(random());
+	std::uniform_int_distribution<> dis(0, 99);
+	int wylosowane = dis(gen);
+
+	if (CzyMoznaLosowac && wylosowane <= 96 && (wylosowane + 1) % 10 != 0 && (wylosowane + 2) % 10 != 0 && (wylosowane + 3) % 10 != 0 
+		&& !statki4[0]->CzyUstawiony && !board.Pola[wylosowane]->CzyStatek && !board.Pola[wylosowane]->wokolStatku 
+		&& !board.Pola[wylosowane + 1]->CzyStatek && !board.Pola[wylosowane + 1]->wokolStatku && !board.Pola[wylosowane + 2]->CzyStatek 
+		&& !board.Pola[wylosowane + 2]->wokolStatku && !board.Pola[wylosowane + 3]->CzyStatek && !board.Pola[wylosowane + 3]->wokolStatku) {
+
+		statki4[0]->x = board.Pola[wylosowane]->x;
+		statki4[0]->y = board.Pola[wylosowane]->y;
+		statki4[0]->Iczesc = wylosowane;
+		statki4[0]->IIczesc = wylosowane + 1;
+		statki4[0]->IIIczesc = wylosowane + 2;
+		statki4[0]->IVczesc = wylosowane + 3;
+		board.Pola[statki4[0]->Iczesc]->CzyStatek = true;
+		board.Pola[statki4[0]->IIczesc]->CzyStatek = true;
+		board.Pola[statki4[0]->IIIczesc]->CzyStatek = true;
+		board.Pola[statki4[0]->IVczesc]->CzyStatek = true;
+		statki4[0]->CzyUstawiony = true;
+		statki4[0]->zaznaczwokol4(event, board);
+		screen.ZajetePola += 4;
+	}
+	else if (!CzyMoznaLosowac)
+		al_draw_bitmap(screen.LosujWarning, 500, 54, 0);
+	else LosujPoczworny(event, board, screen);
+}
+
+void ArmiaGracz::LosujPlansze(ALLEGRO_EVENT event, PlanszaGry& board, Ustawianie& screen) {
 
 	for (int i = 0; i < 4; i++) {    //Losowanie pojedynczych statkow
-		int WylosowanePole = dis(gen);
-		if (LosujPojedyncze(i, WylosowanePole, event, board)) 
-			continue;
-		else {
-			WylosowanePole = dis(gen);
-			LosujPojedyncze(i, WylosowanePole, event, board);
-		}
+		LosujPojedyncze(i, event, board, screen);
 	}
-	/*
 	for (int i = 0; i < 3; i++) {    //Losowanie podwojnych statkow
-		int WylosowanePole = dis(gen);
-
-		if (WylosowanePole+1 != 99 && (WylosowanePole+1)%10 != 0  && !board.Pola[WylosowanePole]->CzyStatek && !board.Pola[WylosowanePole]->wokolStatku) {
-			if (!statki2[i]->CzyUstawiony) {
-				statki2[i]->x = board.Pola[WylosowanePole]->x;
-				statki2[i]->y = board.Pola[WylosowanePole]->y;
-				board.Pola[WylosowanePole]->CzyStatek = true;
-				statki2[i]->Iczesc = WylosowanePole;
-				statki2[i]->IIczesc = WylosowanePole + 1;
-				statki2[i]->CzyUstawiony = true;
-				statki2[i]->zaznaczwokol2(event, board);
-			}
-		}
-		else {
-			int WylosowanePole = dis(gen);
-		}
+		LosujPodwojne(i, event, board, screen);
 	}
-	*/
+	for (int i = 0; i < 2; i++) {    //Losowanie potrojnych statkow
+		LosujPotrojne(i, event, board, screen);
+	}
+	LosujPoczworny(event, board, screen);
 
 	for (int i = 1; i <= 100; i++) {
 		std::cout << board.Pola[i - 1]->wokolStatku<<" ";
@@ -689,6 +754,8 @@ void ArmiaGracz::destroy() {
 		delete* boat;
 	}
 	statki4.clear();
+
+	CzyMoznaLosowac = false;
 }
 
 void PlanszaPrzeciwnik::init() {

@@ -92,7 +92,8 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 
 			if (gamesystem.event.mouse.x >= 508 && gamesystem.event.mouse.x <= 692 && gamesystem.event.mouse.y >= 390 && gamesystem.event.mouse.y <= 444) {
 				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && gamesystem.event.mouse.button == 1) {
-					armiagracz.LosujPlansze(gamesystem.event, plansza);
+					armiagracz.LosujPlansze(gamesystem.event, plansza, ustawianie);
+					armiagracz.CzyMoznaLosowac = false;
 				}
 			}
 
