@@ -76,7 +76,7 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 			gamescreen.CzyLose = false;
 			menu.CzyInstrukcje = false;
 			al_clear_to_color(al_map_rgb(255, 255, 255));
-			ustawianie.drawUstawianie(plansza);
+			ustawianie.DrawUstawianie(plansza);
 			plansza.drawplansza();
 			armiagracz.drawarmia(gamesystem.event, plansza, ustawianie);
 
@@ -87,6 +87,12 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 					plansza.destroy();
 					armiagracz.destroy();
 					menu.CzyMenu = true;
+				}
+			}
+
+			if (gamesystem.event.mouse.x >= 508 && gamesystem.event.mouse.x <= 692 && gamesystem.event.mouse.y >= 390 && gamesystem.event.mouse.y <= 444) {
+				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && gamesystem.event.mouse.button == 1) {
+					armiagracz.LosujPlansze(gamesystem.event, plansza);
 				}
 			}
 

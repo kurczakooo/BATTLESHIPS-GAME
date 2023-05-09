@@ -103,7 +103,7 @@ void PlanszaGry::drawplansza() {
 	}
 }
 
-void Ustawianie::init(char Napis[], char Panel[], char litery[], char cyfry[], char reset[], char exit[], char graj[]) {
+void Ustawianie::init(char Napis[], char Panel[], char litery[], char cyfry[], char reset[], char exit[], char graj[], char losujustawianie[]) {
 	this->NapisObracanie = al_load_bitmap(Napis);          //inicjalizacja ekranu ustawiania statkow
 	this->SrodPanel = al_load_bitmap(Panel);
 	this->Litery = al_load_bitmap(litery);
@@ -111,9 +111,10 @@ void Ustawianie::init(char Napis[], char Panel[], char litery[], char cyfry[], c
 	this->Reset = al_load_bitmap(reset);
 	this->Exit = al_load_bitmap(exit);
 	this->Graj = al_load_bitmap(graj);
+	this->Losuj = al_load_bitmap(losujustawianie);
 }
 
-void Ustawianie::drawUstawianie(PlanszaGry &board) {
+void Ustawianie::DrawUstawianie(PlanszaGry &board) {
 	this->CzyUstawianie = true;   //pozwala na wykonywanie warunkow zwiazych z ekranem ustawiania(zobacz Petla.cpp lin38 i 44)
 	al_draw_bitmap(NapisObracanie, 700, 0, 0);     //rysowanie ekranu ustawiania statkow
 	al_draw_bitmap(SrodPanel, 500, 0, 0);
@@ -121,6 +122,7 @@ void Ustawianie::drawUstawianie(PlanszaGry &board) {
 	al_draw_bitmap(Cyfry, 24, 94, 0);
 	al_draw_bitmap(Reset, 617, 461, 0);
 	al_draw_bitmap(Exit, 514, 461, 0);
+	al_draw_bitmap(Losuj, 508, 390, 0);
 
 	if (ZajetePola == 20)
 		al_draw_bitmap(Graj, 508, 235, 0);
@@ -609,6 +611,65 @@ void ArmiaGracz::restart(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& scr
 		boat->isDragged = false;
 		boat->CzyUstawiony = false;
 	}
+}
+
+bool ArmiaGracz::LosujPojedyncze(int n, int wylosowane, ALLEGRO_EVENT event, PlanszaGry& board) {
+	if (!board.Pola[wylosowane]->CzyStatek && !board.Pola[wylosowane]->wokolStatku) {
+		if (!statki1[n]->CzyUstawiony) {
+			statki1[n]->x = board.Pola[wylosowane]->x;
+			statki1[n]->y = board.Pola[wylosowane]->y;
+			board.Pola[wylosowane]->CzyStatek = true;
+			statki1[n]->Iczesc = wylosowane;
+			statki1[n]->CzyUstawiony = true;
+			statki1[n]->zaznaczwokol1(event, board);
+			return true;
+		}
+		else return false;
+	}
+	else return false;
+}
+
+void ArmiaGracz::LosujPlansze(ALLEGRO_EVENT event, PlanszaGry& board) {
+	std::random_device random;
+	std::mt19937 gen(random());
+	std::uniform_int_distribution<> dis(0, 99);
+
+	for (int i = 0; i < 4; i++) {    //Losowanie pojedynczych statkow
+		int WylosowanePole = dis(gen);
+		if (LosujPojedyncze(i, WylosowanePole, event, board)) 
+			continue;
+		else {
+			WylosowanePole = dis(gen);
+			LosujPojedyncze(i, WylosowanePole, event, board);
+		}
+	}
+	/*
+	for (int i = 0; i < 3; i++) {    //Losowanie podwojnych statkow
+		int WylosowanePole = dis(gen);
+
+		if (WylosowanePole+1 != 99 && (WylosowanePole+1)%10 != 0  && !board.Pola[WylosowanePole]->CzyStatek && !board.Pola[WylosowanePole]->wokolStatku) {
+			if (!statki2[i]->CzyUstawiony) {
+				statki2[i]->x = board.Pola[WylosowanePole]->x;
+				statki2[i]->y = board.Pola[WylosowanePole]->y;
+				board.Pola[WylosowanePole]->CzyStatek = true;
+				statki2[i]->Iczesc = WylosowanePole;
+				statki2[i]->IIczesc = WylosowanePole + 1;
+				statki2[i]->CzyUstawiony = true;
+				statki2[i]->zaznaczwokol2(event, board);
+			}
+		}
+		else {
+			int WylosowanePole = dis(gen);
+		}
+	}
+	*/
+
+	for (int i = 1; i <= 100; i++) {
+		std::cout << board.Pola[i - 1]->wokolStatku<<" ";
+		if (i % 10 == 0)
+			std::cout << "\n";
+	}
+	std::cout << "-------------------------------\n";
 }
 
 void ArmiaGracz::destroy() {

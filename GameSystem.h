@@ -84,10 +84,11 @@ public:                                       //klasa ekranu ustawiania statkow
     ALLEGRO_BITMAP* Reset;
     ALLEGRO_BITMAP* Exit;
     ALLEGRO_BITMAP* Graj;
+    ALLEGRO_BITMAP* Losuj;
     int ZajetePola{0};
 
-    void init(char Napis[], char Panel[], char litery[], char cyfry[], char reset[], char exit[] ,char graj[]);    //metody do jej inicjalizacji, rysowania i zniszczenia
-    void drawUstawianie(PlanszaGry &board);
+    void init(char Napis[], char Panel[], char litery[], char cyfry[], char reset[], char exit[] ,char graj[], char losujustawianie[]);    //metody do jej inicjalizacji, rysowania i zniszczenia
+    void DrawUstawianie(PlanszaGry &board);
     void destroy();
 };
 
@@ -177,6 +178,8 @@ public:
     void init();
     void drawarmia(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie &screen);
     void restart(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& screen);
+    bool LosujPojedyncze(int n, int wylosowane, ALLEGRO_EVENT event, PlanszaGry& board);
+    void LosujPlansze(ALLEGRO_EVENT event, PlanszaGry& board);
     void destroy();
 };
 
