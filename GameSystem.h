@@ -93,6 +93,15 @@ public:                                       //klasa ekranu ustawiania statkow
     void destroy();
 };
 
+class PlanszaPrzeciwnik {
+public:
+    std::vector <Pole*> PolaPrzeciwnik;
+
+    void init();
+    void destroy();
+    void drawplanszaprzeciwnika();
+};
+
 class Statek1 : public GameSystem {
 public:
     ALLEGRO_BITMAP* ship1;
@@ -108,6 +117,7 @@ public:
     Statek1(char statek1[], float x, float y, int defaultx, int defaulty);
     void drawstatek1(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie &screen);
     void zaznaczwokol1(ALLEGRO_EVENT event, PlanszaGry &board);
+    void zaznaczwokolprzeciwnik1(ALLEGRO_EVENT event, PlanszaPrzeciwnik& board);
 };
 
 class Statek2 : public GameSystem {
@@ -188,13 +198,11 @@ public:
     void destroy();
 };
 
-class PlanszaPrzeciwnik {
-public:
-    std::vector <Pole*> PolaPrzeciwnik;
-
-    void init();
-    void destroy();
-    void drawplanszaprzeciwnika();
+class ArmiaPrzeciwnik {
+    std::vector <Statek1*> statki1;
+    std::vector <Statek2*> statki2;
+    std::vector <Statek3*> statki3;
+    std::vector <Statek4*> statki4;
 };
 
 class GamePlay : public GameSystem {

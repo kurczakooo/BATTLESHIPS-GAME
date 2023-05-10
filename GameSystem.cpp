@@ -640,10 +640,10 @@ void ArmiaGracz::LosujPojedyncze(int n, ALLEGRO_EVENT event, PlanszaGry& board, 
 void ArmiaGracz::LosujPodwojne(int n, ALLEGRO_EVENT event, PlanszaGry& board, Ustawianie& screen) {
 	std::random_device random;
 	std::mt19937 gen(random());
-	std::uniform_int_distribution<> dis(0, 99);
+	std::uniform_int_distribution<> dis(0, 98);
 	int wylosowane = dis(gen);
 
-	if (CzyMoznaLosowac && wylosowane + 1 != 99 && (wylosowane + 1) % 10 != 0 && !statki2[n]->CzyUstawiony && !board.Pola[wylosowane]->CzyStatek 
+	if (CzyMoznaLosowac && (wylosowane + 1) % 10 != 0 && !statki2[n]->CzyUstawiony && !board.Pola[wylosowane]->CzyStatek 
 		&& !board.Pola[wylosowane]->wokolStatku && !board.Pola[wylosowane+1]->CzyStatek && !board.Pola[wylosowane+1]->wokolStatku) {
 		statki2[n]->x = board.Pola[wylosowane]->x;
 		statki2[n]->y = board.Pola[wylosowane]->y;
@@ -663,10 +663,10 @@ void ArmiaGracz::LosujPodwojne(int n, ALLEGRO_EVENT event, PlanszaGry& board, Us
 void ArmiaGracz::LosujPotrojne(int n, ALLEGRO_EVENT event, PlanszaGry& board, Ustawianie& screen) {
 	std::random_device random;
 	std::mt19937 gen(random());
-	std::uniform_int_distribution<> dis(0, 99);
+	std::uniform_int_distribution<> dis(0, 97);
 	int wylosowane = dis(gen);
 	
-	if (CzyMoznaLosowac && wylosowane <= 97 && (wylosowane + 1) % 10 != 0 && (wylosowane + 2) % 10 != 0 && !statki3[n]->CzyUstawiony 
+	if (CzyMoznaLosowac && (wylosowane + 1) % 10 != 0 && (wylosowane + 2) % 10 != 0 && !statki3[n]->CzyUstawiony 
 		&& !board.Pola[wylosowane]->CzyStatek && !board.Pola[wylosowane]->wokolStatku && !board.Pola[wylosowane + 1]->CzyStatek 
 		&& !board.Pola[wylosowane + 1]->wokolStatku && !board.Pola[wylosowane + 2]->CzyStatek && !board.Pola[wylosowane + 2]->wokolStatku) {
 		statki3[n]->x = board.Pola[wylosowane]->x;
@@ -689,10 +689,10 @@ void ArmiaGracz::LosujPotrojne(int n, ALLEGRO_EVENT event, PlanszaGry& board, Us
 void ArmiaGracz::LosujPoczworny(ALLEGRO_EVENT event, PlanszaGry& board, Ustawianie& screen) {
 	std::random_device random;
 	std::mt19937 gen(random());
-	std::uniform_int_distribution<> dis(0, 99);
+	std::uniform_int_distribution<> dis(0, 96);
 	int wylosowane = dis(gen);
 
-	if (CzyMoznaLosowac && wylosowane <= 96 && (wylosowane + 1) % 10 != 0 && (wylosowane + 2) % 10 != 0 && (wylosowane + 3) % 10 != 0 
+	if (CzyMoznaLosowac && (wylosowane + 1) % 10 != 0 && (wylosowane + 2) % 10 != 0 && (wylosowane + 3) % 10 != 0 
 		&& !statki4[0]->CzyUstawiony && !board.Pola[wylosowane]->CzyStatek && !board.Pola[wylosowane]->wokolStatku 
 		&& !board.Pola[wylosowane + 1]->CzyStatek && !board.Pola[wylosowane + 1]->wokolStatku && !board.Pola[wylosowane + 2]->CzyStatek 
 		&& !board.Pola[wylosowane + 2]->wokolStatku && !board.Pola[wylosowane + 3]->CzyStatek && !board.Pola[wylosowane + 3]->wokolStatku) {
@@ -718,16 +718,17 @@ void ArmiaGracz::LosujPoczworny(ALLEGRO_EVENT event, PlanszaGry& board, Ustawian
 
 void ArmiaGracz::LosujPlansze(ALLEGRO_EVENT event, PlanszaGry& board, Ustawianie& screen) {
 
-	for (int i = 0; i < 4; i++) {    //Losowanie pojedynczych statkow
-		LosujPojedyncze(i, event, board, screen);
+
+	LosujPoczworny(event, board, screen);
+	for (int i = 0; i < 2; i++) {    //Losowanie potrojnych statkow
+		LosujPotrojne(i, event, board, screen);
 	}
 	for (int i = 0; i < 3; i++) {    //Losowanie podwojnych statkow
 		LosujPodwojne(i, event, board, screen);
 	}
-	for (int i = 0; i < 2; i++) {    //Losowanie potrojnych statkow
-		LosujPotrojne(i, event, board, screen);
+	for (int i = 0; i < 4; i++) {    //Losowanie pojedynczych statkow
+		LosujPojedyncze(i, event, board, screen);
 	}
-	LosujPoczworny(event, board, screen);
 
 	for (int i = 1; i <= 100; i++) {
 		std::cout << board.Pola[i - 1]->wokolStatku<<" ";
