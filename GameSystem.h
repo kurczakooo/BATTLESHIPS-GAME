@@ -199,10 +199,18 @@ public:
 };
 
 class ArmiaPrzeciwnik {
+public:
     std::vector <Statek1*> statki1;
     std::vector <Statek2*> statki2;
     std::vector <Statek3*> statki3;
     std::vector <Statek4*> statki4;
+
+    void init();
+   // void LosujPojedyncze(int n, PlanszaPrzeciwnik& board);
+    //void LosujPodwojne(int n, PlanszaPrzeciwnik& board);
+    //void LosujPojedyncze(int n, PlanszaPrzeciwnik& board);
+    //void LosujPojedyncze(int n, PlanszaPrzeciwnik& board);
+   // void LosujPlansze(ALLEGRO_EVENT event, PlanszaGry& board);
 };
 
 class GamePlay : public GameSystem {

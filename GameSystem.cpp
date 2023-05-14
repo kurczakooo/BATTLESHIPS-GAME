@@ -140,6 +140,57 @@ void Ustawianie::destroy() {
 	al_destroy_bitmap(Graj);
 }
 
+void PlanszaPrzeciwnik::init() {
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 10; j++) {
+			this->PolaPrzeciwnik.push_back(new Pole(tile, hit, miss, (i * 40) + 727, (j * 40) + 94, false, false, false));
+		}
+	}
+	/*PolaPrzeciwnik[0]->CzyStatek = true;          //podwojny
+	PolaPrzeciwnik[1]->CzyStatek = true;
+
+	PolaPrzeciwnik[3]->CzyStatek = true;          //podwojny
+	PolaPrzeciwnik[4]->CzyStatek = true;
+
+	PolaPrzeciwnik[6]->CzyStatek = true;          //podwojny
+	PolaPrzeciwnik[7]->CzyStatek = true;
+
+	PolaPrzeciwnik[9]->CzyStatek = true;
+	PolaPrzeciwnik[20]->CzyStatek = true;         //pojedyncze
+	PolaPrzeciwnik[22]->CzyStatek = true;
+	PolaPrzeciwnik[24]->CzyStatek = true;
+
+	PolaPrzeciwnik[26]->CzyStatek = true;           //potrojny
+	PolaPrzeciwnik[27]->CzyStatek = true;
+	PolaPrzeciwnik[28]->CzyStatek = true;
+
+	PolaPrzeciwnik[40]->CzyStatek = true;          //potrojny
+	PolaPrzeciwnik[41]->CzyStatek = true;
+	PolaPrzeciwnik[42]->CzyStatek = true;
+
+	PolaPrzeciwnik[44]->CzyStatek = true;
+	PolaPrzeciwnik[45]->CzyStatek = true;          //poczworny
+	PolaPrzeciwnik[46]->CzyStatek = true;
+	PolaPrzeciwnik[47]->CzyStatek = true;*/
+}
+
+void PlanszaPrzeciwnik::destroy() {
+	for (auto tile = PolaPrzeciwnik.begin(); tile != PolaPrzeciwnik.end(); tile++) {
+		delete* tile;
+	}
+	PolaPrzeciwnik.clear();
+}
+
+void PlanszaPrzeciwnik::drawplanszaprzeciwnika() {
+	for (auto& tile : PolaPrzeciwnik) {
+		if (tile->czyTrafione && tile->CzyStatek)
+			tile->pole = tile->hit;
+		else if (tile->czyTrafione && !tile->CzyStatek)
+			tile->pole = tile->miss;
+		al_draw_bitmap(tile->pole, tile->x, tile->y, 0);
+	}
+}
+
 Statek1::Statek1(char statek1[], float x, float y, int defaultx, int defaulty) {
 	this->degree = 0.0;
 	this->ship1 = al_load_bitmap(statek1);
@@ -759,55 +810,20 @@ void ArmiaGracz::destroy() {
 	CzyMoznaLosowac = false;
 }
 
-void PlanszaPrzeciwnik::init() {
-	for (int i = 0; i < 10; i++) {
-		for (int j = 0; j < 10; j++) {
-			this->PolaPrzeciwnik.push_back(new Pole(tile, hit, miss, (i * 40) + 727, (j * 40) + 94, false, false, false));
-		}
-	}
-	PolaPrzeciwnik[0]->CzyStatek = true;          //podwojny
-	PolaPrzeciwnik[1]->CzyStatek = true;
+void ArmiaPrzeciwnik::init(){
+	this->statki1.push_back(new Statek1(statek1, 0, 0, 0, 0));
+	this->statki1.push_back(new Statek1(statek1, 0, 0, 0, 0));
+	this->statki1.push_back(new Statek1(statek1, 0, 0, 0, 0));
+	this->statki1.push_back(new Statek1(statek1, 0, 0, 0, 0));
 
-	PolaPrzeciwnik[3]->CzyStatek = true;          //podwojny
-	PolaPrzeciwnik[4]->CzyStatek = true;
+	this->statki2.push_back(new Statek2(statek2, statek2r, 0, 0, 0, 0));
+	this->statki2.push_back(new Statek2(statek2, statek2r, 0, 0, 0, 0));
+	this->statki2.push_back(new Statek2(statek2, statek2r, 0, 0, 0, 0));
 
-	PolaPrzeciwnik[6]->CzyStatek = true;          //podwojny
-	PolaPrzeciwnik[7]->CzyStatek = true;
+	this->statki3.push_back(new Statek3(statek3, 0, 0, 0, 0));
+	this->statki3.push_back(new Statek3(statek3, 0, 0, 0, 0));
 
-	PolaPrzeciwnik[9]->CzyStatek = true;
-	PolaPrzeciwnik[20]->CzyStatek = true;         //pojedyncze
-	PolaPrzeciwnik[22]->CzyStatek = true;
-	PolaPrzeciwnik[24]->CzyStatek = true;
-
-	PolaPrzeciwnik[26]->CzyStatek = true;           //potrojny
-	PolaPrzeciwnik[27]->CzyStatek = true;
-	PolaPrzeciwnik[28]->CzyStatek = true;
-
-	PolaPrzeciwnik[40]->CzyStatek = true;          //potrojny
-	PolaPrzeciwnik[41]->CzyStatek = true;
-	PolaPrzeciwnik[42]->CzyStatek = true;
-
-	PolaPrzeciwnik[44]->CzyStatek = true;
-	PolaPrzeciwnik[45]->CzyStatek = true;          //poczworny
-	PolaPrzeciwnik[46]->CzyStatek = true;
-	PolaPrzeciwnik[47]->CzyStatek = true;
-}
-
-void PlanszaPrzeciwnik::destroy() {
-	for (auto tile = PolaPrzeciwnik.begin(); tile != PolaPrzeciwnik.end(); tile++) {
-		delete* tile;
-	}
-	PolaPrzeciwnik.clear();
-}
-
-void PlanszaPrzeciwnik::drawplanszaprzeciwnika() {
-	for (auto& tile : PolaPrzeciwnik) {
-		if (tile->czyTrafione && tile->CzyStatek)
-			tile->pole = tile->hit;
-		else if (tile->czyTrafione && !tile->CzyStatek)
-			tile->pole = tile->miss;
-		al_draw_bitmap(tile->pole, tile->x, tile->y, 0);
-	}
+	this->statki4.push_back(new Statek4(statek4, 0, 0, 0, 0));
 }
 
 void GamePlay::init(Ustawianie& ustawianie, char exitscreen[], char win[], char lose[], char wrongchoice[], char outofboard[]) {

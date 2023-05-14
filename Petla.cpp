@@ -10,7 +10,7 @@ char wrongchoice[] = "elements/wrong_choice.png";
 char outofboard[] = "elements/out_of_board.png";
 char tiletemp[] = "elements/pole.png";
 
-void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, PlanszaGry& plansza, PlanszaPrzeciwnik& enemyboard, ArmiaGracz& armiagracz, GamePlay& gamescreen) {
+void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, PlanszaGry& plansza, PlanszaPrzeciwnik& enemyboard, ArmiaGracz& armiagracz, ArmiaPrzeciwnik& armiaprzeciwnik, GamePlay& gamescreen) {
 
 	while (gamesystem.running) { //glowna petla
 
@@ -107,6 +107,7 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 				if (gamesystem.event.mouse.x >= 508 && gamesystem.event.mouse.x <= 692 && gamesystem.event.mouse.y >= 235 && gamesystem.event.mouse.y <= 305) {
 					ustawianie.CzyUstawianie = false;
 					gamescreen.CzyGameplay = true;
+					armiaprzeciwnik.init();
 					gamescreen.init(ustawianie, exitscreen, win, lose, wrongchoice, outofboard);
 					enemyboard.init();
 					for (auto tile1 : enemyboard.PolaPrzeciwnik) {
