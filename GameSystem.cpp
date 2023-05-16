@@ -17,6 +17,9 @@ void GameSystem::init() {
 	al_init_image_addon();
 	al_init_native_dialog_addon();
 	al_install_mouse();
+	al_install_audio();
+	al_init_acodec_addon();
+	al_reserve_samples(10);
 
 	this->display = al_create_display(DisplayWidth, DisplayHeight);
 	al_set_window_title(display, DisplayTitle);
@@ -33,7 +36,7 @@ void GameSystem::destroy() {
 	al_uninstall_mouse();
 }
 
-void Menu::init(char Tytul[], char Tlo[], char Graj[], char Exit[], char Jakgrac[], char Instrukcje[]) {
+void Menu::init(char Tytul[], char Tlo[], char Graj[], char Exit[], char Jakgrac[], char Instrukcje[], char dzwiek[]) {
 
 	this->tytul = al_load_bitmap(Tytul);
 	this->tlo = al_load_bitmap(Tlo);                  //inicjalizacja menu, ladowanie bitmap
@@ -45,6 +48,8 @@ void Menu::init(char Tytul[], char Tlo[], char Graj[], char Exit[], char Jakgrac
 	this->Gwidth = al_get_bitmap_width(graj);
 	this->Gheight = al_get_bitmap_height(graj);
 	this->Ewidth = al_get_bitmap_width(exit);
+	this->dzwiek = al_load_sample(dzwiek);
+	
 }
 
 void Menu::drawMenu() {
@@ -769,7 +774,6 @@ void ArmiaGracz::LosujPoczworny(ALLEGRO_EVENT event, PlanszaGry& board, Ustawian
 
 void ArmiaGracz::LosujPlansze(ALLEGRO_EVENT event, PlanszaGry& board, Ustawianie& screen) {
 
-
 	LosujPoczworny(event, board, screen);
 	for (int i = 0; i < 2; i++) {    //Losowanie potrojnych statkow
 		LosujPotrojne(i, event, board, screen);
@@ -781,12 +785,6 @@ void ArmiaGracz::LosujPlansze(ALLEGRO_EVENT event, PlanszaGry& board, Ustawianie
 		LosujPojedyncze(i, event, board, screen);
 	}
 
-	for (int i = 1; i <= 100; i++) {
-		std::cout << board.Pola[i - 1]->wokolStatku<<" ";
-		if (i % 10 == 0)
-			std::cout << "\n";
-	}
-	std::cout << "-------------------------------\n";
 }
 
 void ArmiaGracz::destroy() {

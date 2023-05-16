@@ -4,6 +4,8 @@
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_color.h>
 #include <allegro5/allegro_native_dialog.h>
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 #include <vector>
 #include <ctime>
 #include <random>
@@ -36,6 +38,7 @@ public:
     ALLEGRO_BITMAP* exit;
     ALLEGRO_BITMAP* jakgrac;
     ALLEGRO_BITMAP* instrukcje;
+    ALLEGRO_SAMPLE* dzwiek;
 
     bool CzyInstrukcje;
     int Gwidth;
@@ -43,7 +46,7 @@ public:
     int Ewidth;                         //zawiera tez zmienne ulatwiajace rysowanie bitmap na displayu oraz obsluge roznych ekranow
     bool CzyMenu;
 
-    void init(char Tytul[], char Tlo[], char Graj[], char Exit[], char Jakgrac[], char Instrukcje[]);
+    void init(char Tytul[], char Tlo[], char Graj[], char Exit[], char Jakgrac[], char Instrukcje[], char dzwiek[]);
     void drawMenu();
     void destroy();                                     //konstruktor do inicjalizacji menu, metody do narysowania i zniszczenia
 };

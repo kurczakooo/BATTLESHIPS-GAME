@@ -34,6 +34,7 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && gamesystem.event.mouse.button == 1) {
 					menu.CzyMenu = false;
 					menu.CzyInstrukcje = true;
+					al_play_sample(menu.dzwiek, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
 				}
 			}
 

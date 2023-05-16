@@ -19,6 +19,7 @@ int main() {
 	char exitustawianie[] = "elements/wyjscie.png";
 	char losujustawianie[] = "elements/losuj_ustawianie.png";
 	char losujwarning[] = "elements/zresetuj_statki.png";
+	char dzwiek[] = "sounds/click2.wav";
 
 	GameSystem gamesystem;
 	Menu menuscreen;
@@ -30,7 +31,7 @@ int main() {
 	GamePlay gameplayscreen;
 
 	gamesystem.init();
-	menuscreen.init(tytul, tlo, graj, exit, jakgrac, instrukcje);
+	menuscreen.init(tytul, tlo, graj, exit, jakgrac, instrukcje, dzwiek);
 	menuscreen.drawMenu();
 	ustawianiescreen.init(napisobracanie, srodpanel, litery, cyfry, reset, exitustawianie, grajustawianie, losujustawianie, losujwarning);
 	
