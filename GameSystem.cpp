@@ -11,7 +11,7 @@ char statek2r[] = "elements/2statek_rotated.png";
 char statek3[] = "elements/3statek.png";
 char statek4[] = "elements/4statek.png";
 
-void GameSystem::init() {
+void GameSystem::init(char dzwiek[]) {
 
 	al_init();                    //inicjalizacja displayu, tworzenie ekranu i kolejkki na wydarzenia
 	al_init_image_addon();
@@ -28,6 +28,7 @@ void GameSystem::init() {
 	al_register_event_source(queue, al_get_mouse_event_source());
 	//rejestrowanie wydarzen na displayu i wydarzen myszki
 	this->running = true;
+	this->dzwiek = al_load_sample(dzwiek);
 }
 
 void GameSystem::destroy() {
@@ -36,7 +37,7 @@ void GameSystem::destroy() {
 	al_uninstall_mouse();
 }
 
-void Menu::init(char Tytul[], char Tlo[], char Graj[], char Exit[], char Jakgrac[], char Instrukcje[], char dzwiek[]) {
+void Menu::init(char Tytul[], char Tlo[], char Graj[], char Exit[], char Jakgrac[], char Instrukcje[]) {
 
 	this->tytul = al_load_bitmap(Tytul);
 	this->tlo = al_load_bitmap(Tlo);                  //inicjalizacja menu, ladowanie bitmap
@@ -48,8 +49,6 @@ void Menu::init(char Tytul[], char Tlo[], char Graj[], char Exit[], char Jakgrac
 	this->Gwidth = al_get_bitmap_width(graj);
 	this->Gheight = al_get_bitmap_height(graj);
 	this->Ewidth = al_get_bitmap_width(exit);
-	this->dzwiek = al_load_sample(dzwiek);
-	
 }
 
 void Menu::drawMenu() {
@@ -774,6 +773,11 @@ void ArmiaGracz::LosujPoczworny(ALLEGRO_EVENT event, PlanszaGry& board, Ustawian
 
 void ArmiaGracz::LosujPlansze(ALLEGRO_EVENT event, PlanszaGry& board, Ustawianie& screen) {
 
+	for (auto tile : board.Pola) {
+		if (tile->CzyStatek)
+			CzyMoznaLosowac = false;
+	}
+
 	LosujPoczworny(event, board, screen);
 	for (int i = 0; i < 2; i++) {    //Losowanie potrojnych statkow
 		LosujPotrojne(i, event, board, screen);
@@ -784,7 +788,6 @@ void ArmiaGracz::LosujPlansze(ALLEGRO_EVENT event, PlanszaGry& board, Ustawianie
 	for (int i = 0; i < 4; i++) {    //Losowanie pojedynczych statkow
 		LosujPojedyncze(i, event, board, screen);
 	}
-
 }
 
 void ArmiaGracz::destroy() {
@@ -824,7 +827,120 @@ void ArmiaPrzeciwnik::init(){
 	this->statki4.push_back(new Statek4(statek4, 0, 0, 0, 0));
 }
 
-void GamePlay::init(Ustawianie& ustawianie, char exitscreen[], char win[], char lose[], char wrongchoice[], char outofboard[]) {
+void ArmiaPrzeciwnik::LosujPojedyncze(int n, PlanszaPrzeciwnik& board) {
+	std::random_device random;
+	std::mt19937 gen(random());
+	std::uniform_int_distribution<> dis(0, 99);
+	int wylosowane = dis(gen);
+
+	if (!statki1[n]->CzyUstawiony && !board.PolaPrzeciwnik[wylosowane]->CzyStatek && !board.PolaPrzeciwnik[wylosowane]->wokolStatku) {
+		statki1[n]->x = board.PolaPrzeciwnik[wylosowane]->x;
+		statki1[n]->y = board.PolaPrzeciwnik[wylosowane]->y;
+		statki1[n]->Iczesc = wylosowane;
+		board.PolaPrzeciwnik[statki1[n]->Iczesc]->CzyStatek = true;
+		statki1[n]->CzyUstawiony = true;
+//		statki1[n]->zaznaczwokol1(event, board);
+//		screen.ZajetePola++;
+	}
+//	else if (!CzyMoznaLosowac)
+//		al_draw_bitmap(screen.LosujWarning, 500, 54, 0);
+	else LosujPojedyncze(n, board);
+}
+
+void ArmiaPrzeciwnik::LosujPodwojne(int n, PlanszaPrzeciwnik& board) {
+	std::random_device random;
+	std::mt19937 gen(random());
+	std::uniform_int_distribution<> dis(0, 98);
+	int wylosowane = dis(gen);
+
+	if ((wylosowane + 1) % 10 != 0 && !statki2[n]->CzyUstawiony && !board.PolaPrzeciwnik[wylosowane]->CzyStatek
+		&& !board.PolaPrzeciwnik[wylosowane]->wokolStatku && !board.PolaPrzeciwnik[wylosowane + 1]->CzyStatek && !board.PolaPrzeciwnik[wylosowane + 1]->wokolStatku) {
+		statki2[n]->x = board.PolaPrzeciwnik[wylosowane]->x;
+		statki2[n]->y = board.PolaPrzeciwnik[wylosowane]->y;
+		statki2[n]->Iczesc = wylosowane;
+		statki2[n]->IIczesc = wylosowane + 1;
+		board.PolaPrzeciwnik[statki2[n]->Iczesc]->CzyStatek = true;
+		board.PolaPrzeciwnik[statki2[n]->IIczesc]->CzyStatek = true;
+		statki2[n]->CzyUstawiony = true;
+//		statki2[n]->zaznaczwokol2(event, board);
+//		screen.ZajetePola += 2;
+	}
+//	else if (!CzyMoznaLosowac)
+//		al_draw_bitmap(screen.LosujWarning, 500, 54, 0);
+	else LosujPodwojne(n, board);
+}
+
+void ArmiaPrzeciwnik::LosujPotrojne(int n, PlanszaPrzeciwnik& board) {
+	std::random_device random;
+	std::mt19937 gen(random());
+	std::uniform_int_distribution<> dis(0, 97);
+	int wylosowane = dis(gen);
+
+	if ((wylosowane + 1) % 10 != 0 && (wylosowane + 2) % 10 != 0 && !statki3[n]->CzyUstawiony
+		&& !board.PolaPrzeciwnik[wylosowane]->CzyStatek && !board.PolaPrzeciwnik[wylosowane]->wokolStatku && !board.PolaPrzeciwnik[wylosowane + 1]->CzyStatek
+		&& !board.PolaPrzeciwnik[wylosowane + 1]->wokolStatku && !board.PolaPrzeciwnik[wylosowane + 2]->CzyStatek && !board.PolaPrzeciwnik[wylosowane + 2]->wokolStatku) {
+		statki3[n]->x = board.PolaPrzeciwnik[wylosowane]->x;
+		statki3[n]->y = board.PolaPrzeciwnik[wylosowane]->y;
+		statki3[n]->Iczesc = wylosowane;
+		statki3[n]->IIczesc = wylosowane + 1;
+		statki3[n]->IIIczesc = wylosowane + 2;
+		board.PolaPrzeciwnik[statki3[n]->Iczesc]->CzyStatek = true;
+		board.PolaPrzeciwnik[statki3[n]->IIczesc]->CzyStatek = true;
+		board.PolaPrzeciwnik[statki3[n]->IIIczesc]->CzyStatek = true;
+		statki3[n]->CzyUstawiony = true;
+//		statki3[n]->zaznaczwokol3(event, board);
+//		screen.ZajetePola += 3;
+	}
+//	else if (!CzyMoznaLosowac)
+//		al_draw_bitmap(screen.LosujWarning, 500, 54, 0);
+	else LosujPotrojne(n, board);
+}
+
+void ArmiaPrzeciwnik::LosujPoczworny(PlanszaPrzeciwnik& board) {
+	std::random_device random;
+	std::mt19937 gen(random());
+	std::uniform_int_distribution<> dis(0, 96);
+	int wylosowane = dis(gen);
+
+	if ((wylosowane + 1) % 10 != 0 && (wylosowane + 2) % 10 != 0 && (wylosowane + 3) % 10 != 0
+		&& !statki4[0]->CzyUstawiony && !board.PolaPrzeciwnik[wylosowane]->CzyStatek && !board.PolaPrzeciwnik[wylosowane]->wokolStatku
+		&& !board.PolaPrzeciwnik[wylosowane + 1]->CzyStatek && !board.PolaPrzeciwnik[wylosowane + 1]->wokolStatku && !board.PolaPrzeciwnik[wylosowane + 2]->CzyStatek
+		&& !board.PolaPrzeciwnik[wylosowane + 2]->wokolStatku && !board.PolaPrzeciwnik[wylosowane + 3]->CzyStatek && !board.PolaPrzeciwnik[wylosowane + 3]->wokolStatku) {
+
+		statki4[0]->x = board.PolaPrzeciwnik[wylosowane]->x;
+		statki4[0]->y = board.PolaPrzeciwnik[wylosowane]->y;
+		statki4[0]->Iczesc = wylosowane;
+		statki4[0]->IIczesc = wylosowane + 1;
+		statki4[0]->IIIczesc = wylosowane + 2;
+		statki4[0]->IVczesc = wylosowane + 3;
+		board.PolaPrzeciwnik[statki4[0]->Iczesc]->CzyStatek = true;
+		board.PolaPrzeciwnik[statki4[0]->IIczesc]->CzyStatek = true;
+		board.PolaPrzeciwnik[statki4[0]->IIIczesc]->CzyStatek = true;
+		board.PolaPrzeciwnik[statki4[0]->IVczesc]->CzyStatek = true;
+		statki4[0]->CzyUstawiony = true;
+//		statki4[0]->zaznaczwokol4(event, board);
+//		screen.ZajetePola += 4;
+	}
+//	else if (!CzyMoznaLosowac)
+//		al_draw_bitmap(screen.LosujWarning, 500, 54, 0);
+	else LosujPoczworny(board);
+}
+
+void ArmiaPrzeciwnik::LosujPlansze(PlanszaPrzeciwnik& board) {
+	
+	LosujPoczworny(board);           //Losowanie poczwornego statku
+	for (int i = 0; i < 2; i++) {    //Losowanie potrojnych statkow
+		LosujPotrojne(i, board);
+	}
+	for (int i = 0; i < 3; i++) {    //Losowanie podwojnych statkow
+		LosujPodwojne(i, board);
+	}
+	for (int i = 0; i < 4; i++) {    //Losowanie pojedynczych statkow
+		LosujPojedyncze(i, board);
+	}
+}
+
+void GamePlay::init(Ustawianie& ustawianie, char exitscreen[], char win[], char lose[], char wrongchoice[], char outofboard[], char hitsound[], char misssound[], char winsound[], char losesound[]) {
 	this->SrodPanel = ustawianie.SrodPanel;
 	this->Litery = ustawianie.Litery;
 	this->Cyfry = ustawianie.Cyfry;
@@ -837,6 +953,10 @@ void GamePlay::init(Ustawianie& ustawianie, char exitscreen[], char win[], char 
 	this->TuraGracza = true;
 	this->CzyWin = false;
 	this->CzyLose = false;
+	this->HitSound = al_load_sample(hitsound);
+	this->MissSound = al_load_sample(misssound);
+	this->WinSound = al_load_sample(winsound);
+	this->LoseSound = al_load_sample(losesound);
 }
 
 void GamePlay::drawgameplay(PlanszaPrzeciwnik& enemyboard) {
@@ -845,7 +965,7 @@ void GamePlay::drawgameplay(PlanszaPrzeciwnik& enemyboard) {
 	al_draw_bitmap(Litery, 76, 44, 0);
 	al_draw_bitmap(Cyfry, 24, 94, 0);
 	al_draw_bitmap(Exit, 514, 461, 0);
-	enemyboard.drawplanszaprzeciwnika();
+    enemyboard.drawplanszaprzeciwnika();
 	al_draw_bitmap(Litery, 727, 44, 0);
 	al_draw_bitmap(Cyfry, 1127, 94, 0);
 }
@@ -857,11 +977,15 @@ void GamePlay::WyborPolaPrzezGracza(ALLEGRO_EVENT event, PlanszaGry& board, Plan
 				if (event.mouse.x > enemyboard.PolaPrzeciwnik[i]->x && event.mouse.x < enemyboard.PolaPrzeciwnik[i]->x + 40
 					&& event.mouse.y > enemyboard.PolaPrzeciwnik[i]->y && event.mouse.y < enemyboard.PolaPrzeciwnik[i]->y + 40) {
 					if (!enemyboard.PolaPrzeciwnik[i]->czyTrafione) {
-						if(enemyboard.PolaPrzeciwnik[i]->CzyStatek)
-							TrafionePlanszaAI++;
-						else
-							TuraGracza = false;
 						enemyboard.PolaPrzeciwnik[i]->czyTrafione = true;
+						if (enemyboard.PolaPrzeciwnik[i]->CzyStatek) {
+							TrafionePlanszaAI++;
+							al_play_sample(HitSound, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
+						}
+						else {
+							al_play_sample(MissSound, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
+							TuraGracza = false;
+						}
 					}
 					else {
 						al_draw_bitmap(this->WrongChoice, 500, 54, 0);
@@ -883,12 +1007,15 @@ void GamePlay::GetRandomPole(PlanszaGry& board, PlanszaPrzeciwnik& enemyboard) {
 	int WylosowanePole = dis(gen);
 
 	if (!board.Pola[WylosowanePole]->czyTrafione) {
+		board.Pola[WylosowanePole]->czyTrafione = true;
 		if (board.Pola[WylosowanePole]->CzyStatek) {
 			TrafionePlanszaGracz++;
+			al_play_sample(HitSound, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
 		}
-		else
+		else {
+			al_play_sample(MissSound, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
 			TuraGracza = true;
-		board.Pola[WylosowanePole]->czyTrafione = true;
+		}
 	}
 	else {
 		GetRandomPole(board, enemyboard);
@@ -902,6 +1029,7 @@ void GamePlay::Rozgrywka(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaPrzeciwn
 	}
 
 	if (!TuraGracza) {
+		Sleep(200);
 		GetRandomPole(board, enemyboard);	
 	}
 

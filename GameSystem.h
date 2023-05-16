@@ -9,6 +9,7 @@
 #include <vector>
 #include <ctime>
 #include <random>
+#include<Windows.h>
 
 /*Plik w ktorym znajduja sie klasy obiektow jakie sa w grze*/
 
@@ -23,10 +24,11 @@ public:
     ALLEGRO_DISPLAY* display;
     ALLEGRO_EVENT_QUEUE* queue;         //klasa bazowa ze zdefiniwanym oknem, kolejka wydarzen i wydarzeniem
     ALLEGRO_EVENT event;
+    ALLEGRO_SAMPLE* dzwiek;
 
     bool running;
 
-    virtual void init();              //metody do inicjalizacji i zniszczenia displayu
+    virtual void init(char dzwiek[]);              //metody do inicjalizacji i zniszczenia displayu
     virtual void destroy();
 };
 
@@ -38,7 +40,6 @@ public:
     ALLEGRO_BITMAP* exit;
     ALLEGRO_BITMAP* jakgrac;
     ALLEGRO_BITMAP* instrukcje;
-    ALLEGRO_SAMPLE* dzwiek;
 
     bool CzyInstrukcje;
     int Gwidth;
@@ -46,7 +47,7 @@ public:
     int Ewidth;                         //zawiera tez zmienne ulatwiajace rysowanie bitmap na displayu oraz obsluge roznych ekranow
     bool CzyMenu;
 
-    void init(char Tytul[], char Tlo[], char Graj[], char Exit[], char Jakgrac[], char Instrukcje[], char dzwiek[]);
+    void init(char Tytul[], char Tlo[], char Graj[], char Exit[], char Jakgrac[], char Instrukcje[]);
     void drawMenu();
     void destroy();                                     //konstruktor do inicjalizacji menu, metody do narysowania i zniszczenia
 };
@@ -209,11 +210,11 @@ public:
     std::vector <Statek4*> statki4;
 
     void init();
-   // void LosujPojedyncze(int n, PlanszaPrzeciwnik& board);
-    //void LosujPodwojne(int n, PlanszaPrzeciwnik& board);
-    //void LosujPojedyncze(int n, PlanszaPrzeciwnik& board);
-    //void LosujPojedyncze(int n, PlanszaPrzeciwnik& board);
-   // void LosujPlansze(ALLEGRO_EVENT event, PlanszaGry& board);
+    void LosujPojedyncze(int n, PlanszaPrzeciwnik& board);
+    void LosujPodwojne(int n, PlanszaPrzeciwnik& board);
+    void LosujPotrojne(int n, PlanszaPrzeciwnik& board);
+    void LosujPoczworny(PlanszaPrzeciwnik& board);
+    void LosujPlansze(PlanszaPrzeciwnik& board);
 };
 
 class GamePlay : public GameSystem {
@@ -233,9 +234,13 @@ public:
     ALLEGRO_BITMAP* Lose;
     ALLEGRO_BITMAP* WrongChoice;
     ALLEGRO_BITMAP* OutOfBoard;
+    ALLEGRO_SAMPLE* HitSound;
+    ALLEGRO_SAMPLE* MissSound;
+    ALLEGRO_SAMPLE* WinSound;
+    ALLEGRO_SAMPLE* LoseSound;
     bool TuraGracza;
 
-    void init(Ustawianie &ustawianie, char exitscreen[], char win[], char lose[], char wrongchoice[], char outofboard[]);
+    void init(Ustawianie &ustawianie, char exitscreen[], char win[], char lose[], char wrongchoice[], char outofboard[], char hitsound[], char misssound[], char winsound[], char losesound[]);
     void drawgameplay(PlanszaPrzeciwnik& enemyboard);
     void WyborPolaPrzezGracza(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaPrzeciwnik& enemyboard);
     void GetRandomPole(PlanszaGry& board, PlanszaPrzeciwnik& enemyboard);

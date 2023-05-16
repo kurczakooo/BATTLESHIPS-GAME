@@ -19,7 +19,7 @@ int main() {
 	char exitustawianie[] = "elements/wyjscie.png";
 	char losujustawianie[] = "elements/losuj_ustawianie.png";
 	char losujwarning[] = "elements/zresetuj_statki.png";
-	char dzwiek[] = "sounds/click2.wav";
+	char dzwiek[] = "sounds/click.wav";
 
 	GameSystem gamesystem;
 	Menu menuscreen;
@@ -30,8 +30,8 @@ int main() {
 	ArmiaPrzeciwnik armiaprzeciwnik;
 	GamePlay gameplayscreen;
 
-	gamesystem.init();
-	menuscreen.init(tytul, tlo, graj, exit, jakgrac, instrukcje, dzwiek);
+	gamesystem.init(dzwiek);
+	menuscreen.init(tytul, tlo, graj, exit, jakgrac, instrukcje);
 	menuscreen.drawMenu();
 	ustawianiescreen.init(napisobracanie, srodpanel, litery, cyfry, reset, exitustawianie, grajustawianie, losujustawianie, losujwarning);
 	
