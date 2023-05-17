@@ -72,6 +72,7 @@ public:
 class PlanszaGry : public GameSystem {
 public:
     std::vector <Pole*> Pola;
+    ALLEGRO_SAMPLE* click;
 
     void init();
     void destroy();
@@ -90,9 +91,10 @@ public:                                       //klasa ekranu ustawiania statkow
     ALLEGRO_BITMAP* Graj;
     ALLEGRO_BITMAP* Losuj;
     ALLEGRO_BITMAP* LosujWarning;
+    ALLEGRO_SAMPLE* GrajSound;
     int ZajetePola{0};
 
-    void init(char Napis[], char Panel[], char litery[], char cyfry[], char reset[], char exit[] ,char graj[], char losujustawianie[], char losujwarning[]);    //metody do jej inicjalizacji, rysowania i zniszczenia
+    void init(char Napis[], char Panel[], char litery[], char cyfry[], char reset[], char exit[] ,char graj[], char losujustawianie[], char losujwarning[], char grajsound[]);    //metody do jej inicjalizacji, rysowania i zniszczenia
     void DrawUstawianie(PlanszaGry &board);
     void destroy();
 };

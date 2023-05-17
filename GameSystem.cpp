@@ -10,6 +10,7 @@ char statek2[] = "elements/2statek.png";
 char statek2r[] = "elements/2statek_rotated.png";
 char statek3[] = "elements/3statek.png";
 char statek4[] = "elements/4statek.png";
+char dzwiek1[] = "sounds/setship1.wav";
 
 void GameSystem::init(char dzwiek[]) {
 
@@ -88,6 +89,7 @@ void PlanszaGry::init() {
 			this->Pola.push_back(new Pole(tile, hit, miss, (i*40) + 75, (j*40) + 94, false, false, false));
 		}
 	}
+	this->click = al_load_sample(dzwiek1);
 }
 
 void PlanszaGry::destroy() {
@@ -107,7 +109,7 @@ void PlanszaGry::drawplansza() {
 	}
 }
 
-void Ustawianie::init(char Napis[], char Panel[], char litery[], char cyfry[], char reset[], char exit[], char graj[], char losujustawianie[], char losujwarning[]) {
+void Ustawianie::init(char Napis[], char Panel[], char litery[], char cyfry[], char reset[], char exit[], char graj[], char losujustawianie[], char losujwarning[], char grajsound[]) {
 	this->NapisObracanie = al_load_bitmap(Napis);          //inicjalizacja ekranu ustawiania statkow
 	this->SrodPanel = al_load_bitmap(Panel);
 	this->Litery = al_load_bitmap(litery);
@@ -117,6 +119,7 @@ void Ustawianie::init(char Napis[], char Panel[], char litery[], char cyfry[], c
 	this->Graj = al_load_bitmap(graj);
 	this->Losuj = al_load_bitmap(losujustawianie);
 	this->LosujWarning = al_load_bitmap(losujwarning);
+	this->GrajSound = al_load_sample(grajsound);
 }
 
 void Ustawianie::DrawUstawianie(PlanszaGry &board) {
@@ -247,6 +250,7 @@ void Statek1::drawstatek1(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie &sc
 						screen.ZajetePola++;
 						zaznaczwokol1(event, board);
 						CzyUstawiony = true;
+						al_play_sample(board.click, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
 						break;
 					}
 					else {
@@ -339,6 +343,7 @@ void Statek2::drawstatek2(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& sc
 						screen.ZajetePola += 2;
 						zaznaczwokol2(event, board);
 						CzyUstawiony = true;
+						al_play_sample(board.click, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
 						break;
 					}
 					else {
@@ -454,6 +459,7 @@ void Statek3::drawstatek3(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& sc
 						screen.ZajetePola += 3;
 						zaznaczwokol3(event, board);
 						CzyUstawiony = true;
+						al_play_sample(board.click, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
 						break;
 					}
 					else {
@@ -549,8 +555,7 @@ void Statek4::drawstatek4(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& sc
 			for (int i = 0; i < 100; i++) {
 				if (x + 20 >= board.Pola[i]->x && x + 20 <= board.Pola[i]->x + 40 && y + 20 >= board.Pola[i]->y && y + 20 <= board.Pola[i]->y + 40) {
 					if (i <= 96 && (i + 1) % 10 != 0 && (i + 2) % 10 != 0 && (i + 3) % 10 != 0 && !board.Pola[i]->CzyStatek && !board.Pola[i+1]->CzyStatek && !board.Pola[i+2]->CzyStatek 
-						&& !board.Pola[i+3]->CzyStatek && !board.Pola[i]->wokolStatku && !board.Pola[i+1]->wokolStatku && !board.Pola[i+2]->wokolStatku && !board.Pola[i+3]->wokolStatku) {
-						
+						&& !board.Pola[i+3]->CzyStatek && !board.Pola[i]->wokolStatku && !board.Pola[i+1]->wokolStatku && !board.Pola[i+2]->wokolStatku && !board.Pola[i+3]->wokolStatku) {					
 						x = board.Pola[i]->x;
 						y = board.Pola[i]->y;
 						Iczesc = i;
@@ -564,6 +569,7 @@ void Statek4::drawstatek4(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& sc
 						screen.ZajetePola += 4;
 						zaznaczwokol4(event, board);
 						CzyUstawiony = true;
+						al_play_sample(board.click, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
 						break;
 					}
 					else {

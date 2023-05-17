@@ -115,7 +115,7 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 
 			if (ustawianie.ZajetePola == 20 && gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && gamesystem.event.mouse.button == 1) {
 				if (gamesystem.event.mouse.x >= 508 && gamesystem.event.mouse.x <= 692 && gamesystem.event.mouse.y >= 235 && gamesystem.event.mouse.y <= 305) {
-					al_play_sample(gamesystem.dzwiek, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
+					al_play_sample(ustawianie.GrajSound, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
 					ustawianie.CzyUstawianie = false;
 					gamescreen.CzyGameplay = true;
 					armiaprzeciwnik.init();
@@ -153,11 +153,13 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 
 			if (gamescreen.TrafionePlanszaAI == 20) {
 				al_play_sample(gamescreen.WinSound, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
+				Sleep(1000);
 				gamescreen.CzyWin = true;
 			}
 			
 			if (gamescreen.TrafionePlanszaGracz == 20) {
 				al_play_sample(gamescreen.LoseSound, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
+				Sleep(1000);
 				gamescreen.CzyLose = true;
 			}
 

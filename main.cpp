@@ -20,6 +20,7 @@ int main() {
 	char losujustawianie[] = "elements/losuj_ustawianie.png";
 	char losujwarning[] = "elements/zresetuj_statki.png";
 	char dzwiek[] = "sounds/click.wav";
+	char grajsound[] = "sounds/startgame.wav";
 
 	GameSystem gamesystem;
 	Menu menuscreen;
@@ -33,7 +34,7 @@ int main() {
 	gamesystem.init(dzwiek);
 	menuscreen.init(tytul, tlo, graj, exit, jakgrac, instrukcje);
 	menuscreen.drawMenu();
-	ustawianiescreen.init(napisobracanie, srodpanel, litery, cyfry, reset, exitustawianie, grajustawianie, losujustawianie, losujwarning);
+	ustawianiescreen.init(napisobracanie, srodpanel, litery, cyfry, reset, exitustawianie, grajustawianie, losujustawianie, losujwarning, grajsound);
 	
 	PetlaGry(gamesystem, menuscreen, ustawianiescreen, plansza, enemyboard, armiagracz, armiaprzeciwnik, gameplayscreen);
 
