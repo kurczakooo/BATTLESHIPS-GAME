@@ -147,10 +147,10 @@ void Ustawianie::destroy() {
 	al_destroy_bitmap(Graj);
 }
 
-void PlanszaPrzeciwnik::init() {
+void PlanszaGry::initprzeciwnik() {
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
-			this->PolaPrzeciwnik.push_back(new Pole(tile, hit, miss, (i * 40) + 727, (j * 40) + 94, false, false, false));
+			this->Pola.push_back(new Pole(tile, hit, miss, (i * 40) + 727, (j * 40) + 94, false, false, false));
 		}
 	}
 	/*PolaPrzeciwnik[0]->CzyStatek = true;          //podwojny
@@ -181,15 +181,15 @@ void PlanszaPrzeciwnik::init() {
 	PolaPrzeciwnik[47]->CzyStatek = true;*/
 }
 
-void PlanszaPrzeciwnik::destroy() {
-	for (auto tile = PolaPrzeciwnik.begin(); tile != PolaPrzeciwnik.end(); tile++) {
+void PlanszaGry::destroyprzeciwnik() {
+	for (auto tile = Pola.begin(); tile != Pola.end(); tile++) {
 		delete* tile;
 	}
-	PolaPrzeciwnik.clear();
+	Pola.clear();
 }
 
-void PlanszaPrzeciwnik::drawplanszaprzeciwnika() {
-	for (auto& tile : PolaPrzeciwnik) {
+void PlanszaGry::drawplanszaprzeciwnika() {
+	for (auto& tile : Pola) {
 		if (tile->czyTrafione && tile->CzyStatek)
 			tile->pole = tile->hit;
 		else if (tile->czyTrafione && !tile->CzyStatek)
@@ -209,7 +209,7 @@ Statek1::Statek1(char statek1[], float x, float y, int defaultx, int defaulty) {
 	this->CzyUstawiony = false;
 }
 
-void Statek1::zaznaczwokol1(ALLEGRO_EVENT event, PlanszaGry &board) {
+void Statek1::zaznaczwokol1( PlanszaGry &board) {
 	if ((Iczesc + 1) % 10 != 0 && Iczesc != 99) {
 		board.Pola[Iczesc + 1]->wokolStatku = true;     //dol statku
 	}
@@ -248,7 +248,7 @@ void Statek1::drawstatek1(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie &sc
 						Iczesc = i;
 						board.Pola[Iczesc]->CzyStatek = true;
 						screen.ZajetePola++;
-						zaznaczwokol1(event, board);
+						zaznaczwokol1(board);
 						CzyUstawiony = true;
 						al_play_sample(board.click, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
 						break;
@@ -294,7 +294,7 @@ Statek2::Statek2(char statek2[], char statek2r[], float x, float y, int defaultx
 	this->isDragged = false;
 }
 
-void Statek2::zaznaczwokol2(ALLEGRO_EVENT event, PlanszaGry &board) {
+void Statek2::zaznaczwokol2(PlanszaGry &board) {
 	if (Iczesc % 10 != 0) {
 		board.Pola[Iczesc - 1]->wokolStatku = true;     //gora statku
 	}
@@ -341,7 +341,7 @@ void Statek2::drawstatek2(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& sc
 						board.Pola[Iczesc]->CzyStatek = true;
 						board.Pola[IIczesc]->CzyStatek = true;	
 						screen.ZajetePola += 2;
-						zaznaczwokol2(event, board);
+						zaznaczwokol2(board);
 						CzyUstawiony = true;
 						al_play_sample(board.click, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
 						break;
@@ -401,7 +401,7 @@ Statek3::Statek3(char statek3[], float x, float y, int defaultx, int defaulty) {
 	this->CzyUstawiony = false;
 }
 
-void Statek3::zaznaczwokol3(ALLEGRO_EVENT event, PlanszaGry& board) {
+void Statek3::zaznaczwokol3(PlanszaGry& board) {
 	if (Iczesc % 10 != 0) {
 		board.Pola[Iczesc - 1]->wokolStatku = true;     //gora statku
 	}
@@ -457,7 +457,7 @@ void Statek3::drawstatek3(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& sc
 						board.Pola[IIczesc]->CzyStatek = true;
 						board.Pola[IIIczesc]->CzyStatek = true;
 						screen.ZajetePola += 3;
-						zaznaczwokol3(event, board);
+						zaznaczwokol3(board);
 						CzyUstawiony = true;
 						al_play_sample(board.click, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
 						break;
@@ -503,7 +503,7 @@ Statek4::Statek4(char statek4[], float x, float y, int defaultx, int defaulty) {
 	this->CzyUstawiony = false;
 }
 
-void Statek4::zaznaczwokol4(ALLEGRO_EVENT event, PlanszaGry& board) {
+void Statek4::zaznaczwokol4(PlanszaGry& board) {
 	if (Iczesc % 10 != 0) {
 		board.Pola[Iczesc - 1]->wokolStatku = true;     //gora statku
 	}
@@ -567,7 +567,7 @@ void Statek4::drawstatek4(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& sc
 						board.Pola[IIIczesc]->CzyStatek = true;
 						board.Pola[IVczesc]->CzyStatek = true;
 						screen.ZajetePola += 4;
-						zaznaczwokol4(event, board);
+						zaznaczwokol4(board);
 						CzyUstawiony = true;
 						al_play_sample(board.click, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
 						break;
@@ -690,7 +690,7 @@ void ArmiaGracz::LosujPojedyncze(int n, ALLEGRO_EVENT event, PlanszaGry& board, 
 		statki1[n]->Iczesc = wylosowane;
 		board.Pola[statki1[n]->Iczesc]->CzyStatek = true;
 		statki1[n]->CzyUstawiony = true;
-		statki1[n]->zaznaczwokol1(event, board);
+		statki1[n]->zaznaczwokol1(board);
 		screen.ZajetePola++;
 	}
 	else if (!CzyMoznaLosowac)
@@ -713,7 +713,7 @@ void ArmiaGracz::LosujPodwojne(int n, ALLEGRO_EVENT event, PlanszaGry& board, Us
 		board.Pola[statki2[n]->Iczesc]->CzyStatek = true;
 		board.Pola[statki2[n]->IIczesc]->CzyStatek = true;
 		statki2[n]->CzyUstawiony = true;
-		statki2[n]->zaznaczwokol2(event, board);
+		statki2[n]->zaznaczwokol2(board);
 		screen.ZajetePola += 2;
 	}
 	else if (!CzyMoznaLosowac)
@@ -739,7 +739,7 @@ void ArmiaGracz::LosujPotrojne(int n, ALLEGRO_EVENT event, PlanszaGry& board, Us
 		board.Pola[statki3[n]->IIczesc]->CzyStatek = true;
 		board.Pola[statki3[n]->IIIczesc]->CzyStatek = true;
 		statki3[n]->CzyUstawiony = true;
-		statki3[n]->zaznaczwokol3(event, board);
+		statki3[n]->zaznaczwokol3(board);
 		screen.ZajetePola += 3;
 	}
 	else if (!CzyMoznaLosowac)
@@ -769,7 +769,7 @@ void ArmiaGracz::LosujPoczworny(ALLEGRO_EVENT event, PlanszaGry& board, Ustawian
 		board.Pola[statki4[0]->IIIczesc]->CzyStatek = true;
 		board.Pola[statki4[0]->IVczesc]->CzyStatek = true;
 		statki4[0]->CzyUstawiony = true;
-		statki4[0]->zaznaczwokol4(event, board);
+		statki4[0]->zaznaczwokol4(board);
 		screen.ZajetePola += 4;
 	}
 	else if (!CzyMoznaLosowac)
@@ -833,106 +833,94 @@ void ArmiaPrzeciwnik::init(){
 	this->statki4.push_back(new Statek4(statek4, 0, 0, 0, 0));
 }
 
-void ArmiaPrzeciwnik::LosujPojedyncze(int n, PlanszaPrzeciwnik& board) {
+void ArmiaPrzeciwnik::LosujPojedyncze(int n, PlanszaGry& board) {
 	std::random_device random;
 	std::mt19937 gen(random());
 	std::uniform_int_distribution<> dis(0, 99);
 	int wylosowane = dis(gen);
 
-	if (!statki1[n]->CzyUstawiony && !board.PolaPrzeciwnik[wylosowane]->CzyStatek && !board.PolaPrzeciwnik[wylosowane]->wokolStatku) {
-		statki1[n]->x = board.PolaPrzeciwnik[wylosowane]->x;
-		statki1[n]->y = board.PolaPrzeciwnik[wylosowane]->y;
+	if (!statki1[n]->CzyUstawiony && !board.Pola[wylosowane]->CzyStatek && !board.Pola[wylosowane]->wokolStatku) {
+		statki1[n]->x = board.Pola[wylosowane]->x;
+		statki1[n]->y = board.Pola[wylosowane]->y;
 		statki1[n]->Iczesc = wylosowane;
-		board.PolaPrzeciwnik[statki1[n]->Iczesc]->CzyStatek = true;
+		board.Pola[statki1[n]->Iczesc]->CzyStatek = true;
 		statki1[n]->CzyUstawiony = true;
-//		statki1[n]->zaznaczwokol1(event, board);
-//		screen.ZajetePola++;
+		statki1[n]->zaznaczwokol1(board);
 	}
-//	else if (!CzyMoznaLosowac)
-//		al_draw_bitmap(screen.LosujWarning, 500, 54, 0);
 	else LosujPojedyncze(n, board);
 }
 
-void ArmiaPrzeciwnik::LosujPodwojne(int n, PlanszaPrzeciwnik& board) {
+void ArmiaPrzeciwnik::LosujPodwojne(int n, PlanszaGry& board) {
 	std::random_device random;
 	std::mt19937 gen(random());
 	std::uniform_int_distribution<> dis(0, 98);
 	int wylosowane = dis(gen);
 
-	if ((wylosowane + 1) % 10 != 0 && !statki2[n]->CzyUstawiony && !board.PolaPrzeciwnik[wylosowane]->CzyStatek
-		&& !board.PolaPrzeciwnik[wylosowane]->wokolStatku && !board.PolaPrzeciwnik[wylosowane + 1]->CzyStatek && !board.PolaPrzeciwnik[wylosowane + 1]->wokolStatku) {
-		statki2[n]->x = board.PolaPrzeciwnik[wylosowane]->x;
-		statki2[n]->y = board.PolaPrzeciwnik[wylosowane]->y;
+	if ((wylosowane + 1) % 10 != 0 && !statki2[n]->CzyUstawiony && !board.Pola[wylosowane]->CzyStatek
+		&& !board.Pola[wylosowane]->wokolStatku && !board.Pola[wylosowane + 1]->CzyStatek && !board.Pola[wylosowane + 1]->wokolStatku) {
+		statki2[n]->x = board.Pola[wylosowane]->x;
+		statki2[n]->y = board.Pola[wylosowane]->y;
 		statki2[n]->Iczesc = wylosowane;
 		statki2[n]->IIczesc = wylosowane + 1;
-		board.PolaPrzeciwnik[statki2[n]->Iczesc]->CzyStatek = true;
-		board.PolaPrzeciwnik[statki2[n]->IIczesc]->CzyStatek = true;
+		board.Pola[statki2[n]->Iczesc]->CzyStatek = true;
+		board.Pola[statki2[n]->IIczesc]->CzyStatek = true;
 		statki2[n]->CzyUstawiony = true;
-//		statki2[n]->zaznaczwokol2(event, board);
-//		screen.ZajetePola += 2;
+		statki2[n]->zaznaczwokol2(board);
 	}
-//	else if (!CzyMoznaLosowac)
-//		al_draw_bitmap(screen.LosujWarning, 500, 54, 0);
 	else LosujPodwojne(n, board);
 }
 
-void ArmiaPrzeciwnik::LosujPotrojne(int n, PlanszaPrzeciwnik& board) {
+void ArmiaPrzeciwnik::LosujPotrojne(int n, PlanszaGry& board) {
 	std::random_device random;
 	std::mt19937 gen(random());
 	std::uniform_int_distribution<> dis(0, 97);
 	int wylosowane = dis(gen);
 
 	if ((wylosowane + 1) % 10 != 0 && (wylosowane + 2) % 10 != 0 && !statki3[n]->CzyUstawiony
-		&& !board.PolaPrzeciwnik[wylosowane]->CzyStatek && !board.PolaPrzeciwnik[wylosowane]->wokolStatku && !board.PolaPrzeciwnik[wylosowane + 1]->CzyStatek
-		&& !board.PolaPrzeciwnik[wylosowane + 1]->wokolStatku && !board.PolaPrzeciwnik[wylosowane + 2]->CzyStatek && !board.PolaPrzeciwnik[wylosowane + 2]->wokolStatku) {
-		statki3[n]->x = board.PolaPrzeciwnik[wylosowane]->x;
-		statki3[n]->y = board.PolaPrzeciwnik[wylosowane]->y;
+		&& !board.Pola[wylosowane]->CzyStatek && !board.Pola[wylosowane]->wokolStatku && !board.Pola[wylosowane + 1]->CzyStatek
+		&& !board.Pola[wylosowane + 1]->wokolStatku && !board.Pola[wylosowane + 2]->CzyStatek && !board.Pola[wylosowane + 2]->wokolStatku) {
+		statki3[n]->x = board.Pola[wylosowane]->x;
+		statki3[n]->y = board.Pola[wylosowane]->y;
 		statki3[n]->Iczesc = wylosowane;
 		statki3[n]->IIczesc = wylosowane + 1;
 		statki3[n]->IIIczesc = wylosowane + 2;
-		board.PolaPrzeciwnik[statki3[n]->Iczesc]->CzyStatek = true;
-		board.PolaPrzeciwnik[statki3[n]->IIczesc]->CzyStatek = true;
-		board.PolaPrzeciwnik[statki3[n]->IIIczesc]->CzyStatek = true;
+		board.Pola[statki3[n]->Iczesc]->CzyStatek = true;
+		board.Pola[statki3[n]->IIczesc]->CzyStatek = true;
+		board.Pola[statki3[n]->IIIczesc]->CzyStatek = true;
 		statki3[n]->CzyUstawiony = true;
-//		statki3[n]->zaznaczwokol3(event, board);
-//		screen.ZajetePola += 3;
+		statki3[n]->zaznaczwokol3(board);
 	}
-//	else if (!CzyMoznaLosowac)
-//		al_draw_bitmap(screen.LosujWarning, 500, 54, 0);
 	else LosujPotrojne(n, board);
 }
 
-void ArmiaPrzeciwnik::LosujPoczworny(PlanszaPrzeciwnik& board) {
+void ArmiaPrzeciwnik::LosujPoczworny(PlanszaGry& board) {
 	std::random_device random;
 	std::mt19937 gen(random());
 	std::uniform_int_distribution<> dis(0, 96);
 	int wylosowane = dis(gen);
 
 	if ((wylosowane + 1) % 10 != 0 && (wylosowane + 2) % 10 != 0 && (wylosowane + 3) % 10 != 0
-		&& !statki4[0]->CzyUstawiony && !board.PolaPrzeciwnik[wylosowane]->CzyStatek && !board.PolaPrzeciwnik[wylosowane]->wokolStatku
-		&& !board.PolaPrzeciwnik[wylosowane + 1]->CzyStatek && !board.PolaPrzeciwnik[wylosowane + 1]->wokolStatku && !board.PolaPrzeciwnik[wylosowane + 2]->CzyStatek
-		&& !board.PolaPrzeciwnik[wylosowane + 2]->wokolStatku && !board.PolaPrzeciwnik[wylosowane + 3]->CzyStatek && !board.PolaPrzeciwnik[wylosowane + 3]->wokolStatku) {
+		&& !statki4[0]->CzyUstawiony && !board.Pola[wylosowane]->CzyStatek && !board.Pola[wylosowane]->wokolStatku
+		&& !board.Pola[wylosowane + 1]->CzyStatek && !board.Pola[wylosowane + 1]->wokolStatku && !board.Pola[wylosowane + 2]->CzyStatek
+		&& !board.Pola[wylosowane + 2]->wokolStatku && !board.Pola[wylosowane + 3]->CzyStatek && !board.Pola[wylosowane + 3]->wokolStatku) {
 
-		statki4[0]->x = board.PolaPrzeciwnik[wylosowane]->x;
-		statki4[0]->y = board.PolaPrzeciwnik[wylosowane]->y;
+		statki4[0]->x = board.Pola[wylosowane]->x;
+		statki4[0]->y = board.Pola[wylosowane]->y;
 		statki4[0]->Iczesc = wylosowane;
 		statki4[0]->IIczesc = wylosowane + 1;
 		statki4[0]->IIIczesc = wylosowane + 2;
 		statki4[0]->IVczesc = wylosowane + 3;
-		board.PolaPrzeciwnik[statki4[0]->Iczesc]->CzyStatek = true;
-		board.PolaPrzeciwnik[statki4[0]->IIczesc]->CzyStatek = true;
-		board.PolaPrzeciwnik[statki4[0]->IIIczesc]->CzyStatek = true;
-		board.PolaPrzeciwnik[statki4[0]->IVczesc]->CzyStatek = true;
+		board.Pola[statki4[0]->Iczesc]->CzyStatek = true;
+		board.Pola[statki4[0]->IIczesc]->CzyStatek = true;
+		board.Pola[statki4[0]->IIIczesc]->CzyStatek = true;
+		board.Pola[statki4[0]->IVczesc]->CzyStatek = true;
 		statki4[0]->CzyUstawiony = true;
-//		statki4[0]->zaznaczwokol4(event, board);
-//		screen.ZajetePola += 4;
+		statki4[0]->zaznaczwokol4(board);
 	}
-//	else if (!CzyMoznaLosowac)
-//		al_draw_bitmap(screen.LosujWarning, 500, 54, 0);
 	else LosujPoczworny(board);
 }
 
-void ArmiaPrzeciwnik::LosujPlansze(PlanszaPrzeciwnik& board) {
+void ArmiaPrzeciwnik::LosujPlansze(PlanszaGry& board) {
 	
 	LosujPoczworny(board);           //Losowanie poczwornego statku
 	for (int i = 0; i < 2; i++) {    //Losowanie potrojnych statkow
@@ -944,6 +932,25 @@ void ArmiaPrzeciwnik::LosujPlansze(PlanszaPrzeciwnik& board) {
 	for (int i = 0; i < 4; i++) {    //Losowanie pojedynczych statkow
 		LosujPojedyncze(i, board);
 	}
+}
+
+void ArmiaPrzeciwnik::destroy() {
+	for (auto boat = statki1.begin(); boat != statki1.end(); boat++) {
+		delete* boat;
+	}
+	statki1.clear();
+	for (auto boat = statki2.begin(); boat != statki2.end(); boat++) {
+		delete* boat;
+	}
+	statki2.clear();
+	for (auto boat = statki3.begin(); boat != statki3.end(); boat++) {
+		delete* boat;
+	}
+	statki3.clear();
+	for (auto boat = statki4.begin(); boat != statki4.end(); boat++) {
+		delete* boat;
+	}
+	statki4.clear();
 }
 
 void GamePlay::init(Ustawianie& ustawianie, char exitscreen[], char win[], char lose[], char wrongchoice[], char outofboard[], char hitsound[], char misssound[], char winsound[], char losesound[]) {
@@ -965,7 +972,7 @@ void GamePlay::init(Ustawianie& ustawianie, char exitscreen[], char win[], char 
 	this->LoseSound = al_load_sample(losesound);
 }
 
-void GamePlay::drawgameplay(PlanszaPrzeciwnik& enemyboard) {
+void GamePlay::drawgameplay(PlanszaGry& enemyboard) {
 	this->CzyGameplay = true;
 	al_draw_bitmap(SrodPanel, 500, 0, 0);
 	al_draw_bitmap(Litery, 76, 44, 0);
@@ -976,15 +983,15 @@ void GamePlay::drawgameplay(PlanszaPrzeciwnik& enemyboard) {
 	al_draw_bitmap(Cyfry, 1127, 94, 0);
 }
 
-void GamePlay::WyborPolaPrzezGracza(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaPrzeciwnik& enemyboard) {
+void GamePlay::WyborPolaPrzezGracza(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaGry& enemyboard) {
 	if (event.mouse.x >= 727 && event.mouse.x <= 1127 && event.mouse.y >= 94 && event.mouse.y <= 494) {
 		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && event.mouse.button == 1) {
 			for (int i = 0; i < 100; i++) {
-				if (event.mouse.x > enemyboard.PolaPrzeciwnik[i]->x && event.mouse.x < enemyboard.PolaPrzeciwnik[i]->x + 40
-					&& event.mouse.y > enemyboard.PolaPrzeciwnik[i]->y && event.mouse.y < enemyboard.PolaPrzeciwnik[i]->y + 40) {
-					if (!enemyboard.PolaPrzeciwnik[i]->czyTrafione) {
-						enemyboard.PolaPrzeciwnik[i]->czyTrafione = true;
-						if (enemyboard.PolaPrzeciwnik[i]->CzyStatek) {
+				if (event.mouse.x > enemyboard.Pola[i]->x && event.mouse.x < enemyboard.Pola[i]->x + 40
+					&& event.mouse.y > enemyboard.Pola[i]->y && event.mouse.y < enemyboard.Pola[i]->y + 40) {
+					if (!enemyboard.Pola[i]->czyTrafione) {
+						enemyboard.Pola[i]->czyTrafione = true;
+						if (enemyboard.Pola[i]->CzyStatek) {
 							TrafionePlanszaAI++;
 							al_play_sample(HitSound, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
 						}
@@ -1005,7 +1012,7 @@ void GamePlay::WyborPolaPrzezGracza(ALLEGRO_EVENT event, PlanszaGry& board, Plan
 	}
 }
 
-void GamePlay::GetRandomPole(PlanszaGry& board, PlanszaPrzeciwnik& enemyboard) {
+void GamePlay::GetRandomPole(PlanszaGry& board, PlanszaGry& enemyboard) {
 	std::random_device random;
 	std::mt19937 gen(random());
 	std::uniform_int_distribution<> dis(0, 99);
@@ -1028,7 +1035,7 @@ void GamePlay::GetRandomPole(PlanszaGry& board, PlanszaPrzeciwnik& enemyboard) {
 	}
 }
 
-void GamePlay::Rozgrywka(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaPrzeciwnik& enemyboard, Ustawianie& screen) {
+void GamePlay::Rozgrywka(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaGry& enemyboard, Ustawianie& screen) {
 
 	if (TuraGracza) {
 		WyborPolaPrzezGracza(event, board, enemyboard);
@@ -1039,7 +1046,7 @@ void GamePlay::Rozgrywka(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaPrzeciwn
 		GetRandomPole(board, enemyboard);	
 	}
 
-	enemyboard.drawplanszaprzeciwnika();
+	enemyboard.drawplansza();
 }
 
 void GamePlay::destroy() {

@@ -26,7 +26,7 @@ int main() {
 	Menu menuscreen;
 	Ustawianie ustawianiescreen;
 	PlanszaGry plansza;
-	PlanszaPrzeciwnik enemyboard;
+	PlanszaGry enemyboard;
 	ArmiaGracz armiagracz;
 	ArmiaPrzeciwnik armiaprzeciwnik;
 	GamePlay gameplayscreen;

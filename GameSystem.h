@@ -77,6 +77,9 @@ public:
     void init();
     void destroy();
     void drawplansza();
+    void initprzeciwnik();
+    void destroyprzeciwnik();
+    void drawplanszaprzeciwnika();
 };
 
 class Ustawianie : public GameSystem {
@@ -99,15 +102,6 @@ public:                                       //klasa ekranu ustawiania statkow
     void destroy();
 };
 
-class PlanszaPrzeciwnik {
-public:
-    std::vector <Pole*> PolaPrzeciwnik;
-
-    void init();
-    void destroy();
-    void drawplanszaprzeciwnika();
-};
-
 class Statek1 : public GameSystem {
 public:
     ALLEGRO_BITMAP* ship1;
@@ -122,8 +116,7 @@ public:
 
     Statek1(char statek1[], float x, float y, int defaultx, int defaulty);
     void drawstatek1(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie &screen);
-    void zaznaczwokol1(ALLEGRO_EVENT event, PlanszaGry &board);
-    void zaznaczwokolprzeciwnik1(ALLEGRO_EVENT event, PlanszaPrzeciwnik& board);
+    void zaznaczwokol1(PlanszaGry &board);
 };
 
 class Statek2 : public GameSystem {
@@ -143,7 +136,7 @@ public:
 
     Statek2(char statek2[], char statek2r[], float x, float y, int defaultx, int defaulty);
     void drawstatek2(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& screen);
-    void zaznaczwokol2(ALLEGRO_EVENT event, PlanszaGry &board);
+    void zaznaczwokol2( PlanszaGry &board);
 };
 
 class Statek3 : public GameSystem {
@@ -162,7 +155,7 @@ public:
 
     Statek3(char statek3[], float x, float y, int defaultx, int defaulty);
     void drawstatek3(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& screen);
-    void zaznaczwokol3(ALLEGRO_EVENT event, PlanszaGry& board);
+    void zaznaczwokol3(PlanszaGry& board);
 };
 
 class Statek4 : public GameSystem {
@@ -182,7 +175,7 @@ public:
 
     Statek4(char statek4[], float x, float y, int defaultx, int defaulty);
     void drawstatek4(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& screen);
-    void zaznaczwokol4(ALLEGRO_EVENT event, PlanszaGry& board);
+    void zaznaczwokol4(PlanszaGry& board);
 };
 
 class ArmiaGracz : public GameSystem {
@@ -212,11 +205,12 @@ public:
     std::vector <Statek4*> statki4;
 
     void init();
-    void LosujPojedyncze(int n, PlanszaPrzeciwnik& board);
-    void LosujPodwojne(int n, PlanszaPrzeciwnik& board);
-    void LosujPotrojne(int n, PlanszaPrzeciwnik& board);
-    void LosujPoczworny(PlanszaPrzeciwnik& board);
-    void LosujPlansze(PlanszaPrzeciwnik& board);
+    void LosujPojedyncze(int n, PlanszaGry& board);
+    void LosujPodwojne(int n, PlanszaGry& board);
+    void LosujPotrojne(int n, PlanszaGry& board);
+    void LosujPoczworny(PlanszaGry& board);
+    void LosujPlansze(PlanszaGry& board);
+    void destroy();
 };
 
 class GamePlay : public GameSystem {
@@ -243,9 +237,9 @@ public:
     bool TuraGracza;
 
     void init(Ustawianie &ustawianie, char exitscreen[], char win[], char lose[], char wrongchoice[], char outofboard[], char hitsound[], char misssound[], char winsound[], char losesound[]);
-    void drawgameplay(PlanszaPrzeciwnik& enemyboard);
-    void WyborPolaPrzezGracza(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaPrzeciwnik& enemyboard);
-    void GetRandomPole(PlanszaGry& board, PlanszaPrzeciwnik& enemyboard);
-    void Rozgrywka(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaPrzeciwnik& enemyboard, Ustawianie& screen);
+    void drawgameplay(PlanszaGry& enemyboard);
+    void WyborPolaPrzezGracza(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaGry& enemyboard);
+    void GetRandomPole(PlanszaGry& board, PlanszaGry& enemyboard);
+    void Rozgrywka(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaGry& enemyboard, Ustawianie& screen);
     void destroy();
 };
