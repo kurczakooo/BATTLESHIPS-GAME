@@ -139,7 +139,7 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 			gamescreen.drawgameplay(enemyboard);
 			armiagracz.drawarmia(gamesystem.event, plansza, ustawianie);
 			plansza.drawplansza();
-			gamescreen.Rozgrywka(gamesystem.event, plansza, enemyboard, ustawianie);
+			gamescreen.Rozgrywka(gamesystem.event, plansza, enemyboard, ustawianie, armiaprzeciwnik, armiagracz);
 /*			for (int i = 0; i < 4; i++) {    //Losowanie pojedynczych statkow
 				al_draw_bitmap(armiaprzeciwnik.statki1[i]->ship1, armiaprzeciwnik.statki1[i]->x, armiaprzeciwnik.statki1[i]->y, 0);
 			}
@@ -159,7 +159,7 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 			
 			if (gamescreen.TrafionePlanszaGracz == 20) {
 				al_play_sample(gamescreen.LoseSound, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
-				Sleep(1000);
+				//Sleep(1000);
 				gamescreen.CzyLose = true;
 			}
 

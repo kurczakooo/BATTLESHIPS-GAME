@@ -212,27 +212,35 @@ Statek1::Statek1(char statek1[], float x, float y, int defaultx, int defaulty) {
 void Statek1::zaznaczwokol1( PlanszaGry &board) {
 	if ((Iczesc + 1) % 10 != 0 && Iczesc != 99) {
 		board.Pola[Iczesc + 1]->wokolStatku = true;     //dol statku
+		PolaWokolStatku1.push_back(Iczesc + 1);
 	}
 	if (Iczesc % 10 != 0 && Iczesc != 0) {
 		board.Pola[Iczesc - 1]->wokolStatku = true;     //gora statku
+		PolaWokolStatku1.push_back(Iczesc - 1);
 	}
 	if ((Iczesc - 10) >= 0) {
 		board.Pola[Iczesc - 10]->wokolStatku = true;    //lewo statku
+		PolaWokolStatku1.push_back(Iczesc - 10);
 	}
 	if ((Iczesc + 10) <= 99) {
 		board.Pola[Iczesc + 10]->wokolStatku = true;    //prawo statku
+		PolaWokolStatku1.push_back(Iczesc + 10);
 	}
 	if ((Iczesc - 9) >= 0 && (Iczesc - 9) % 10 != 0) {
 		board.Pola[Iczesc - 9]->wokolStatku = true;    //lewo dol statku
+		PolaWokolStatku1.push_back(Iczesc - 9);
 	}
 	if ((Iczesc - 11) >= 0 && (Iczesc - 10) % 10 != 0) {
 		board.Pola[Iczesc - 11]->wokolStatku = true;    //lewo gora statku
+		PolaWokolStatku1.push_back(Iczesc - 11);
 	}
 	if ((Iczesc + 9) < 99 && Iczesc % 10 != 0) {
 		board.Pola[Iczesc + 9]->wokolStatku = true;    //prawo gora statku
+		PolaWokolStatku1.push_back(Iczesc + 9);
 	}
 	if ((Iczesc + 11) <= 99 && (Iczesc + 11) % 10 != 0) {
 		board.Pola[Iczesc + 11]->wokolStatku = true;    //prawo dol statku
+		PolaWokolStatku1.push_back(Iczesc + 11);
 	}
 }
 
@@ -297,33 +305,43 @@ Statek2::Statek2(char statek2[], char statek2r[], float x, float y, int defaultx
 void Statek2::zaznaczwokol2(PlanszaGry &board) {
 	if (Iczesc % 10 != 0) {
 		board.Pola[Iczesc - 1]->wokolStatku = true;     //gora statku
+		PolaWokolStatku2.push_back(Iczesc - 1);
 	}
 	if ((IIczesc + 1) % 10 != 0 && IIczesc != 99) {
 		board.Pola[IIczesc + 1]->wokolStatku = true;     //dol statku
+		PolaWokolStatku2.push_back(IIczesc + 1);
 	}
 	if ((Iczesc - 11) >= 0 && (Iczesc - 10) % 10 != 0) {
 		board.Pola[Iczesc - 11]->wokolStatku = true;    //lewo gora statku
+		PolaWokolStatku2.push_back(Iczesc - 11);
 	}
 	if ((Iczesc + 9) < 99 && Iczesc % 10 != 0) {
 		board.Pola[Iczesc + 9]->wokolStatku = true;    //prawo gora statku
+		PolaWokolStatku2.push_back(Iczesc + 9);
 	}
 	if ((Iczesc - 10) >= 0) {
 		board.Pola[Iczesc - 10]->wokolStatku = true;    //lewo I czesci 
+		PolaWokolStatku2.push_back(Iczesc - 10);
 	}
 	if ((Iczesc + 10) < 99) {
 		board.Pola[Iczesc + 10]->wokolStatku = true;    //prawo I czesci
+		PolaWokolStatku2.push_back(Iczesc + 10);
 	}
 	if ((IIczesc - 10) >= 0) {
 		board.Pola[IIczesc - 10]->wokolStatku = true;    //lewo II czesci 
+		PolaWokolStatku2.push_back(IIczesc - 10);
 	}
 	if ((IIczesc + 10) <= 99) {
 		board.Pola[IIczesc + 10]->wokolStatku = true;    //prawo II czesci
+		PolaWokolStatku2.push_back(IIczesc + 10);
 	}
 	if ((IIczesc - 9) >= 0 && (IIczesc - 9) % 10 != 0) {
 		board.Pola[IIczesc - 9]->wokolStatku = true;    //lewo dol statku
+		PolaWokolStatku2.push_back(IIczesc - 9);
 	}
 	if ((IIczesc + 11) <= 99 && (IIczesc + 11) % 10 != 0) {
 		board.Pola[IIczesc + 11]->wokolStatku = true;    //prawo dol statku
+		PolaWokolStatku2.push_back(IIczesc + 11);
 	}
 }
 
@@ -344,7 +362,6 @@ void Statek2::drawstatek2(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& sc
 						zaznaczwokol2(board);
 						CzyUstawiony = true;
 						al_play_sample(board.click, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
-						break;
 					}
 					else {
 						x = defaultX;
@@ -404,39 +421,51 @@ Statek3::Statek3(char statek3[], float x, float y, int defaultx, int defaulty) {
 void Statek3::zaznaczwokol3(PlanszaGry& board) {
 	if (Iczesc % 10 != 0) {
 		board.Pola[Iczesc - 1]->wokolStatku = true;     //gora statku
+		PolaWokolStatku3.push_back(Iczesc - 1);
 	}
 	if ((Iczesc - 11) >= 0 && (Iczesc - 10) % 10 != 0) {
 		board.Pola[Iczesc - 11]->wokolStatku = true;    //lewo gora statku
+		PolaWokolStatku3.push_back(Iczesc - 11);
 	}
 	if ((Iczesc + 9) < 99 && Iczesc % 10 != 0) {
 		board.Pola[Iczesc + 9]->wokolStatku = true;    //prawo gora statku
+		PolaWokolStatku3.push_back(Iczesc + 9);
 	}
 	if ((Iczesc - 10) >= 0) {
 		board.Pola[Iczesc - 10]->wokolStatku = true;    //lewo I czesci 
+		PolaWokolStatku3.push_back(Iczesc - 10);
 	}
 	if ((Iczesc + 10) < 99) {
 		board.Pola[Iczesc + 10]->wokolStatku = true;    //prawo I czesci
+		PolaWokolStatku3.push_back(Iczesc + 10);
 	}
 	if ((IIczesc - 10) >= 0) {
 		board.Pola[IIczesc - 10]->wokolStatku = true;    //lewo II czesci 
+		PolaWokolStatku3.push_back(IIczesc - 10);
 	}
 	if ((IIczesc + 10) <= 99) {
 		board.Pola[IIczesc + 10]->wokolStatku = true;    //prawo II czesci
+		PolaWokolStatku3.push_back(IIczesc + 10);
 	}
 	if ((IIIczesc - 10) >= 0 && (IIIczesc - 10) % 10 != 0) {
 		board.Pola[IIIczesc - 10]->wokolStatku = true;    //lewo III czesci
+		PolaWokolStatku3.push_back(IIIczesc - 10);
 	}
 	if ((IIIczesc + 10) <= 99 && (IIIczesc + 10) % 10 != 0) {
 		board.Pola[IIIczesc + 10]->wokolStatku = true;    //prawo III czesci
+		PolaWokolStatku3.push_back(IIIczesc + 10);
 	}
 	if ((IIIczesc + 1) % 10 != 0 && IIIczesc != 99) {
 		board.Pola[IIIczesc + 1]->wokolStatku = true;      //dol statku
+		PolaWokolStatku3.push_back(IIIczesc + 1);
 	}
 	if ((IIIczesc - 9) >= 0 && (IIIczesc - 9) % 10 != 0) {
 		board.Pola[IIIczesc - 9]->wokolStatku = true;    //lewo dol statku
+		PolaWokolStatku3.push_back(IIIczesc - 9);
 	}
 	if ((IIIczesc + 11) <= 99 && (IIIczesc + 11) % 10 != 0) {
 		board.Pola[IIIczesc + 11]->wokolStatku = true;    //prawo dol statku
+		PolaWokolStatku3.push_back(IIIczesc + 11);
 	}
 }
 
@@ -506,45 +535,59 @@ Statek4::Statek4(char statek4[], float x, float y, int defaultx, int defaulty) {
 void Statek4::zaznaczwokol4(PlanszaGry& board) {
 	if (Iczesc % 10 != 0) {
 		board.Pola[Iczesc - 1]->wokolStatku = true;     //gora statku
+		PolaWokolStatku4.push_back(Iczesc - 1);
 	}
 	if ((Iczesc - 11) >= 0 && (Iczesc - 10) % 10 != 0) {
 		board.Pola[Iczesc - 11]->wokolStatku = true;    //lewo gora statku
+		PolaWokolStatku4.push_back(Iczesc - 11);
 	}
 	if ((Iczesc + 9) < 99 && Iczesc % 10 != 0) {
 		board.Pola[Iczesc + 9]->wokolStatku = true;    //prawo gora statku
+		PolaWokolStatku4.push_back(Iczesc + 9);
 	}
 	if ((Iczesc - 10) >= 0) {
 		board.Pola[Iczesc - 10]->wokolStatku = true;    //lewo I czesci 
+		PolaWokolStatku4.push_back(Iczesc - 10);
 	}
 	if ((Iczesc + 10) < 99) {
 		board.Pola[Iczesc + 10]->wokolStatku = true;    //prawo I czesci
+		PolaWokolStatku4.push_back(Iczesc + 10);
 	}
 	if ((IIczesc - 10) >= 0) {
 		board.Pola[IIczesc - 10]->wokolStatku = true;    //lewo II czesci 
+		PolaWokolStatku4.push_back(IIczesc - 10);
 	}
 	if ((IIczesc + 10) <= 99) {
 		board.Pola[IIczesc + 10]->wokolStatku = true;    //prawo II czesci
+		PolaWokolStatku4.push_back(IIczesc + 10);
 	}
 	if ((IIIczesc - 10) >= 0 && (IIIczesc - 10) % 10 != 0) {
 		board.Pola[IIIczesc - 10]->wokolStatku = true;    //lewo III czesci
+		PolaWokolStatku4.push_back(IIIczesc - 10);
 	}
 	if ((IIIczesc + 10) <= 99 && (IIIczesc + 10) % 10 != 0) {
 		board.Pola[IIIczesc + 10]->wokolStatku = true;    //prawo III czesci
+		PolaWokolStatku4.push_back(IIIczesc + 10);
 	}
 	if ((IIIczesc - 9) >= 0 && (IIIczesc - 9) % 10 != 0) {
 		board.Pola[IIIczesc - 9]->wokolStatku = true;    //lewo IVczesci
+		PolaWokolStatku4.push_back(IIIczesc - 9);
 	}
 	if ((IIIczesc + 11) <= 99 && (IIIczesc + 11) % 10 != 0) {
 		board.Pola[IIIczesc + 11]->wokolStatku = true;    //prawo IVczesci
+		PolaWokolStatku4.push_back(IIIczesc + 11);
 	}
 	if ((IVczesc + 1) % 10 != 0 && IVczesc != 99) {
 		board.Pola[IVczesc + 1]->wokolStatku = true;      //dol statku
+		PolaWokolStatku4.push_back(IVczesc + 1);
 	}
 	if ((IVczesc - 9) >= 0 && (IVczesc - 9) % 10 != 0) {
 		board.Pola[IVczesc - 9]->wokolStatku = true;    //lewo dol statku
+		PolaWokolStatku4.push_back(IVczesc - 9);
 	}
 	if ((IVczesc + 11) <= 99 && (IVczesc + 11) % 10 != 0) {
 		board.Pola[IVczesc + 11]->wokolStatku = true;    //prawo dol statku
+		PolaWokolStatku4.push_back(IVczesc + 11);
 	}
 }
 
@@ -983,7 +1026,69 @@ void GamePlay::drawgameplay(PlanszaGry& enemyboard) {
 	al_draw_bitmap(Cyfry, 1127, 94, 0);
 }
 
-void GamePlay::WyborPolaPrzezGracza(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaGry& enemyboard) {
+void GamePlay::SprawdzanieStatkowKomputera(ArmiaPrzeciwnik& enemyships, PlanszaGry& enemyboard) {
+	for (auto statek : enemyships.statki1) {
+		if (enemyboard.Pola[statek->Iczesc]->czyTrafione) {
+			for (auto pole : statek->PolaWokolStatku1) {
+				enemyboard.Pola[pole]->czyTrafione = true;
+			}
+		}
+	}
+	for (auto statek : enemyships.statki2) {
+		if (enemyboard.Pola[statek->Iczesc]->czyTrafione && enemyboard.Pola[statek->IIczesc]->czyTrafione) {
+			for (auto pole : statek->PolaWokolStatku2) {
+				enemyboard.Pola[pole]->czyTrafione = true;
+			}
+		}
+	}
+	for (auto statek : enemyships.statki3) {
+		if (enemyboard.Pola[statek->Iczesc]->czyTrafione && enemyboard.Pola[statek->IIczesc]->czyTrafione
+			&& enemyboard.Pola[statek->IIIczesc]->czyTrafione) {
+			for (auto pole : statek->PolaWokolStatku3) {
+				enemyboard.Pola[pole]->czyTrafione = true;
+			}
+		}
+	}
+	if (enemyboard.Pola[enemyships.statki4[0]->Iczesc]->czyTrafione && enemyboard.Pola[enemyships.statki4[0]->IIczesc]->czyTrafione
+		&& enemyboard.Pola[enemyships.statki4[0]->IIIczesc]->czyTrafione && enemyboard.Pola[enemyships.statki4[0]->IVczesc]->czyTrafione) {
+		for (auto pole : enemyships.statki4[0]->PolaWokolStatku4) {
+			enemyboard.Pola[pole]->czyTrafione = true;
+		}
+	}
+}
+
+void GamePlay::SprawdzanieStatkowGracza(ArmiaGracz& myships, PlanszaGry& myboard) {
+	for (auto statek : myships.statki1) {
+		if (myboard.Pola[statek->Iczesc]->czyTrafione) {
+			for (auto pole : statek->PolaWokolStatku1) {
+				myboard.Pola[pole]->czyTrafione = true;
+			}
+		}
+	}
+	for (auto statek : myships.statki2) {
+		if (myboard.Pola[statek->Iczesc]->czyTrafione && myboard.Pola[statek->IIczesc]->czyTrafione) {
+			for (auto pole : statek->PolaWokolStatku2) {
+				myboard.Pola[pole]->czyTrafione = true;
+			}
+		}
+	}
+	for (auto statek : myships.statki3) {
+		if (myboard.Pola[statek->Iczesc]->czyTrafione && myboard.Pola[statek->IIczesc]->czyTrafione
+			&& myboard.Pola[statek->IIIczesc]->czyTrafione) {
+			for (auto pole : statek->PolaWokolStatku3) {
+				myboard.Pola[pole]->czyTrafione = true;
+			}
+		}
+	}
+	if (myboard.Pola[myships.statki4[0]->Iczesc]->czyTrafione && myboard.Pola[myships.statki4[0]->IIczesc]->czyTrafione
+		&& myboard.Pola[myships.statki4[0]->IIIczesc]->czyTrafione && myboard.Pola[myships.statki4[0]->IVczesc]->czyTrafione) {
+		for (auto pole : myships.statki4[0]->PolaWokolStatku4) {
+			myboard.Pola[pole]->czyTrafione = true;
+		}
+	}
+}
+
+void GamePlay::RuchGracza(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaGry& enemyboard, ArmiaPrzeciwnik& enemyships) {
 	if (event.mouse.x >= 727 && event.mouse.x <= 1127 && event.mouse.y >= 94 && event.mouse.y <= 494) {
 		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && event.mouse.button == 1) {
 			for (int i = 0; i < 100; i++) {
@@ -994,6 +1099,7 @@ void GamePlay::WyborPolaPrzezGracza(ALLEGRO_EVENT event, PlanszaGry& board, Plan
 						if (enemyboard.Pola[i]->CzyStatek) {
 							TrafionePlanszaAI++;
 							al_play_sample(HitSound, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
+							//SprawdzanieStatkowKomputera(enemyships, enemyboard);
 						}
 						else {
 							al_play_sample(MissSound, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
@@ -1012,18 +1118,19 @@ void GamePlay::WyborPolaPrzezGracza(ALLEGRO_EVENT event, PlanszaGry& board, Plan
 	}
 }
 
-void GamePlay::GetRandomPole(PlanszaGry& board, PlanszaGry& enemyboard) {
+void GamePlay::RuchKomputera(int WylosowanePole, PlanszaGry& board, PlanszaGry& enemyboard, ArmiaGracz& myships) {
 	std::random_device random;
 	std::mt19937 gen(random());
 	std::uniform_int_distribution<> dis(0, 99);
 
-	int WylosowanePole = dis(gen);
+	WylosowanePole = dis(gen);
 
 	if (!board.Pola[WylosowanePole]->czyTrafione) {
 		board.Pola[WylosowanePole]->czyTrafione = true;
 		if (board.Pola[WylosowanePole]->CzyStatek) {
 			TrafionePlanszaGracz++;
 			al_play_sample(HitSound, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
+			SprawdzanieStatkowGracza(myships, board);
 		}
 		else {
 			al_play_sample(MissSound, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
@@ -1031,19 +1138,23 @@ void GamePlay::GetRandomPole(PlanszaGry& board, PlanszaGry& enemyboard) {
 		}
 	}
 	else {
-		GetRandomPole(board, enemyboard);
+		RuchKomputera(WylosowanePole, board, enemyboard, myships);
 	}
 }
 
-void GamePlay::Rozgrywka(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaGry& enemyboard, Ustawianie& screen) {
-
+void GamePlay::Rozgrywka(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaGry& enemyboard, Ustawianie& screen, ArmiaPrzeciwnik& enemyships, ArmiaGracz& myships) {
+	int WylosowanePole = 0;
 	if (TuraGracza) {
-		WyborPolaPrzezGracza(event, board, enemyboard);
+		RuchGracza(event, board, enemyboard, enemyships);
 	}
 
 	if (!TuraGracza) {
 		Sleep(200);
-		GetRandomPole(board, enemyboard);	
+
+		if (WylosowanePole < 99 && board.Pola[WylosowanePole + 1]->CzyStatek)
+			WylosowanePole += 1;
+
+		RuchKomputera(WylosowanePole, board, enemyboard, myships);	
 	}
 
 	enemyboard.drawplansza();

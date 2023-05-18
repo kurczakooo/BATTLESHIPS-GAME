@@ -113,6 +113,7 @@ public:
     bool isDragged;
     bool CzyUstawiony;
     int Iczesc;
+    std::vector <int> PolaWokolStatku1;
 
     Statek1(char statek1[], float x, float y, int defaultx, int defaulty);
     void drawstatek1(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie &screen);
@@ -133,6 +134,7 @@ public:
     bool CzyUstawiony;
     int Iczesc;
     int IIczesc;
+    std::vector <int> PolaWokolStatku2;
 
     Statek2(char statek2[], char statek2r[], float x, float y, int defaultx, int defaulty);
     void drawstatek2(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& screen);
@@ -152,6 +154,7 @@ public:
     int Iczesc;
     int IIczesc;
     int IIIczesc;
+    std::vector <int> PolaWokolStatku3;
 
     Statek3(char statek3[], float x, float y, int defaultx, int defaulty);
     void drawstatek3(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& screen);
@@ -172,6 +175,7 @@ public:
     int IIczesc;
     int IIIczesc;
     int IVczesc;
+    std::vector <int> PolaWokolStatku4;
 
     Statek4(char statek4[], float x, float y, int defaultx, int defaulty);
     void drawstatek4(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& screen);
@@ -238,8 +242,10 @@ public:
 
     void init(Ustawianie &ustawianie, char exitscreen[], char win[], char lose[], char wrongchoice[], char outofboard[], char hitsound[], char misssound[], char winsound[], char losesound[]);
     void drawgameplay(PlanszaGry& enemyboard);
-    void WyborPolaPrzezGracza(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaGry& enemyboard);
-    void GetRandomPole(PlanszaGry& board, PlanszaGry& enemyboard);
-    void Rozgrywka(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaGry& enemyboard, Ustawianie& screen);
+    void RuchGracza(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaGry& enemyboard, ArmiaPrzeciwnik& enemyships);
+    void SprawdzanieStatkowGracza(ArmiaGracz& myships, PlanszaGry& myboard);
+    void RuchKomputera(int WylosowanePole, PlanszaGry& board, PlanszaGry& enemyboard, ArmiaGracz& myships);
+    void SprawdzanieStatkowKomputera(ArmiaPrzeciwnik& enemyships, PlanszaGry& enemyboard);
+    void Rozgrywka(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaGry& enemyboard, Ustawianie& screen, ArmiaPrzeciwnik& enemyships, ArmiaGracz& myships);
     void destroy();
 };
