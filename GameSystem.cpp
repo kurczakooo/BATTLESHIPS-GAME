@@ -350,25 +350,6 @@ void Statek2::drawstatek2(ALLEGRO_EVENT event, PlanszaGry &board, Ustawianie& sc
 				degree = 0;
 			}
 		}
-	/*	if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && event.mouse.button == 2 && !CzyUstawiony) {
-			if (obrocony) {
-				std::swap(ship2, ship2rotated);
-				y -= 40;
-				defaultY -= 40;
-				obrocony = false;
-			}
-			else {/////////////////////////////////////////////////////////////////
-				std::swap(ship2, ship2rotated);
-				y += 40;
-				defaultY += 40;
-				obrocony = true;
-			}
-			for (int i = 1; i <= 100; i++) {
-				std::cout << board.Pola[i-1]->CzyStatek<<" ";
-				if (i % 10 == 0)
-					std::cout << "\n";
-			}
-		}*/
 		if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN && event.mouse.button == 1 && !CzyUstawiony) {
 			isDragged = true;
 		}

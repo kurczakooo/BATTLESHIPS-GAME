@@ -199,7 +199,7 @@ public:
     void destroy();
 };
 
-class ArmiaPrzeciwnik {
+class ArmiaPrzeciwnik : public GameSystem {
 public:
     std::vector <Statek1*> statki1;
     std::vector <Statek2*> statki2;
