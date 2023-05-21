@@ -158,8 +158,9 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 			}
 			
 			if (gamescreen.TrafionePlanszaGracz == 20) {
+				gamescreen.CzyGameplay = false;
 				al_play_sample(gamescreen.LoseSound, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
-				//Sleep(1000);
+				Sleep(1000);
 				gamescreen.CzyLose = true;
 			}
 

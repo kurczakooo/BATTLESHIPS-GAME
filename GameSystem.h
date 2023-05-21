@@ -64,9 +64,7 @@ public:
     bool czyTrafione;
     bool wokolStatku;
 
-
     Pole(char Pole[], char Hit[], char Miss[], int x, int y, bool statek, bool trafione, bool wokol);
-
 };
 
 class PlanszaGry : public GameSystem {
@@ -244,7 +242,7 @@ public:
     void drawgameplay(PlanszaGry& enemyboard);
     void RuchGracza(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaGry& enemyboard, ArmiaPrzeciwnik& enemyships);
     void SprawdzanieStatkowGracza(ArmiaGracz& myships, PlanszaGry& myboard);
-    void RuchKomputera(int WylosowanePole, PlanszaGry& board, PlanszaGry& enemyboard, ArmiaGracz& myships);
+    void RuchKomputera(PlanszaGry& board, PlanszaGry& enemyboard, ArmiaGracz& myships);
     void SprawdzanieStatkowKomputera(ArmiaPrzeciwnik& enemyships, PlanszaGry& enemyboard);
     void Rozgrywka(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaGry& enemyboard, Ustawianie& screen, ArmiaPrzeciwnik& enemyships, ArmiaGracz& myships);
     void destroy();

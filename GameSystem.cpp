@@ -153,32 +153,6 @@ void PlanszaGry::initprzeciwnik() {
 			this->Pola.push_back(new Pole(tile, hit, miss, (i * 40) + 727, (j * 40) + 94, false, false, false));
 		}
 	}
-	/*PolaPrzeciwnik[0]->CzyStatek = true;          //podwojny
-	PolaPrzeciwnik[1]->CzyStatek = true;
-
-	PolaPrzeciwnik[3]->CzyStatek = true;          //podwojny
-	PolaPrzeciwnik[4]->CzyStatek = true;
-
-	PolaPrzeciwnik[6]->CzyStatek = true;          //podwojny
-	PolaPrzeciwnik[7]->CzyStatek = true;
-
-	PolaPrzeciwnik[9]->CzyStatek = true;
-	PolaPrzeciwnik[20]->CzyStatek = true;         //pojedyncze
-	PolaPrzeciwnik[22]->CzyStatek = true;
-	PolaPrzeciwnik[24]->CzyStatek = true;
-
-	PolaPrzeciwnik[26]->CzyStatek = true;           //potrojny
-	PolaPrzeciwnik[27]->CzyStatek = true;
-	PolaPrzeciwnik[28]->CzyStatek = true;
-
-	PolaPrzeciwnik[40]->CzyStatek = true;          //potrojny
-	PolaPrzeciwnik[41]->CzyStatek = true;
-	PolaPrzeciwnik[42]->CzyStatek = true;
-
-	PolaPrzeciwnik[44]->CzyStatek = true;
-	PolaPrzeciwnik[45]->CzyStatek = true;          //poczworny
-	PolaPrzeciwnik[46]->CzyStatek = true;
-	PolaPrzeciwnik[47]->CzyStatek = true;*/
 }
 
 void PlanszaGry::destroyprzeciwnik() {
@@ -1099,7 +1073,7 @@ void GamePlay::RuchGracza(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaGry& en
 						if (enemyboard.Pola[i]->CzyStatek) {
 							TrafionePlanszaAI++;
 							al_play_sample(HitSound, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
-							//SprawdzanieStatkowKomputera(enemyships, enemyboard);
+							SprawdzanieStatkowKomputera(enemyships, enemyboard);
 						}
 						else {
 							al_play_sample(MissSound, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
@@ -1118,12 +1092,12 @@ void GamePlay::RuchGracza(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaGry& en
 	}
 }
 
-void GamePlay::RuchKomputera(int WylosowanePole, PlanszaGry& board, PlanszaGry& enemyboard, ArmiaGracz& myships) {
+void GamePlay::RuchKomputera(PlanszaGry& board, PlanszaGry& enemyboard, ArmiaGracz& myships) {
 	std::random_device random;
 	std::mt19937 gen(random());
 	std::uniform_int_distribution<> dis(0, 99);
 
-	WylosowanePole = dis(gen);
+	int WylosowanePole = dis(gen);
 
 	if (!board.Pola[WylosowanePole]->czyTrafione) {
 		board.Pola[WylosowanePole]->czyTrafione = true;
@@ -1138,7 +1112,7 @@ void GamePlay::RuchKomputera(int WylosowanePole, PlanszaGry& board, PlanszaGry& 
 		}
 	}
 	else {
-		RuchKomputera(WylosowanePole, board, enemyboard, myships);
+		RuchKomputera(board, enemyboard, myships);
 	}
 }
 
@@ -1150,11 +1124,7 @@ void GamePlay::Rozgrywka(ALLEGRO_EVENT event, PlanszaGry& board, PlanszaGry& ene
 
 	if (!TuraGracza) {
 		Sleep(200);
-
-		if (WylosowanePole < 99 && board.Pola[WylosowanePole + 1]->CzyStatek)
-			WylosowanePole += 1;
-
-		RuchKomputera(WylosowanePole, board, enemyboard, myships);	
+		RuchKomputera( board, enemyboard, myships);	
 	}
 
 	enemyboard.drawplansza();

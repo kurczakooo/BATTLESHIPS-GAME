@@ -38,10 +38,6 @@ int main() {
 	
 	PetlaGry(gamesystem, menuscreen, ustawianiescreen, plansza, enemyboard, armiagracz, armiaprzeciwnik, gameplayscreen);
 
-	armiagracz.destroy();
-	plansza.destroy();
-	menuscreen.destroy();
-	ustawianiescreen.destroy();
 	gamesystem.destroy();
 	
 	return 0;
