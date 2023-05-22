@@ -1,4 +1,10 @@
-﻿#include <iostream>
+﻿/**
+* @file GameSystem.h
+* 
+* @brief Plik w ktorym znajduja sie klasy obiektow jakie sa w grze
+*/
+
+#include <iostream>
 #include <string>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
@@ -11,31 +17,39 @@
 #include <random>
 #include<Windows.h>
 
-/*Plik w ktorym znajduja sie klasy obiektow jakie sa w grze*/
-
+/**
+ * @brief Stałe dotyczące wyświetlania gry.
+ */
 #define DisplayTitle "STATKI"
-#define DisplayWidth 1200         //definiujemy nazwe i wymiary okna gry
+#define DisplayWidth 1200
 #define DisplayHeight 540
 
 #pragma once
 
+ /**
+  * @brief klasa bazowa ze zdefiniwanym oknem, kolejka wydarzen i wydarzeniem
+  */
 class GameSystem {
 public:
     ALLEGRO_DISPLAY* display;
-    ALLEGRO_EVENT_QUEUE* queue;         //klasa bazowa ze zdefiniwanym oknem, kolejka wydarzen i wydarzeniem
+    ALLEGRO_EVENT_QUEUE* queue;
     ALLEGRO_EVENT event;
     ALLEGRO_SAMPLE* dzwiek;
 
     bool running;
 
-    virtual void init(char dzwiek[]);              //metody do inicjalizacji i zniszczenia displayu
+    virtual void init(char dzwiek[]);
     virtual void destroy();
 };
 
+/**
+  * @brief klasa ekranu menu zawierająca wszystkie obrazy widoczne w menu gry
+  * zawiera tez zmienne ulatwiajace rysowanie bitmap na displayu oraz obsluge roznych ekranow
+  */
 class Menu : public GameSystem {
 public:
     ALLEGRO_BITMAP* tytul;
-    ALLEGRO_BITMAP* tlo;                          //klasa ekranu menu zawierająca wszystkie obrazy widoczne w menu gry
+    ALLEGRO_BITMAP* tlo;                          
     ALLEGRO_BITMAP* graj;                       
     ALLEGRO_BITMAP* exit;
     ALLEGRO_BITMAP* jakgrac;
@@ -44,14 +58,17 @@ public:
     bool CzyInstrukcje;
     int Gwidth;
     int Gheight;
-    int Ewidth;                         //zawiera tez zmienne ulatwiajace rysowanie bitmap na displayu oraz obsluge roznych ekranow
+    int Ewidth;                      
     bool CzyMenu;
 
     void init(char Tytul[], char Tlo[], char Graj[], char Exit[], char Jakgrac[], char Instrukcje[]);
     void drawMenu();
-    void destroy();                                     //konstruktor do inicjalizacji menu, metody do narysowania i zniszczenia
+    void destroy();      
 };
 
+/**
+ * @brief Klasa reprezentująca pojedyncze pole na planszy gry.
+ */
 class Pole : public GameSystem {
 public:
     ALLEGRO_BITMAP* pole;
@@ -67,6 +84,9 @@ public:
     Pole(char Pole[], char Hit[], char Miss[], int x, int y, bool statek, bool trafione, bool wokol);
 };
 
+/**
+ * @brief Klasa reprezentująca planszę gry.
+ */
 class PlanszaGry : public GameSystem {
 public:
     std::vector <Pole*> Pola;
@@ -80,8 +100,11 @@ public:
     void drawplanszaprzeciwnika();
 };
 
+/**
+ * @brief klasa ekranu ustawiania statkow
+ */
 class Ustawianie : public GameSystem {
-public:                                       //klasa ekranu ustawiania statkow
+public:
     bool CzyUstawianie;
     ALLEGRO_BITMAP* NapisObracanie;
     ALLEGRO_BITMAP* SrodPanel;
@@ -100,6 +123,9 @@ public:                                       //klasa ekranu ustawiania statkow
     void destroy();
 };
 
+/**
+ * @brief klasa reprezentujaca statek typu Statek1
+ */
 class Statek1 : public GameSystem {
 public:
     ALLEGRO_BITMAP* ship1;
@@ -118,6 +144,9 @@ public:
     void zaznaczwokol1(PlanszaGry &board);
 };
 
+/**
+ * @brief klasa reprezentujaca statek typu Statek2
+ */
 class Statek2 : public GameSystem {
 public:
     ALLEGRO_BITMAP* ship2;
@@ -139,6 +168,9 @@ public:
     void zaznaczwokol2( PlanszaGry &board);
 };
 
+/**
+ * @brief klasa reprezentujaca statek typu Statek3
+ */
 class Statek3 : public GameSystem {
 public:
     ALLEGRO_BITMAP* ship3;
@@ -159,6 +191,9 @@ public:
     void zaznaczwokol3(PlanszaGry& board);
 };
 
+/**
+ * @brief klasa reprezentujaca statek typu Statek4
+ */
 class Statek4 : public GameSystem {
 public:
     ALLEGRO_BITMAP* ship4;
@@ -180,6 +215,9 @@ public:
     void zaznaczwokol4(PlanszaGry& board);
 };
 
+/**
+ * @brief klasa reprezentujaca armie gracza
+ */
 class ArmiaGracz : public GameSystem {
 public:
     std::vector <Statek1*> statki1;
@@ -199,6 +237,9 @@ public:
     void destroy();
 };
 
+/**
+ * @brief klasa reprezentujaca armie przeciwnika
+ */
 class ArmiaPrzeciwnik : public GameSystem {
 public:
     std::vector <Statek1*> statki1;
@@ -215,6 +256,9 @@ public:
     void destroy();
 };
 
+/**
+ * @brief klasa reprezentujaca rozgrywke
+ */
 class GamePlay : public GameSystem {
 public:
     bool CzyGameplay;

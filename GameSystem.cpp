@@ -1,10 +1,11 @@
-﻿#include "GameSystem.h"
-
-/**
+﻿/**
 * @file GameSystem.cpp
+* 
 * @brief Plik definiujacy metody klas z GameSystem.h
 */
 
+
+#include "GameSystem.h"
 
 char tile[] = "elements/pole.png";
 char hit[] = "elements/hit.png";

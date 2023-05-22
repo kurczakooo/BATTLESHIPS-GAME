@@ -1,8 +1,10 @@
-﻿#include "Petla.h"
-/**
-* * @file Petla.cpp
+﻿/**
+* @file Petla.cpp
+* 
 * @brief Plik definiujacy dzialanie fuknkji petli gry
 */
+
+#include "Petla.h"
 
 char exitscreen[] = "elements/exit_gameplay.png";
 char win[] = "elements/win.png";
