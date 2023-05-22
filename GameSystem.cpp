@@ -1,152 +1,225 @@
-#include "GameSystem.h"
+﻿#include "GameSystem.h"
 
-/*Plik definiujacy metody klas z GameSystem.h*/
+/**
+* @file GameSystem.cpp
+* @brief Plik definiujacy metody klas z GameSystem.h
+*/
 
-char tile[] = "elements/pole.png";
-char hit[] = "elements/hit.png";
-char miss[] = "elements/miss.png";
-char statek1[] = "elements/1statek.png";
-char statek2[] = "elements/2statek.png";
-char statek2r[] = "elements/2statek_rotated.png";
-char statek3[] = "elements/3statek.png";
-char statek4[] = "elements/4statek.png";
-char dzwiek1[] = "sounds/setship1.wav";
 
+char tile[] = "elements/pole.png"; /**< Ścieżka do pliku z obrazem pola. */
+char hit[] = "elements/hit.png"; /**< Ścieżka do pliku z obrazem trafionego pola. */
+char miss[] = "elements/miss.png"; /**< Ścieżka do pliku z obrazem chybionego pola. */
+char statek1[] = "elements/1statek.png"; /**< Ścieżka do pliku z obrazem jednomasztowego statku. */
+char statek2[] = "elements/2statek.png"; /**< Ścieżka do pliku z obrazem dwumasztowego statku. */
+char statek2r[] = "elements/2statek_rotated.png"; /**< Ścieżka do pliku z obrazem obróconego dwumasztowego statku. */
+char statek3[] = "elements/3statek.png"; /**< Ścieżka do pliku z obrazem trójmasztowego statku. */
+char statek4[] = "elements/4statek.png"; /**< Ścieżka do pliku z obrazem czteromasztowego statku. */
+char dzwiek1[] = "sounds/setship1.wav"; /**< Ścieżka do pliku dźwiękowego dla ustawiania statków. */
+
+/**
+ * @brief Inicjalizuje klase GameSystem
+ * @param dzwiek Ścieżka do pliku dźwiękowego
+ */
 void GameSystem::init(char dzwiek[]) {
+	al_init(); /**< Inicjalizuje Allegro. */
+	al_init_image_addon(); /**< Inicjalizuje dodatek do obsługi obrazów. */
+	al_init_native_dialog_addon(); /**< Inicjalizuje dodatek do obsługi okien dialogowych. */
+	al_install_mouse(); /**< Instaluje obsługę myszy. */
+	al_install_audio(); /**< Instaluje obsługę dźwięku. */
+	al_init_acodec_addon(); /**< Inicjalizuje dodatek do obsługi kodeków dźwiękowych. */
+	al_reserve_samples(10); /**< Rezerwuje miejsce na 10 próbek dźwiękowych. */
 
-	al_init();                    //inicjalizacja displayu, tworzenie ekranu i kolejkki na wydarzenia
-	al_init_image_addon();
-	al_init_native_dialog_addon();
-	al_install_mouse();
-	al_install_audio();
-	al_init_acodec_addon();
-	al_reserve_samples(10);
+	this->display = al_create_display(DisplayWidth, DisplayHeight); /**< Tworzy obiekt wyświetlania. */
+	al_set_window_title(display, DisplayTitle); /**< Ustawia tytuł okna. */
+	this->queue = al_create_event_queue(); /**< Tworzy kolejkę zdarzeń. */
+	al_register_event_source(queue, al_get_display_event_source(display)); /**< Rejestruje źródło zdarzeń dla wyświetlacza. */
+	al_register_event_source(queue, al_get_mouse_event_source()); /**< Rejestruje źródło zdarzeń dla myszy. */
 
-	this->display = al_create_display(DisplayWidth, DisplayHeight);
-	al_set_window_title(display, DisplayTitle);
-	this->queue = al_create_event_queue();
-	al_register_event_source(queue, al_get_display_event_source(display));
-	al_register_event_source(queue, al_get_mouse_event_source());
-	//rejestrowanie wydarzen na displayu i wydarzen myszki
-	this->running = true;
-	this->dzwiek = al_load_sample(dzwiek);
+	this->running = true; /**< Ustawia flagę running na true. */
+	this->dzwiek = al_load_sample(dzwiek); /**< Wczytuje próbkę dźwiękową z pliku. */
 }
 
+/**
+ * @brief Niszczy zasoby klasy GameSystem
+ */
 void GameSystem::destroy() {
-	al_destroy_display(display);      //niszczenie wszystkich elementow zawartych w klasie GameSystem
-	al_destroy_event_queue(queue);
-	al_uninstall_mouse();
+	al_destroy_display(display); /**< Niszczy obiekt wyświetlania. */
+	al_destroy_event_queue(queue); /**< Niszczy kolejkę zdarzeń. */
+	al_uninstall_mouse(); /**< Dezinstaluje obsługę myszy. */
+	al_uninstall_audio(); /**< Dezinstaluje obsługę dźwięku. */
 }
 
+/**
+ * @brief Inicjalizuje menu.
+ * @param Tytul Ścieżka do pliku bitmapy z tytułem.
+ * @param Tlo Ścieżka do pliku bitmapy z tłem.
+ * @param Graj Ścieżka do pliku bitmapy przycisku "Graj".
+ * @param Exit Ścieżka do pliku bitmapy przycisku "Wyjście".
+ * @param Jakgrac Ścieżka do pliku bitmapy przycisku "Jak grać".
+ * @param Instrukcje Ścieżka do pliku bitmapy z instrukcjami.
+ */
 void Menu::init(char Tytul[], char Tlo[], char Graj[], char Exit[], char Jakgrac[], char Instrukcje[]) {
-
-	this->tytul = al_load_bitmap(Tytul);
-	this->tlo = al_load_bitmap(Tlo);                  //inicjalizacja menu, ladowanie bitmap
-	this->graj = al_load_bitmap(Graj);
-	this->exit = al_load_bitmap(Exit);
-	this->jakgrac = al_load_bitmap(Jakgrac);
-	this->instrukcje = al_load_bitmap(Instrukcje);
-	this->CzyInstrukcje = false;
-	this->Gwidth = al_get_bitmap_width(graj);
-	this->Gheight = al_get_bitmap_height(graj);
-	this->Ewidth = al_get_bitmap_width(exit);
+	this->tytul = al_load_bitmap(Tytul); /**< Wczytuje bitmapę z tytułem. */
+	this->tlo = al_load_bitmap(Tlo); /**< Wczytuje bitmapę z tłem. */
+	this->graj = al_load_bitmap(Graj); /**< Wczytuje bitmapę przycisku "Graj". */
+	this->exit = al_load_bitmap(Exit); /**< Wczytuje bitmapę przycisku "Wyjście". */
+	this->jakgrac = al_load_bitmap(Jakgrac); /**< Wczytuje bitmapę przycisku "Jak grać". */
+	this->instrukcje = al_load_bitmap(Instrukcje); /**< Wczytuje bitmapę z instrukcjami. */
+	this->CzyInstrukcje = false; /**< Ustawia wartość logiczną "CzyInstrukcje" na false. */
+	this->Gwidth = al_get_bitmap_width(graj); /**< Pobiera szerokość bitmapy przycisku "Graj". */
+	this->Gheight = al_get_bitmap_height(graj); /**< Pobiera wysokość bitmapy przycisku "Graj". */
+	this->Ewidth = al_get_bitmap_width(exit); /**< Pobiera szerokość bitmapy przycisku "Wyjście". */
 }
 
+/**
+ * @brief Wyświetla menu.
+ */
 void Menu::drawMenu() {
-	this->CzyMenu = true;                //pozwala na wykonywanie warunkow zwiazanych z ekranem menu(zobacz Petla.cpp lin14)
-	al_clear_to_color(al_map_rgb(255, 255, 255));
-	al_draw_bitmap(tlo, 0, 0, 0);          //rysowanie menu, tla i bitmap
-	al_draw_bitmap(tytul, 0, 0, 0);
-	al_draw_bitmap(graj, DisplayWidth / 2 - Gwidth / 2, DisplayHeight / 2 - Gheight / 2, 0);
-	al_draw_bitmap(exit, DisplayWidth / 2 - Ewidth / 2, 410, 0);
-	al_draw_bitmap(jakgrac, 1117, 0, 0);
+	this->CzyMenu = true; /**< Ustawia flagę CzyMenu na true. */
+	al_clear_to_color(al_map_rgb(255, 255, 255)); /**< Wypełnia tło kolorem białym. */
+	al_draw_bitmap(tlo, 0, 0, 0); /**< Rysuje bitmapę tła na pozycji (0, 0). */
+	al_draw_bitmap(tytul, 0, 0, 0); /**< Rysuje bitmapę tytułu na pozycji (0, 0). */
+	al_draw_bitmap(graj, DisplayWidth / 2 - Gwidth / 2, DisplayHeight / 2 - Gheight / 2, 0); /**< Rysuje bitmapę przycisku "Graj" na wyśrodkowanej pozycji. */
+	al_draw_bitmap(exit, DisplayWidth / 2 - Ewidth / 2, 410, 0); /**< Rysuje bitmapę przycisku "Wyjście" na pozycji (wyśrodkowana szerokość, 410). */
+	al_draw_bitmap(jakgrac, 1117, 0, 0); /**< Rysuje bitmapę przycisku "Jak grać" na pozycji (1117, 0). */
 }
 
+/**
+ * @brief Niszczy zasoby menu.
+ */
 void Menu::destroy() {
-	this->CzyMenu = false;       //dzieki temu warunki zwwiazane z ekranem menu nie dzialaja
-	al_destroy_bitmap(tytul);
-	al_destroy_bitmap(graj);           //niszczenie elementow ekranu menu
-	al_destroy_bitmap(exit);
-	al_destroy_bitmap(jakgrac);
-	al_destroy_bitmap(instrukcje);
-	al_destroy_bitmap(tlo);
+	this->CzyMenu = false; /**< Ustawia flagę CzyMenu na false. */
+	al_destroy_bitmap(tytul); /**< Niszczy bitmapę tytułu. */
+	al_destroy_bitmap(graj); /**< Niszczy bitmapę przycisku "Graj". */
+	al_destroy_bitmap(exit); /**< Niszczy bitmapę przycisku "Wyjście". */
+	al_destroy_bitmap(jakgrac); /**< Niszczy bitmapę przycisku "Jak grać". */
+	al_destroy_bitmap(instrukcje); /**< Niszczy bitmapę z instrukcjami. */
+	al_destroy_bitmap(tlo); /**< Niszczy bitmapę tła. */
 }
 
+/**
+ * @brief Konstruktor klasy Pole.
+ * @param Pole Ścieżka do pliku bitmapy reprezentującej pole.
+ * @param Hit Ścieżka do pliku bitmapy reprezentującej trafienie.
+ * @param Miss Ścieżka do pliku bitmapy reprezentującej chybienie.
+ * @param x Współrzędna x pola.
+ * @param y Współrzędna y pola.
+ * @param statek Informacja czy na polu znajduje się statek.
+ * @param trafione Informacja czy pole zostało trafione.
+ * @param wokol Informacja czy wokół pola znajduje się statek.
+ */
 Pole::Pole(char Pole[], char Hit[], char Miss[], int x, int y, bool statek, bool trafione, bool wokol) {
-	this->pole = al_load_bitmap(Pole);
-	this->hit = al_load_bitmap(Hit);                            //do zaznacania potem zmienic
-	this->miss = al_load_bitmap(Miss);
-	this->x = x;
-	this->y = y;
-	this->CzyStatek = statek;
-	this->czyTrafione = trafione;
-	this->wokolStatku = wokol;
+	this->pole = al_load_bitmap(Pole); /**< Wczytuje bitmapę reprezentującą pole. */
+	this->hit = al_load_bitmap(Hit); /**< Wczytuje bitmapę reprezentującą trafienie. */
+	this->miss = al_load_bitmap(Miss); /**< Wczytuje bitmapę reprezentującą chybienie. */
+	this->x = x; /**< Ustawia współrzędną x pola. */
+	this->y = y; /**< Ustawia współrzędną y pola. */
+	this->CzyStatek = statek; /**< Ustawia informację czy na polu znajduje się statek. */
+	this->czyTrafione = trafione; /**< Ustawia informację czy pole zostało trafione. */
+	this->wokolStatku = wokol; /**< Ustawia informację czy wokół pola znajduje się statek. */
 }
 
+/**
+ * @brief Inicjalizuje planszę gry.
+ */
 void PlanszaGry::init() {
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
-			this->Pola.push_back(new Pole(tile, hit, miss, (i*40) + 75, (j*40) + 94, false, false, false));
+			/**
+			 * Tworzy obiekt klasy Pole i dodaje go do wektora Pola na planszy.
+			 * Ustawia współrzędne x i y pola na podstawie wartości i i j.
+			 * Ustawia początkowe wartości pól logicznych (statek, trafione, wokol).
+			 */
+			this->Pola.push_back(new Pole(tile, hit, miss, (i * 40) + 75, (j * 40) + 94, false, false, false));
 		}
 	}
-	this->click = al_load_sample(dzwiek1);
+	this->click = al_load_sample(dzwiek1); /**< Wczytuje próbkę dźwiękową z pliku. */
 }
 
+/**
+ * @brief Niszczy planszę gry.
+ */
 void PlanszaGry::destroy() {
 	for (auto tile = Pola.begin(); tile != Pola.end(); tile++) {
-		delete *tile;
+		delete* tile; /**< Usuwa obiekt klasy Pole. */
 	}
-	Pola.clear();
+	Pola.clear(); /**< Czyści wektor Pola. */
 }
 
+/**
+ * @brief Rysuje planszę gry.
+ */
 void PlanszaGry::drawplansza() {
 	for (auto& tile : Pola) {
-		if (tile->czyTrafione && tile->CzyStatek)
-			tile->pole = tile->hit;
-		else if (tile->czyTrafione && !tile->CzyStatek)
-			tile->pole = tile->miss;
-		al_draw_bitmap(tile->pole, tile->x, tile->y, 0);
+		if (tile->czyTrafione && tile->CzyStatek) /**< Jeśli pole zostało trafione i na nim znajduje się statek. */
+			tile->pole = tile->hit; /**< Ustawia bitmapę trafienia dla pola. */
+		else if (tile->czyTrafione && !tile->CzyStatek) /**< Jeśli pole zostało trafione i na nim nie ma statku. */
+			tile->pole = tile->miss; /**< Ustawia bitmapę chybienia dla pola. */
+		al_draw_bitmap(tile->pole, tile->x, tile->y, 0); /**< Rysuje bitmapę pola na określonej pozycji (x, y). */
 	}
 }
 
+/**
+ * @brief Inicjalizuje ekran ustawiania statków.
+ * @param Napis Ścieżka do pliku bitmapy reprezentującej napis.
+ * @param Panel Ścieżka do pliku bitmapy reprezentującej panel.
+ * @param litery Ścieżka do pliku bitmapy reprezentującej litery.
+ * @param cyfry Ścieżka do pliku bitmapy reprezentującej cyfry.
+ * @param reset Ścieżka do pliku bitmapy reprezentującej reset.
+ * @param exit Ścieżka do pliku bitmapy reprezentującej wyjście.
+ * @param graj Ścieżka do pliku bitmapy reprezentującej przycisk "Graj".
+ * @param losujustawianie Ścieżka do pliku bitmapy reprezentującej przycisk "Losuj ustawienie".
+ * @param losujwarning Ścieżka do pliku bitmapy reprezentującej ostrzeżenie przy losowaniu.
+ * @param grajsound Ścieżka do pliku dźwiękowego reprezentującego dźwięk przycisku "Graj".
+ */
 void Ustawianie::init(char Napis[], char Panel[], char litery[], char cyfry[], char reset[], char exit[], char graj[], char losujustawianie[], char losujwarning[], char grajsound[]) {
-	this->NapisObracanie = al_load_bitmap(Napis);          //inicjalizacja ekranu ustawiania statkow
-	this->SrodPanel = al_load_bitmap(Panel);
-	this->Litery = al_load_bitmap(litery);
-	this->Cyfry = al_load_bitmap(cyfry);
-	this->Reset = al_load_bitmap(reset);
-	this->Exit = al_load_bitmap(exit);
-	this->Graj = al_load_bitmap(graj);
-	this->Losuj = al_load_bitmap(losujustawianie);
-	this->LosujWarning = al_load_bitmap(losujwarning);
-	this->GrajSound = al_load_sample(grajsound);
+	this->NapisObracanie = al_load_bitmap(Napis); /**< Wczytuje bitmapę reprezentującą napis. */
+	this->SrodPanel = al_load_bitmap(Panel); /**< Wczytuje bitmapę reprezentującą panel. */
+	this->Litery = al_load_bitmap(litery); /**< Wczytuje bitmapę reprezentującą litery. */
+	this->Cyfry = al_load_bitmap(cyfry); /**< Wczytuje bitmapę reprezentującą cyfry. */
+	this->Reset = al_load_bitmap(reset); /**< Wczytuje bitmapę reprezentującą przycisk reset. */
+	this->Exit = al_load_bitmap(exit); /**< Wczytuje bitmapę reprezentującą przycisk wyjście. */
+	this->Graj = al_load_bitmap(graj); /**< Wczytuje bitmapę reprezentującą przycisk "Graj". */
+	this->Losuj = al_load_bitmap(losujustawianie); /**< Wczytuje bitmapę reprezentującą przycisk "Losuj ustawienie". */
+	this->LosujWarning = al_load_bitmap(losujwarning); /**< Wczytuje bitmapę reprezentującą ostrzeżenie przy losowaniu. */
+	this->GrajSound = al_load_sample(grajsound); /**< Wczytuje próbkę dźwiękową z pliku. */
 }
 
-void Ustawianie::DrawUstawianie(PlanszaGry &board) {
-	this->CzyUstawianie = true;   //pozwala na wykonywanie warunkow zwiazych z ekranem ustawiania(zobacz Petla.cpp lin38 i 44)
-	al_draw_bitmap(NapisObracanie, 700, 0, 0);     //rysowanie ekranu ustawiania statkow
-	al_draw_bitmap(SrodPanel, 500, 0, 0);
-	al_draw_bitmap(Litery, 76, 44, 0);
-	al_draw_bitmap(Cyfry, 24, 94, 0);
-	al_draw_bitmap(Reset, 617, 461, 0);
-	al_draw_bitmap(Exit, 514, 461, 0);
-	al_draw_bitmap(Losuj, 508, 390, 0);
+/**
+ * @brief Rysuje ekran ustawiania statków.
+ * @param board Referencja do obiektu PlanszaGry.
+ */
+void Ustawianie::DrawUstawianie(PlanszaGry& board) {
+	this->CzyUstawianie = true; /**< Ustawia flagę CzyUstawianie na true. */
+	al_draw_bitmap(NapisObracanie, 700, 0, 0); /**< Rysuje bitmapę napisu na określonej pozycji. */
+	al_draw_bitmap(SrodPanel, 500, 0, 0); /**< Rysuje bitmapę panelu na określonej pozycji. */
+	al_draw_bitmap(Litery, 76, 44, 0); /**< Rysuje bitmapę liter na określonej pozycji. */
+	al_draw_bitmap(Cyfry, 24, 94, 0); /**< Rysuje bitmapę cyfr na określonej pozycji. */
+	al_draw_bitmap(Reset, 617, 461, 0); /**< Rysuje bitmapę przycisku reset na określonej pozycji. */
+	al_draw_bitmap(Exit, 514, 461, 0); /**< Rysuje bitmapę przycisku wyjście na określonej pozycji. */
+	al_draw_bitmap(Losuj, 508, 390, 0); /**< Rysuje bitmapę przycisku "Losuj ustawienie" na określonej pozycji. */
 
-	if (ZajetePola == 20)
-		al_draw_bitmap(Graj, 508, 235, 0);
+	if (ZajetePola == 20) /**< Jeśli wszystkie pola zostały zajęte. */
+		al_draw_bitmap(Graj, 508, 235, 0); /**< Rysuje bitmapę przycisku "Graj" na określonej pozycji. */
 }
 
+/**
+ * @brief Niszczy zasoby związane z klasą Ustawianie.
+ */
 void Ustawianie::destroy() {
-	this->CzyUstawianie = false;
-	al_destroy_bitmap(NapisObracanie);   //niszczenie elementow klasy ustawianie
-	al_destroy_bitmap(SrodPanel);
-	al_destroy_bitmap(Litery);
-	al_destroy_bitmap(Cyfry);
-	al_destroy_bitmap(Reset);
-	al_destroy_bitmap(Exit);
-	al_destroy_bitmap(Graj);
+	this->CzyUstawianie = false; /**< Ustawia flagę CzyUstawianie na false. */
+	al_destroy_bitmap(NapisObracanie); /**< Niszczy bitmapę NapisObracanie. */
+	al_destroy_bitmap(SrodPanel); /**< Niszczy bitmapę SrodPanel. */
+	al_destroy_bitmap(Litery); /**< Niszczy bitmapę Litery. */
+	al_destroy_bitmap(Cyfry); /**< Niszczy bitmapę Cyfry. */
+	al_destroy_bitmap(Reset); /**< Niszczy bitmapę Reset. */
+	al_destroy_bitmap(Exit); /**< Niszczy bitmapę Exit. */
+	al_destroy_bitmap(Graj); /**< Niszczy bitmapę Graj. */
 }
 
+/**
+ * @brief Inicjalizuje planszę przeciwnika.
+ */
 void PlanszaGry::initprzeciwnik() {
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
@@ -154,7 +227,9 @@ void PlanszaGry::initprzeciwnik() {
 		}
 	}
 }
-
+/**
+*@brief Niszczy planszę przeciwnika.
+*/
 void PlanszaGry::destroyprzeciwnik() {
 	for (auto tile = Pola.begin(); tile != Pola.end(); tile++) {
 		delete* tile;
@@ -162,6 +237,9 @@ void PlanszaGry::destroyprzeciwnik() {
 	Pola.clear();
 }
 
+/**
+ * @brief Rysuje planszę przeciwnika.
+ */
 void PlanszaGry::drawplanszaprzeciwnika() {
 	for (auto& tile : Pola) {
 		if (tile->czyTrafione && tile->CzyStatek)
@@ -172,6 +250,14 @@ void PlanszaGry::drawplanszaprzeciwnika() {
 	}
 }
 
+/**
+ * @brief Konstruktor klasy Statek1.
+ * @param statek1 Ścieżka do bitmapy reprezentującej statek.
+ * @param x Współrzędna x, na której statek ma być umieszczony.
+ * @param y Współrzędna y, na której statek ma być umieszczony.
+ * @param defaultx Wartość domyślna współrzędnej x.
+ * @param defaulty Wartość domyślna współrzędnej y.
+ */
 Statek1::Statek1(char statek1[], float x, float y, int defaultx, int defaulty) {
 	this->degree = 0.0;
 	this->ship1 = al_load_bitmap(statek1);
@@ -183,37 +269,41 @@ Statek1::Statek1(char statek1[], float x, float y, int defaultx, int defaulty) {
 	this->CzyUstawiony = false;
 }
 
-void Statek1::zaznaczwokol1( PlanszaGry &board) {
+/**
+ * @brief Zaznacza pola wokół statku.
+ * @param board Referencja do obiektu PlanszaGry, na którym znajdują się pola.
+ */
+void Statek1::zaznaczwokol1(PlanszaGry& board) {
 	if ((Iczesc + 1) % 10 != 0 && Iczesc != 99) {
-		board.Pola[Iczesc + 1]->wokolStatku = true;     //dol statku
+		board.Pola[Iczesc + 1]->wokolStatku = true;     ///< Dol statku
 		PolaWokolStatku1.push_back(Iczesc + 1);
 	}
 	if (Iczesc % 10 != 0 && Iczesc != 0) {
-		board.Pola[Iczesc - 1]->wokolStatku = true;     //gora statku
+		board.Pola[Iczesc - 1]->wokolStatku = true;     ///< Góra statku
 		PolaWokolStatku1.push_back(Iczesc - 1);
 	}
 	if ((Iczesc - 10) >= 0) {
-		board.Pola[Iczesc - 10]->wokolStatku = true;    //lewo statku
+		board.Pola[Iczesc - 10]->wokolStatku = true;    ///< Lewo statku
 		PolaWokolStatku1.push_back(Iczesc - 10);
 	}
 	if ((Iczesc + 10) <= 99) {
-		board.Pola[Iczesc + 10]->wokolStatku = true;    //prawo statku
+		board.Pola[Iczesc + 10]->wokolStatku = true;    ///< Prawo statku
 		PolaWokolStatku1.push_back(Iczesc + 10);
 	}
 	if ((Iczesc - 9) >= 0 && (Iczesc - 9) % 10 != 0) {
-		board.Pola[Iczesc - 9]->wokolStatku = true;    //lewo dol statku
+		board.Pola[Iczesc - 9]->wokolStatku = true;    ///< Lewo dol statku
 		PolaWokolStatku1.push_back(Iczesc - 9);
 	}
 	if ((Iczesc - 11) >= 0 && (Iczesc - 10) % 10 != 0) {
-		board.Pola[Iczesc - 11]->wokolStatku = true;    //lewo gora statku
+		board.Pola[Iczesc - 11]->wokolStatku = true;    ///< Lewo gora statku
 		PolaWokolStatku1.push_back(Iczesc - 11);
 	}
 	if ((Iczesc + 9) < 99 && Iczesc % 10 != 0) {
-		board.Pola[Iczesc + 9]->wokolStatku = true;    //prawo gora statku
+		board.Pola[Iczesc + 9]->wokolStatku = true;    ///< Prawo gora statku
 		PolaWokolStatku1.push_back(Iczesc + 9);
 	}
 	if ((Iczesc + 11) <= 99 && (Iczesc + 11) % 10 != 0) {
-		board.Pola[Iczesc + 11]->wokolStatku = true;    //prawo dol statku
+		board.Pola[Iczesc + 11]->wokolStatku = true;    ///< Prawo dol statku
 		PolaWokolStatku1.push_back(Iczesc + 11);
 	}
 }
