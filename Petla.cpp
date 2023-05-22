@@ -1,7 +1,8 @@
-#include "Petla.h"
-/*Plik definiujacy dzialanie fuknkji petli gry, postanowilem wylaczyc ja z pliku gamesystem.cpp, bo robila sie duza
-w visual studio do projektu mozna przulaczyc tylko jeden plik naglowkowy, abu podlaczyc kolejny nalezy wejsc projekt->
-wlasciwosci->c++/c->zaawansowane->plik wymuszonego doloczenia i wpisac sciezke do pliku naglowkowego*/
+﻿#include "Petla.h"
+/**
+* * @file Petla.cpp
+* @brief Plik definiujacy dzialanie fuknkji petli gry
+*/
 
 char exitscreen[] = "elements/exit_gameplay.png";
 char win[] = "elements/win.png";
@@ -14,17 +15,34 @@ char misssound[] = "sounds/miss.wav";
 char winsound[] = "sounds/win.wav";
 char losesound[] = "sounds/lose.wav";
 
+/**
+ * @brief Funkcja reprezentująca pętlę gry.
+ *
+ * @param gamesystem   Referencja do obiektu GameSystem.
+ * @param menu         Referencja do obiektu Menu.
+ * @param ustawianie   Referencja do obiektu Ustawianie.
+ * @param plansza      Referencja do obiektu PlanszaGry.
+ * @param enemyboard   Referencja do obiektu PlanszaGry reprezentującego planszę przeciwnika.
+ * @param armiagracz   Referencja do obiektu ArmiaGracz.
+ * @param armiaprzeciwnik  Referencja do obiektu ArmiaPrzeciwnik.
+ * @param gamescreen   Referencja do obiektu GamePlay.
+ */
 void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, PlanszaGry& plansza, PlanszaGry& enemyboard, ArmiaGracz& armiagracz, ArmiaPrzeciwnik& armiaprzeciwnik, GamePlay& gamescreen) {
 
-	while (gamesystem.running) { //glowna petla
+	while (gamesystem.running) { ///<glowna petla
 
 		al_wait_for_event(gamesystem.queue, &gamesystem.event); //deklaracja ze kolejka czeka na wydarzenia
-
-		if (gamesystem.event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {   //warunek zamkniecia okna 
+		/**
+		* @brief Sprawdza, czy wystąpiło zdarzenie zamykania okna i wyświetla okno dialogowe potwierdzające zamknięcie gry.
+		*/
+		if (gamesystem.event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {   
 			int koniec = al_show_native_message_box(gamesystem.display, DisplayTitle, "", "Czy napewno chcesz zamknac gre? Zamkniecie spowoduje utrate postepu.", NULL, ALLEGRO_MESSAGEBOX_WARN | ALLEGRO_MESSAGEBOX_YES_NO);
 			if(koniec == 1) gamesystem.running = false;
 		}
 
+		/**
+		* @brief Obsługuje zdarzenia podczas wyświetlania menu gry.
+		*/
 		if (menu.CzyMenu) {
 			ustawianie.CzyUstawianie = false;
 			gamescreen.CzyGameplay = false;
@@ -33,7 +51,7 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 			gamescreen.CzyLose = false;
 			menu.CzyInstrukcje = false;
 			menu.drawMenu();
-
+			// Obsługa kliknięcia przycisku "Instrukcje"
 			if (gamesystem.event.mouse.x >= 1117 && gamesystem.event.mouse.x <= 1177 && gamesystem.event.mouse.y >= 0 && gamesystem.event.mouse.y <= 100) {
 				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && gamesystem.event.mouse.button == 1) {
 					menu.CzyMenu = false;
@@ -41,13 +59,13 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 					al_play_sample(gamesystem.dzwiek, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
 				}
 			}
-
+			// Obsługa kliknięcia przycisku "Wyjście"
 			if (gamesystem.event.mouse.x >= 483 && gamesystem.event.mouse.x <= 718 && gamesystem.event.mouse.y >= 410 && gamesystem.event.mouse.y <= 485) {
 				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && gamesystem.event.mouse.button == 1) {
 					gamesystem.running = false;
 				}
 			}
-			
+			// Obsługa kliknięcia przycisku "Rozpocznij grę"
 			if (gamesystem.event.mouse.x >= 475 && gamesystem.event.mouse.x <= 725 && gamesystem.event.mouse.y >= 220 && gamesystem.event.mouse.y <= 320) {
 				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && gamesystem.event.mouse.button == 1) {
 					al_play_sample(gamesystem.dzwiek, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
@@ -58,7 +76,9 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 				}
 			}
 		}
-
+		/**
+		* @brief Obsługuje zdarzenia podczas wyświetlania ekranu instrukcji.
+		*/
 		if (menu.CzyInstrukcje) {
 			al_draw_bitmap(menu.instrukcje, DisplayWidth / 2 - 300, DisplayHeight / 2 - 200, 0);
 			ustawianie.CzyUstawianie = false;
@@ -74,7 +94,9 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 				}
 			}
 		}
-
+		/**
+		* @brief Obsługuje zdarzenia podczas wyświetlania ekranu ustawianai statkow.
+		*/
 		if (ustawianie.CzyUstawianie) {
 			menu.CzyMenu = false;
 			gamescreen.CzyGameplay = false;
@@ -86,7 +108,9 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 			ustawianie.DrawUstawianie(plansza);
 			plansza.drawplansza();
 			armiagracz.drawarmia(gamesystem.event, plansza, ustawianie);
-
+			/**
+			* @brief Obsługuje zdarzenia podczas kliknięcia przycisku "Powrót do menu" na ekranie ustawiania.
+			*/
 			if (gamesystem.event.mouse.x >= 514 && gamesystem.event.mouse.x <= 570 && gamesystem.event.mouse.y >= 461 && gamesystem.event.mouse.y <= 521) {
 				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && gamesystem.event.mouse.button == 1) {
 					al_play_sample(gamesystem.dzwiek, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
@@ -97,7 +121,9 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 					menu.CzyMenu = true;
 				}
 			}
-
+			/**
+			* @brief Obsługuje zdarzenia po kliknieciu losuj statki
+			*/
 			if (gamesystem.event.mouse.x >= 508 && gamesystem.event.mouse.x <= 692 && gamesystem.event.mouse.y >= 390 && gamesystem.event.mouse.y <= 444) {
 				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && gamesystem.event.mouse.button == 1) {
 					al_play_sample(gamesystem.dzwiek, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
@@ -105,14 +131,22 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 					armiagracz.CzyMoznaLosowac = false;
 				}
 			}
-
+			/**
+			* @brief Obsługuje zdarzenia po kliknieciu restart
+			*/
 			if (gamesystem.event.mouse.x >= 617 && gamesystem.event.mouse.x <= 680 && gamesystem.event.mouse.y >= 461 && gamesystem.event.mouse.y <= 521) {
 				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && gamesystem.event.mouse.button == 1) {
 					al_play_sample(gamesystem.dzwiek, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
 					armiagracz.restart(gamesystem.event, plansza, ustawianie);
 				}
 			}
-
+			/**
+			 * @brief Obsługuje zdarzenia podczas kliknięcia przycisku "Graj" na ekranie ustawiania gry.
+			 *
+			 * Funkcja sprawdza, czy liczba zajętych pól na planszy (`ustawianie.ZajetePola`) wynosi 20 i czy użytkownik kliknął przycisk "Graj".
+			 * Sprawdza również, czy współrzędne kliknięcia myszy znajdują się w obszarze przycisku.
+			 * Losuje planszę przeciwnika (`armiaprzeciwnik.LosujPlansze()`).
+			 */
 			if (ustawianie.ZajetePola == 20 && gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && gamesystem.event.mouse.button == 1) {
 				if (gamesystem.event.mouse.x >= 508 && gamesystem.event.mouse.x <= 692 && gamesystem.event.mouse.y >= 235 && gamesystem.event.mouse.y <= 305) {
 					al_play_sample(ustawianie.GrajSound, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
@@ -129,7 +163,9 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 				}
 			}
 		}
-
+		/**
+		* @brief Obsługuje zdarzenia podczas wyświetlania ekranu gry w statki
+		*/
 		if (gamescreen.CzyGameplay) {
 			menu.CzyMenu = false;
 			ustawianie.CzyUstawianie = false;
@@ -140,30 +176,26 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 			armiagracz.drawarmia(gamesystem.event, plansza, ustawianie);
 			plansza.drawplansza();
 			gamescreen.Rozgrywka(gamesystem.event, plansza, enemyboard, ustawianie, armiaprzeciwnik, armiagracz);
-/*			for (int i = 0; i < 4; i++) {    //Losowanie pojedynczych statkow
-				al_draw_bitmap(armiaprzeciwnik.statki1[i]->ship1, armiaprzeciwnik.statki1[i]->x, armiaprzeciwnik.statki1[i]->y, 0);
-			}
-			for (int i = 0; i < 3; i++) {    //Losowanie pojedynczych statkow
-				al_draw_bitmap(armiaprzeciwnik.statki2[i]->ship2, armiaprzeciwnik.statki2[i]->x, armiaprzeciwnik.statki2[i]->y, 0);
-			}
-			for (int i = 0; i < 2; i++) {    //Losowanie pojedynczych statkow
-				al_draw_bitmap(armiaprzeciwnik.statki3[i]->ship3, armiaprzeciwnik.statki3[i]->x, armiaprzeciwnik.statki3[i]->y, 0);
-			}
-			al_draw_bitmap(armiaprzeciwnik.statki4[0]->ship4, armiaprzeciwnik.statki4[0]->x, armiaprzeciwnik.statki4[0]->y, 0);
-*/
+			/**
+			 * @brief Sprawdza warunek zwycięstwa w grze.
+			 */
 			if (gamescreen.TrafionePlanszaAI == 20) {
 				al_play_sample(gamescreen.WinSound, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
 				Sleep(1000);
 				gamescreen.CzyWin = true;
 			}
-			
+			/**
+			 * @brief Sprawdza warunek przegranej w grze.
+			 */
 			if (gamescreen.TrafionePlanszaGracz == 20) {
 				gamescreen.CzyGameplay = false;
 				al_play_sample(gamescreen.LoseSound, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
 				Sleep(1000);
 				gamescreen.CzyLose = true;
 			}
-
+			/**
+			* @brief Obsługuje zdarzenia po kliknieciu przycisku "powrot do menu"
+			*/
 			if (gamesystem.event.mouse.x >= 514 && gamesystem.event.mouse.x <= 570 && gamesystem.event.mouse.y >= 461 && gamesystem.event.mouse.y <= 521) {
 				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && gamesystem.event.mouse.button == 1) {
 					al_play_sample(gamesystem.dzwiek, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
@@ -172,14 +204,18 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 				}
 			}
 		}
-
+		/**
+		* @brief Obsługuje zdarzenia podczas wyświetlania ekranu wygranej
+		*/
 		if (gamescreen.CzyWin) {
 			gamescreen.CzyGameplay = false;
 			menu.CzyMenu = false;
 			ustawianie.CzyUstawianie = false;
 			menu.CzyInstrukcje = false;
 			al_draw_bitmap(gamescreen.Win, DisplayWidth / 2 - 300, DisplayHeight / 2 - 200, 0);
-
+			/**
+			* @brief Obsługuje zdarzenia po kliknieciu przycisku "powrot do menu"
+			*/
 			if (gamesystem.event.mouse.x >= 345 && gamesystem.event.mouse.x <= 465 && gamesystem.event.mouse.y >= 380 && gamesystem.event.mouse.y <= 425) {
 				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && gamesystem.event.mouse.button == 1) {
 					al_play_sample(gamesystem.dzwiek, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
@@ -193,7 +229,9 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 					menu.CzyMenu = true;
 				}
 			}
-
+			/**
+			* @brief Obsługuje zdarzenia po kliknieciu przycisku "JESZCZE RAZ"
+			*/
 			if (gamesystem.event.mouse.x >= 590 && gamesystem.event.mouse.x <= 860 && gamesystem.event.mouse.y >= 380 && gamesystem.event.mouse.y <= 425) {
 				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && gamesystem.event.mouse.button == 1) {
 					al_play_sample(gamesystem.dzwiek, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
@@ -211,14 +249,18 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 				}
 			}
 		}
-
+		/**
+		* @brief Obsługuje zdarzenia podczas wyświetlania ekranu przegranej
+		*/
 		if (gamescreen.CzyLose) {
 			gamescreen.CzyGameplay = false;
 			menu.CzyMenu = false;
 			ustawianie.CzyUstawianie = false;
 			menu.CzyInstrukcje = false;
 			al_draw_bitmap(gamescreen.Lose, DisplayWidth / 2 - 300, DisplayHeight / 2 - 200, 0);
-
+			/**
+			* @brief Obsługuje zdarzenia po kliknieciu przycisku "powrot do menu"
+			*/
 			if (gamesystem.event.mouse.x >= 345 && gamesystem.event.mouse.x <= 465 && gamesystem.event.mouse.y >= 380 && gamesystem.event.mouse.y <= 425) {
 				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && gamesystem.event.mouse.button == 1) {
 					al_play_sample(gamesystem.dzwiek, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
@@ -232,7 +274,9 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 					menu.CzyMenu = true;
 				}
 			}
-
+			/**
+			* @brief Obsługuje zdarzenia po kliknieciu przycisku "JESZCZE RAZ"
+			*/
 			if (gamesystem.event.mouse.x >= 590 && gamesystem.event.mouse.x <= 860 && gamesystem.event.mouse.y >= 380 && gamesystem.event.mouse.y <= 425) {
 				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && gamesystem.event.mouse.button == 1) {
 					al_play_sample(gamesystem.dzwiek, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
@@ -250,14 +294,18 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 				}
 			}
 		}
-
+		/**
+		* @brief Obsługuje zdarzenia podczas wyświetlania ekranu wyjscia do menu z ekranu ustawiania
+		*/
 		if (gamescreen.CzyExit) {
 			gamescreen.CzyGameplay = false;
 			menu.CzyMenu = false;
 			ustawianie.CzyUstawianie = false;
 			menu.CzyInstrukcje = false;
 			al_draw_bitmap(gamescreen.ExitScreen, DisplayWidth / 2 - 300, DisplayHeight / 2 - 200, 0);
-	
+			/**
+			* @brief Obsługuje zdarzenia po kliknieciu przycisku "powrot do menu"
+			*/
 			if (gamesystem.event.mouse.x >= 345 && gamesystem.event.mouse.x <= 480 && gamesystem.event.mouse.y >= 380 && gamesystem.event.mouse.y <= 425) {
 				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && gamesystem.event.mouse.button == 1) {
 					al_play_sample(gamesystem.dzwiek, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
@@ -271,7 +319,9 @@ void PetlaGry(GameSystem& gamesystem, Menu& menu, Ustawianie& ustawianie, Plansz
 					menu.CzyMenu = true;
 				}
 			}
-
+			/**
+			* @brief Obsługuje zdarzenia po kliknieciu przycisku "wznow"
+			*/
 			if (gamesystem.event.mouse.x >= 700 && gamesystem.event.mouse.x <= 860 && gamesystem.event.mouse.y >= 380 && gamesystem.event.mouse.y <= 425) {
 				if (gamesystem.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && gamesystem.event.mouse.button == 1) {
 					al_play_sample(gamesystem.dzwiek, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
