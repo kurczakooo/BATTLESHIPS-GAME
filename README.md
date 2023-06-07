@@ -1,13 +1,13 @@
 ## BATTLESHIPS GAME
-A small interactive game of battleships played against ai, made for a college project. (Made in C++ and Allegro 5)
+A small interactive game of battleships played against ai made for a college project. (Made in C++ and Allegro 5)
 
 ### DONE✅:
-- player can randomize their ships placement,
-- game is fully playable.
+- player can randomize their ship's placement,
+- the game is fully playable.
 
-### TO DO IN FUTURE📝:
-- give player the possibility to rotate their ships,
-- fix a bug which sometimes crashes the game when u lose (ai tries to hit a tile on players board after all of them have been hit).
+### TO DO IN THE FUTURE📝:
+- give the player a possibility to rotate their ships,
+- fix a bug that sometimes crashes the game when u lose (ai tries to hit a tile on the player's board after all of them have been hit).
 
 
 ### PREVIEW🎮:
